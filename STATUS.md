@@ -7,7 +7,6 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 
 ## Şu an
 
-- [ ] Astro'yu güvenlik düzeltmesi için 7.4.1 → 7.4.13'e yükselt (`npm audit`: orta seviye, GHSA-mh32-jxcr-mh9f)
 
 ## Sıradaki
 
@@ -81,6 +80,8 @@ Aylık geri yükleme provaları buraya yazılır: `tarih · yedek adı · kayıt
 
 ## Tamamlananlar
 
+- [x] Astro 7.4.1 → 7.4.13 (güvenlik düzeltmesi GHSA-mh32-jxcr-mh9f); `npm audit` temiz
+- [x] Tüzük PDF'i bozuk başlık bilgisi olmadan yeniden üretildi (içerik birebir aynı)
 - [x] Gündem RSS beslemesi → `/gundem/rss.xml` (`<head>` ve alt bilgide bağlantı)
 - [x] Kaynaklar sayfası (`/kaynaklar`): türlere göre gruplu, BibTeX açılır kutusu ve kopyalama düğmesi
 - [x] Gündem arşivinde yıla göre gruplama (`/gundem`); filtrede boş kalan yıl gizlenir
