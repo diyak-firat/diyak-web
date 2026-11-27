@@ -38,5 +38,8 @@ htmlcov/
 media/
 staticfiles/
 
-# Geçici referans: logo tasarımı düzeltilene kadar yerelde tutulur
+# Geçici referanslar: logo tasarımı düzeltilene kadar yerelde tutulur
 Tüzük_v1.pdf
+DIYAK_logo_beyaz.png
+DIYAK_profil_lacivert_zemin.png
+DIYAK_profil_yazili_lacivert_zemin.png
