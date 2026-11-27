@@ -33,7 +33,6 @@ Siteyi bir bağlantıyla ekibe/danışmana göstermek gerektiğinde veya alan ad
 ## Birikmiş işler
 
 - [ ] İngilizce sürüm (Astro i18n, `/en/` altında). Menüdeki EN bağlantısı o zaman eklenecek
-- [ ] Sosyal medya önizlemesi için Open Graph görseli
 - [ ] GitHub Actions'a testleri ekle (ilk testler yazıldığında, `.github/workflows/frontend.yml`)
 
 ## Faz 2 (backend)
@@ -80,6 +79,7 @@ Aylık geri yükleme provaları buraya yazılır: `tarih · yedek adı · kayıt
 
 ## Tamamlananlar
 
+- [x] Open Graph görseli → `frontend/public/og.png` (kaynak `design/og/`), `og:*` ve `twitter:card` etiketleri
 - [x] Astro 7.4.1 → 7.4.13 (güvenlik düzeltmesi GHSA-mh32-jxcr-mh9f); `npm audit` temiz
 - [x] Tüzük PDF'i bozuk başlık bilgisi olmadan yeniden üretildi (içerik birebir aynı)
 - [x] Gündem RSS beslemesi → `/gundem/rss.xml` (`<head>` ve alt bilgide bağlantı)
