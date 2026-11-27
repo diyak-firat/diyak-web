@@ -74,11 +74,11 @@ Aylık geri yükleme provaları buraya yazılır: `tarih · yedek adı · kayıt
 
 ## Bekleyen kararlar
 
-- **API katmanı:** Django Ninja mı, Django REST Framework mü? (Faz 2 başında)
 - **Panel metin editörü:** Konuşulacak. Öneri: Tiptap (çekirdeği MIT lisanslı, araç çubuğu kendi tasarımımızla yapılabiliyor); daha sade alternatif: Trix. A2'den önce karar verilip DECISIONS.md'ye yazılacak.
 
 ## Tamamlananlar
 
+- [x] API katmanı kararı: Django REST Framework (K-23)
 - [x] Open Graph görseli → `frontend/public/og.png` (kaynak `design/og/`), `og:*` ve `twitter:card` etiketleri
 - [x] Astro 7.4.1 → 7.4.13 (güvenlik düzeltmesi GHSA-mh32-jxcr-mh9f); `npm audit` temiz
 - [x] Tüzük PDF'i bozuk başlık bilgisi olmadan yeniden üretildi (içerik birebir aynı)

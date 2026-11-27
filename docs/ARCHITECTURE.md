@@ -80,7 +80,7 @@ Faz 2, ilk gerçek dinamik ihtiyaçla başlar: çevrim içi üyelik başvurusu, 
 | Katman | Seçim |
 | --- | --- |
 | Framework | **Django 5.2 LTS** (Python 3.12+) |
-| API | Django Ninja veya Django REST Framework (Faz 2 başında seçilecek) |
+| API | Django REST Framework, yalnızca salt okunur uç noktalar (K-23) |
 | Yönetim paneli | Kendi panelimiz (`panel.<alan-adi>`): duyurular, etkinlik kayıt formları, yanıtlar, ekip sayfası; sitenin tasarımıyla ([PANEL.md](PANEL.md)). Django Admin yalnızca teknik sorumlular için, VPN arkasında |
 | Veritabanı | PostgreSQL 17, kendi VPS'imizde Docker içinde; yedekleme ve kurtarma [OPERASYON.md](OPERASYON.md) |
 | Önbellek ve kuyruk | Redis |

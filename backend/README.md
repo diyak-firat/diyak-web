@@ -41,7 +41,7 @@ backend/
 
 - [ ] Hosting yeri (KVKK): üniversite sunucusu, yurt içi bulut veya yurt dışı + yükümlülükler
 - [ ] Veri sorumlusu: topluluk mu, üniversite mi (SKS ile yazılı)
-- [ ] API katmanı: Django Ninja veya Django REST Framework
+- [x] API katmanı: Django REST Framework (K-23)
 - [ ] Panel metin editörü bileşeni (PANEL.md A2)
 
 ## Başlangıç kuralları
