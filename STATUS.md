@@ -7,7 +7,6 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 
 ## Şu an
 
-- [ ] Fırat Üniversitesi ve SKS logolarını resmî kaynaklardan bul, doğrula, SVG olarak `frontend/public/logolar/` altına ekle
 - [ ] Kaynaklar sayfası (`/kaynaklar`), BibTeX kopyalama düğmesi
 - [ ] Gündem için RSS beslemesi (`@astrojs/rss`, onaylandı)
 
@@ -83,6 +82,7 @@ Aylık geri yükleme provaları buraya yazılır: `tarih · yedek adı · kayıt
 
 ## Tamamlananlar
 
+- [x] Fırat Üniversitesi logosu resmî kurumsal kimlik kılavuzundan SVG olarak eklendi; SKS adıyla alt bilgide (K-22)
 - [x] Tüzüğün son hâli eklendi → `frontend/public/belgeler/tuzuk.pdf`
 - [x] Repo ayarları: yalnızca squash merge, birleşen dallar otomatik silinir
 - [x] main koruması: PR zorunlu (onay 0, ikinci geliştirici gelince 1), yöneticiler dahil, force push ve silme kapalı, `check ve build` geçmeli

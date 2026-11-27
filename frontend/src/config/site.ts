@@ -14,10 +14,15 @@ export const site = {
     uyeKayitFormu: '/belgeler/uye-kayit-formu.pdf',
     tuzuk: '/belgeler/tuzuk.pdf',
   },
+  // Üst menüde gösterilen kurum logoları. logo: null ise kesikli yer tutucu çıkar.
+  // SKS'nin ayrı bir logosu yok; adı alt bilgide yazar (Tüzük 9/7 "adı ve/veya logosu", K-22).
   kurumlar: [
-    // logo: '/logolar/firat.svg' gibi bir yol verilince yer tutucunun yerine görsel çıkar
-    { kisa: 'FÜ', ad: 'Fırat Üniversitesi', url: 'https://www.firat.edu.tr', logo: null },
-    { kisa: 'SKS', ad: 'Sağlık Kültür ve Spor Daire Başkanlığı', url: '#', logo: null },
+    {
+      kisa: 'FÜ',
+      ad: 'Fırat Üniversitesi',
+      url: 'https://www.firat.edu.tr',
+      logo: '/logolar/firat.svg',
+    },
   ] as { kisa: string; ad: string; url: string; logo: string | null }[],
   sosyal: [
     { ad: 'LinkedIn', url: '#' },

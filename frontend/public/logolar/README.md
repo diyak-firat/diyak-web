@@ -1,10 +1,7 @@
 # Kurum logoları
 
-Fırat Üniversitesi ve SKS logoları, kullanım izniyle buraya eklenir (`firat.svg`, `sks.svg`).
-Ardından `src/config/site.ts` içindeki `kurumlar` listesinde ilgili `logo` alanına yolu yazılır:
+- `firat.svg` — Fırat Üniversitesi, "Türkçe Zeminli Dairesel Kullanım" logosu. Kaynak: üniversitenin resmî kurumsal kimlik sayfası (https://www.firat.edu.tr/tr/page/menu/kurumsal-kimlik-kilavuzu-4066), `kurumsalkimlik.zip` içindeki görsel kimlik kılavuzu PDF'inin 6. sayfasındaki vektörden alındı. Renk kılavuzdaki RGB değeri: `#79113E` (Pantone 209 C). Şekle dokunulmaz, yeniden çizilmez.
 
-```ts
-{ kisa: 'FÜ', ad: 'Fırat Üniversitesi', url: 'https://www.firat.edu.tr', logo: '/logolar/firat.svg' },
-```
+SKS Daire Başkanlığı'nın ayrı bir logosu yoktur (kendi sitesi de FÜ logosunu kullanır); adı alt bilgide yazar (K-22).
 
-Tüzük 9/7 gereği bu logolar (veya kurum adları) sitede bulunmalıdır.
+Logo `src/config/site.ts` içindeki `kurumlar` listesinden üst menüye gelir. Tüzük 9/7 gereği sitede bulunmalıdır.

@@ -62,7 +62,7 @@ Türler: `feat` yeni özellik, `fix` hata düzeltme, `docs` doküman, `style` g�
 ## İçerik kuralları
 
 - Yer tutucular köşeli parantez içinde yazılır: `[Ad Soyad]`, `[GG Ay 2026]`. Uydurma isim, tarih, istatistik veya alıntı yazma.
-- **Tüzük 9/7:** Sitede Fırat Üniversitesi ve SKS adı veya logosu bulunmalı (üst menü ve alt bilgi).
+- **Tüzük 9/7:** Sitede Fırat Üniversitesi ve SKS adı ve/veya logosu bulunmalı. Üst menüde FÜ logosu, alt bilgide FÜ ve SKS'nin adı durur (K-22). Bunları kaldırma.
 - **Tüzük 9/8:** Sponsor sözleşmesi yoksa ticari kuruluşların logosu kullanılmaz.
 - Akademik Danışman, Yönetim Kurulu'nun parçası değildir (Tüzük Madde 6). Ekip sayfasında ayrı bölümde durur.
 - Ekip sayfasındaki fotoğraf, e-posta ve bağlantılar ancak kişinin yazılı onayıyla yayımlanır (KVKK).
