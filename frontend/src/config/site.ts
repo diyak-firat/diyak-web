@@ -37,9 +37,9 @@ export const site = {
 export const menu = [
   { ad: 'Gündem', href: '/#gundem', sayfa: 'gundem' },
   { ad: 'Araştırma', href: '/#arastirma', sayfa: null },
-  { ad: 'Kaynaklar', href: '/#kaynaklar', sayfa: null },
+  { ad: 'Kaynaklar', href: '/#kaynaklar', sayfa: 'kaynaklar' },
   { ad: 'Hakkımızda', href: '/#hakkimizda', sayfa: null },
   { ad: 'Ekip', href: '/ekip/', sayfa: 'ekip' },
 ] as const;
 
-export type Sayfa = 'ana' | 'gundem' | 'ekip' | 'diger';
+export type Sayfa = 'ana' | 'gundem' | 'kaynaklar' | 'ekip' | 'diger';

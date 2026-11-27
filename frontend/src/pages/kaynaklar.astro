@@ -1,0 +1,64 @@
+---
+// Yayınlar ve açık kaynaklar. Veriler src/data/kaynaklar.json dosyasından gelir (docs/CONTENT.md).
+import BaseLayout from '../layouts/BaseLayout.astro';
+import KaynakSatiri from '../components/kaynaklar/KaynakSatiri.astro';
+import { TURLER, kaynaklar, type Tur } from '../lib/kaynaklar';
+
+const BASLIKLAR: Record<Tur, string> = {
+  Yayın: 'Yayınlar',
+  'Veri kümesi': 'Veri kümeleri',
+  Araç: 'Araçlar',
+};
+
+const hepsi = await kaynaklar();
+const gruplar = TURLER.map((tur, i) => ({
+  id: `tur-${i + 1}`,
+  baslik: BASLIKLAR[tur],
+  kaynaklar: hepsi.filter((k) => k.data.tur === tur),
+})).filter((g) => g.kaynaklar.length > 0);
+---
+
+<BaseLayout
+  baslik="Yayınlar ve açık kaynaklar"
+  sayfa="kaynaklar"
+  aciklama="DİYAK yayınları, açık veri kümeleri ve araçları."
+>
+  <div class="wrap page">
+    <h1>Yayınlar ve açık kaynaklar</h1>
+    <p class="lead">Topluluk üyelerinin yayınları, açık veri kümeleri ve araçlar.</p>
+
+    {gruplar.map((g) => (
+      <section class="group" aria-labelledby={g.id}>
+        <h2 class="h2 group-title" id={g.id}>
+          {g.baslik}
+        </h2>
+        <div class="list">
+          {g.kaynaklar.map((k) => (
+            <KaynakSatiri kaynak={k} turGoster={false} />
+          ))}
+        </div>
+      </section>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .page {
+    padding-block: 56px 72px;
+  }
+  h1 {
+    margin: 0 0 8px;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(36px, 5vw, 52px);
+    line-height: 1.1;
+    color: var(--navy);
+  }
+  .group {
+    margin-top: 48px;
+  }
+  .group-title {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+</style>

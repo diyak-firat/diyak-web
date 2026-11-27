@@ -84,7 +84,13 @@ Her kişi şu alanları taşır:
 
 ## Yayın ve kaynak eklemek
 
-Dosya: `frontend/src/data/kaynaklar.json`. Yeni öğeyi listenin başına ekleyin. `tur` alanı `Yayın`, `Veri kümesi` veya `Araç` olur.
+Dosya: `frontend/src/data/kaynaklar.json`. Yeni öğeyi listenin başına ekleyin. `tur` alanı `Yayın`, `Veri kümesi` veya `Araç` olur. Sıralama `sira` alanına göredir; ana sayfada ilk 5 öğe, `/kaynaklar` sayfasında hepsi türlere göre gruplanmış görünür.
+
+Yayınlarda BibTeX kaydı `bibtex` alanına ham metin olarak yazılır (satır sonları `\n`). Sitede "BibTeX" açılır kutusu ve "Kopyala" düğmesi bu alandan oluşur; ayrıca BibTeX bağlantısı eklemeye gerek yok.
+
+```json
+"bibtex": "@inproceedings{soyad2026kisa,\n  title = {...},\n  author = {...},\n  booktitle = {...},\n  year = {2026}\n}"
+```
 
 ## Belgeler
 
