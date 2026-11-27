@@ -135,3 +135,9 @@ Biçim: **Karar** · **Gerekçe** · **Bedeli** (vazgeçtiğimiz şey)
 **Karar:** Mevcut mobil görünüm yeterli değil. Sitenin masaüstü tasarımı ve işlevleri tamamlandıktan sonra tüm sayfaların mobil görünümü ayrı bir çalışma olarak ele alınacak. O zamana kadar değişiklikler masaüstünde kontrol edilir; telefonda yalnızca taşma ve kırılma olmaması (yatay kaydırma, üst üste binme, kullanılamayan düğme) aranır.
 **Gerekçe:** Tasarım masaüstünde oturmadan mobil için ayrıntılı çalışmak iki kez iş yapmak demek.
 **Bedeli:** Bu süreçte telefon kullanıcıları için deneyim sınırlı. Panelin telefondan kullanılabilirliği (PANEL.md) bu mobil çalışmanın parçası olarak ele alınır.
+
+### K-21 · Logo renkleri sitenin renk tanımlarından gelir
+**Tarih:** 2026-11-27
+**Karar:** Logo, `design/logo/` altındaki SVG'ler ve sitedeki `Logo.astro` olarak kullanılır. Renkleri `tokens.css` ile aynıdır: lacivert `#1E2142`, mercan `#E5533A`. İlk referans PNG'lerdeki biraz farklı tonlar esas alınmaz.
+**Gerekçe:** Logo ile sitenin renkleri tek kaynaktan gelir, iki ayrı lacivert ve mercan oluşmaz.
+**Bedeli:** Eski PNG'ler kullanılırsa ton farkı görünür; yeni basılı ve dijital materyaller `design/logo/` dosyalarından üretilmeli.
