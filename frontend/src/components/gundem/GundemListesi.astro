@@ -1,14 +1,25 @@
 ---
 // Gündem gönderilerinin filtrelenebilir listesi. Ana sayfada ve /gundem arşivinde kullanılır.
 // Filtre düğmeleri JavaScript ile açılır; JS kapalıysa liste yine eksiksiz okunur.
+// yilaGore verilirse (arşiv sayfası) gönderiler yıl başlıkları altında gruplanır.
 import { ETIKETLER, type Gonderi } from '../../lib/gundem';
-import { etkinlikZamani, isoTarih, kisaTarih } from '../../lib/tarih';
+import { etkinlikZamani, isoTarih, kisaTarih, yil } from '../../lib/tarih';
 
 interface Props {
   gonderiler: Gonderi[];
+  yilaGore?: boolean;
 }
-const { gonderiler } = Astro.props;
+const { gonderiler, yilaGore = false } = Astro.props;
 const filtreler = ['Tümü', ...ETIKETLER];
+
+// Gönderiler zaten en yeni önce sıralı geldiği için gruplar da yeniden eskiye dizilir.
+const gruplar: { yil: number | null; gonderiler: Gonderi[] }[] = [];
+for (const g of gonderiler) {
+  const y = yilaGore ? yil(g.data.tarih) : null;
+  const son = gruplar.at(-1);
+  if (son && son.yil === y) son.gonderiler.push(g);
+  else gruplar.push({ yil: y, gonderiler: [g] });
+}
 ---
 
 <div data-gundem>
@@ -26,63 +37,78 @@ const filtreler = ['Tümü', ...ETIKETLER];
   </div>
 
   <div class="list">
-    {gonderiler.map((g) => {
-      const etkinlik = g.data.etiket === 'Etkinlik' ? g.data.etkinlik : undefined;
-      return (
-        <article class="row" data-etiket={g.data.etiket}>
-          <div class="row-meta">
-            <time datetime={isoTarih(g.data.tarih)}>{kisaTarih(g.data.tarih)}</time>
-          </div>
-          <div class="row-body">
-            <span class:list={['chip', { event: g.data.etiket === 'Etkinlik' }]}>
-              {g.data.etiket}
-            </span>
-            <h3 class="post-title">
-              <a href={`/gundem/${g.id}/`}>{g.data.baslik}</a>
-            </h3>
-            <p class="post-summary">{g.data.ozet}</p>
-            {etkinlik && (
-              <div class="event-meta">
-                <span>
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                  >
-                    <rect x="3" y="5" width="18" height="16" rx="2" />
-                    <path d="M16 3v4M8 3v4M3 10h18" />
-                  </svg>
-                  <time datetime={isoTarih(etkinlik.zaman)}>{etkinlikZamani(etkinlik.zaman)}</time>
-                </span>
-                <span>
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                  >
-                    <path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" />
-                    <circle cx="12" cy="10" r="2.5" />
-                  </svg>
-                  {etkinlik.yer}
-                </span>
+    {gruplar.map((grup) => (
+      <section
+        class="year-group"
+        data-yil-grubu
+        aria-labelledby={grup.yil ? `yil-${grup.yil}` : undefined}
+      >
+        {grup.yil && (
+          <h2 class="year-title" id={`yil-${grup.yil}`}>
+            {grup.yil}
+          </h2>
+        )}
+        {grup.gonderiler.map((g) => {
+          const etkinlik = g.data.etiket === 'Etkinlik' ? g.data.etkinlik : undefined;
+          return (
+            <article class="row" data-etiket={g.data.etiket}>
+              <div class="row-meta">
+                <time datetime={isoTarih(g.data.tarih)}>{kisaTarih(g.data.tarih)}</time>
               </div>
-            )}
-          </div>
-        </article>
-      );
-    })}
+              <div class="row-body">
+                <span class:list={['chip', { event: g.data.etiket === 'Etkinlik' }]}>
+                  {g.data.etiket}
+                </span>
+                <h3 class="post-title">
+                  <a href={`/gundem/${g.id}/`}>{g.data.baslik}</a>
+                </h3>
+                <p class="post-summary">{g.data.ozet}</p>
+                {etkinlik && (
+                  <div class="event-meta">
+                    <span>
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <rect x="3" y="5" width="18" height="16" rx="2" />
+                        <path d="M16 3v4M8 3v4M3 10h18" />
+                      </svg>
+                      <time datetime={isoTarih(etkinlik.zaman)}>
+                        {etkinlikZamani(etkinlik.zaman)}
+                      </time>
+                    </span>
+                    <span>
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" />
+                        <circle cx="12" cy="10" r="2.5" />
+                      </svg>
+                      {etkinlik.yer}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </article>
+          );
+        })}
+      </section>
+    ))}
     <p class="empty" data-bos hidden>
       Bu etikette henüz gönderi yok.
     </p>
@@ -93,6 +119,7 @@ const filtreler = ['Tümü', ...ETIKETLER];
   document.querySelectorAll<HTMLElement>('[data-gundem]').forEach((kok) => {
     const grup = kok.querySelector<HTMLElement>('[data-filtreler]');
     const satirlar = kok.querySelectorAll<HTMLElement>('[data-etiket]');
+    const yilGruplari = kok.querySelectorAll<HTMLElement>('[data-yil-grubu]');
     const bos = kok.querySelector<HTMLElement>('[data-bos]');
     if (!grup) return;
     grup.hidden = false;
@@ -109,6 +136,10 @@ const filtreler = ['Tümü', ...ETIKETLER];
         const goster = secili === 'Tümü' || s.dataset.etiket === secili;
         s.hidden = !goster;
         if (goster) gorunen++;
+      });
+      // Seçili etikette gönderisi kalmayan yılın başlığı da gizlenir.
+      yilGruplari.forEach((y) => {
+        y.hidden = !y.querySelector('[data-etiket]:not([hidden])');
       });
       if (bos) bos.hidden = gorunen > 0;
     });
@@ -139,6 +170,19 @@ const filtreler = ['Tümü', ...ETIKETLER];
     background: var(--navy);
     border-color: var(--navy);
     color: var(--paper);
+  }
+  .year-title {
+    margin: 40px 0 0;
+    padding-bottom: 12px;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 1.2;
+    color: var(--navy);
+    font-variant-numeric: tabular-nums;
+  }
+  .year-group:first-child .year-title {
+    margin-top: 8px;
   }
   .post-title {
     margin: 10px 0 0;
