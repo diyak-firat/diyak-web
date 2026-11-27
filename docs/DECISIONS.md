@@ -160,3 +160,9 @@ Biçim: **Karar** · **Gerekçe** · **Bedeli** (vazgeçtiğimiz şey)
 - Genel ayarda yalnızca `JSONRenderer` açık (browsable API yok); varsayılan izin **kapalı** (`DEFAULT_PERMISSION_CLASSES = [IsAdminUser]`), varsayılan kimlik doğrulama sınıfı yok.
 - Herkese açık uç noktalar görünüm düzeyinde açıkça `AllowAny` alır ve yalnızca `ReadOnlyModelViewSet` / `ListAPIView` gibi salt okunur görünümlerdir. Yazma işlemi API'den yapılmaz.
 - Her uç nokta için "taslak/onaysız kayıt dönmüyor" ve "izin verilmeyen alan dönmüyor" testleri yazılır.
+
+### K-24 · Compose dosyaları: sunucu tanımı kökte, yerel eklenti ayrı
+**Tarih:** 2026-11-27
+**Karar:** Repo kökündeki `docker-compose.yml` canlı ve deneme sunucusunda tek başına kullanılan servis tanımıdır (OPERASYON.md'deki `/opt/diyak/` yerleşimiyle uyumlu). Yerel geliştirme ayarları (`runserver`, kodun konteynere bağlanması, `127.0.0.1:8000` portu, test araçlarını içeren `dev` imajı) `docker-compose.dev.yml` içindedir ve yalnızca yerel `.env` dosyasındaki `COMPOSE_FILE=docker-compose.yml:docker-compose.dev.yml` satırıyla devreye girer. Sunucudaki `.env` bu satırı içermez. Gizli bilgiler Docker secrets ile `secrets/*.txt` dosyalarından okunur (`AD_FILE` ortam değişkenleri). Redis, MinIO ve ClamAV onları kullanan ilk özellikle eklenir.
+**Gerekçe:** Yerelde ve sunucuda aynı servis tanımı çalışır; `docker compose exec -T db ...` gibi komutlar (AGENTS.md, OPERASYON.md) iki yerde de aynı kalır. `docker-compose.override.yml` kullanılmadı çünkü sunucuda repo çekildiğinde otomatik yüklenip geliştirme ayarlarını canlıya taşırdı.
+**Bedeli:** Yerelde `.env` dosyası kurulmadan `docker compose` canlı ayarlarla başlar; kurulum adımı `backend/README.md` dosyasında.

@@ -1,0 +1,19 @@
+# Yerel geliştirme eklentisi. .env içinde COMPOSE_FILE=docker-compose.yml:docker-compose.dev.yml
+# olduğunda `docker compose ...` komutları bu dosyayı otomatik ekler. Sunucuda KULLANILMAZ.
+
+services:
+  web:
+    build:
+      target: dev
+    restart: 'no'
+    # Konteynerde oluşan dosyalar (migration vb.) bilgisayardaki kullanıcıya ait olsun.
+    user: '${DIYAK_UID:-1000}:${DIYAK_GID:-1000}'
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.development
+      DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1
+      HOME: /tmp
+    volumes:
+      - ./backend:/app
+    ports:
+      # Yalnızca bu bilgisayardan erişilir.
+      - '127.0.0.1:8000:8000'

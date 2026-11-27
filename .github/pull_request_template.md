@@ -23,6 +23,7 @@ Closes #
 ## Kontrol listesi
 
 - [ ] `npm run check` ve `npm run build` hatasız geçiyor
+- [ ] Backend değiştiyse `pytest` geçiyor ve her yeni görünüm için yetkisiz erişim testi var
 - [ ] Masaüstünde (1280px) baktım; telefonda (390px) taşma veya kırılma yok
 - [ ] Yeni renk veya yazı tipi eklemedim, `tokens.css` değişkenlerini kullandım
 - [ ] Gizli bilgi (şifre, token, kişisel veri, yedek dosyası) eklemedim
