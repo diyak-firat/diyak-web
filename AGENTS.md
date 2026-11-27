@@ -24,12 +24,20 @@ npm run build     # üretim derlemesi — her işin sonunda çalıştır
 npm run format    # Prettier
 ```
 
+Backend (Faz 2) komutları repo kökünde çalışır; kurulum `backend/README.md` dosyasında:
+
+```bash
+docker compose up -d                                  # PostgreSQL + Django, http://localhost:8000
+docker compose run --rm web pytest                    # testler — backend işinin sonunda çalıştır
+docker compose run --rm web python manage.py makemigrations
+```
+
 ## Bir iş nasıl yapılır
 
 1. `STATUS.md` dosyasında işin karşılığını bul. Yoksa kullanıcıya sor ya da "Şu an" bölümüne ekle.
 2. Güncel main'den branch aç: `feat/…`, `fix/…`, `docs/…`, `refactor/…`, `chore/…`.
 3. Küçük ve tek amaçlı değişiklikler yap. Bir PR tek bir iş yapar.
-4. Bitirince `npm run check` ve `npm run build` hatasız geçmeli.
+4. Bitirince `npm run check` ve `npm run build` hatasız geçmeli. Backend değiştiyse `pytest` de geçmeli.
 5. Sayfayı 1280px (masaüstü) genişlikte kontrol et. Telefonda (390px) yalnızca taşma ve kırılma olmadığına bak; mobil tasarımın toparlanması ayrı bir iş (STATUS.md, K-20). Kullanıcı istemedikçe mobil görünüm üzerinde ayrıca çalışma.
 6. `STATUS.md` dosyasını güncelle: biten işi "Tamamlananlar"a taşı, yeni ortaya çıkan işleri ekle.
 7. Yeni bir mimari karar aldıysan `docs/DECISIONS.md` dosyasına ekle.

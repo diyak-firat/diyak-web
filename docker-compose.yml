@@ -1,0 +1,48 @@
+# DİYAK servisleri. Canlı ve deneme sunucusunda bu dosya tek başına kullanılır (OPERASYON.md).
+# Yerelde .env içindeki COMPOSE_FILE, docker-compose.dev.yml'yi de ekler (bkz. .env.example).
+#
+# UYARI: `docker compose down -v` ASLA çalıştırılmaz; -v veritabanı volume'ünü siler.
+# TODO (yayın hazırlığı): Caddy (TLS), statik dosyalar, Redis. STATUS.md'de.
+
+services:
+  db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: diyak
+      POSTGRES_USER: diyak
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    secrets: [db_password]
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U diyak -d diyak']
+      interval: 10s
+      retries: 5
+    # "ports" YOK: veritabanı dışarı açılmaz, yalnızca aynı ağdaki Django erişir.
+
+  web:
+    build:
+      context: ./backend
+      target: prod
+    restart: unless-stopped
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.production
+      DJANGO_SECRET_KEY_FILE: /run/secrets/django_secret_key
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-}
+      DJANGO_CSRF_TRUSTED_ORIGINS: ${DJANGO_CSRF_TRUSTED_ORIGINS:-}
+      DB_HOST: db
+      DB_PASSWORD_FILE: /run/secrets/db_password
+    secrets: [db_password, django_secret_key]
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt
+  django_secret_key:
+    file: ./secrets/django_secret_key.txt

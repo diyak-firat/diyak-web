@@ -7,6 +7,7 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 
 ## Şu an
 
+- [ ] **A1 · Temel ve hesaplar** (PANEL.md §12): roller ve dönemler, davet, 2FA (`django-otp`), giriş kilidi (`django-axes`), yeni cihaz uyarısı, `denetim`, `ilk_yonetici`, panel iskeleti ve menüsü, Kullanıcılar ekranı. Yeni pip bağımlılıkları (django-otp, django-axes) için onay alınacak
 
 ## Sıradaki
 
@@ -44,7 +45,7 @@ Faz 1 kısa tutulur: Faz 1'de duyuru yazma aracı kurulmaz, hızla Faz 2'ye geç
 - [ ] Aydınlatma metni ve açık rıza metni taslakları, üniversitenin hukuk birimiyle (formların ön şartı)
 - [ ] E-posta gönderim servisi (davet, onay bildirimi, kayıt onayı): önce Bilgi İşlem'in SMTP sunucusu sorulur; yurt dışındaki bir servis KVKK açısından yurt dışına aktarım sayılır
 - [ ] Bütçe: giderlerin nereden karşılanacağı (SKS?) ve ödeme yapılan hesapların topluluk adına açılması
-- [ ] Django projesi iskeleti, roller, Django Admin
+- [ ] Yayın hazırlığı (Compose): Caddy (TLS ve statik dosyalar), `collectstatic`, Redis; sunucuda `secrets/` dosya izinleri (web konteyneri `uid 10001` ile çalışır, `chmod 600` + root sahipliği onun okumasını engeller; OPERASYON.md §3 buna göre güncellenmeli)
 - [ ] Object storage ve dosya yükleme akışı
 - [ ] Yurt içi VPS seç: 4 GB RAM; paket yükseltmeyi yeniden kurulum gerektirmeden destekleyen bir sağlayıcı (K-19)
 - [ ] Deneme ortamı aynı sunucuda, ayrı Docker Compose projesi olarak (OPERASYON.md §12)
@@ -78,6 +79,7 @@ Aylık geri yükleme provaları buraya yazılır: `tarih · yedek adı · kayıt
 
 ## Tamamlananlar
 
+- [x] Backend iskeleti: Django 5.2 LTS, DRF (K-23 varsayılanları), e-posta ile giriş yapan `accounts.Kullanici`, `/api/saglik/`, ayarlar (base/development/test/production), Dockerfile, Compose (K-24), CI (`backend testleri`: migration, pytest, `check --deploy`, Bandit)
 - [x] API katmanı kararı: Django REST Framework (K-23)
 - [x] Open Graph görseli → `frontend/public/og.png` (kaynak `design/og/`), `og:*` ve `twitter:card` etiketleri
 - [x] Astro 7.4.1 → 7.4.13 (güvenlik düzeltmesi GHSA-mh32-jxcr-mh9f); `npm audit` temiz

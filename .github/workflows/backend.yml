@@ -1,0 +1,59 @@
+# Her PR'da ve main'e her birleştirmede backend'i denetler: testler, migration, check --deploy, Bandit.
+name: backend
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backend-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: backend testleri
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: backend
+    services:
+      db:
+        image: postgres:17
+        env:
+          POSTGRES_DB: diyak
+          POSTGRES_USER: diyak
+          POSTGRES_PASSWORD: yalnizca-ci
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U diyak -d diyak"
+          --health-interval 5s
+          --health-retries 10
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PASSWORD: yalnizca-ci
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.13.10'
+          python-version: '3.13'
+          enable-cache: true
+          cache-dependency-glob: backend/uv.lock
+      - run: uv sync --locked
+      - name: Eksik migration yok
+        run: uv run python manage.py makemigrations --check --dry-run
+      - name: Testler
+        run: uv run pytest
+      - name: Canlı ortam ayarları (check --deploy)
+        env:
+          DJANGO_SETTINGS_MODULE: config.settings.production
+          DJANGO_SECRET_KEY: yalnizca-ci-icin-uzun-ve-rastgele-gorunen-bir-anahtar-0123456789
+          DJANGO_ALLOWED_HOSTS: panel.ornek.org
+        run: uv run python manage.py check --deploy --fail-level WARNING
+      - name: Statik güvenlik taraması (Bandit)
+        run: uv run bandit -q -c pyproject.toml -r .

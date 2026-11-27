@@ -1,0 +1,30 @@
+[project]
+name = "diyak-backend"
+version = "0.1.0"
+description = "DİYAK yönetim paneli ve API (Faz 2)"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "django>=5.2,<5.3",
+    "djangorestframework>=3.16,<4",
+    "psycopg[binary]>=3.2,<4",
+    "gunicorn>=23,<24",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "pytest-django>=4.9",
+    "bandit>=1.8",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+python_files = ["test_*.py"]
+testpaths = ["tests", "apps"]
+addopts = "-ra --strict-markers"
+
+[tool.bandit]
+exclude_dirs = ["tests", ".venv"]
