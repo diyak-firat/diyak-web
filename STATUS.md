@@ -7,7 +7,7 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 
 ## Şu an
 
-- [ ] Logo PR'ını (`fix/logo`) gözden geçir ve birleştir
+- [ ] Tüzüğün son hâlinin olup olmadığını ekipten öğren (yanıta göre aşağıdaki tüzük maddesi)
 
 ## Sıradaki
 
@@ -25,7 +25,7 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 - [ ] Ekip üyeleri: isim, e-posta, isteğe bağlı bağlantılar ve fotoğraflar (yazılı onayla) → `ekip.json` ve `frontend/public/ekip/`
 - [ ] Topluluk e-postası ve sosyal medya bağlantıları → `frontend/src/config/site.ts`
 - [ ] Üye kayıt formu (Ek-4) PDF → `frontend/public/belgeler/uye-kayit-formu.pdf`
-- [ ] Onaylanmış tüzük PDF → `frontend/public/belgeler/tuzuk.pdf`
+- [ ] Tüzük: ekibe soruldu. Son hâli varsa PDF → `frontend/public/belgeler/tuzuk.pdf`; hâlâ akademik danışmandaysa sitede tüzük hiç yer almaz ve `Footer.astro`, `Hakkimizda.astro` içindeki tüzük bağlantıları ile `site.ts` içindeki `belgeler.tuzuk` kaldırılır
 - [ ] Örnek gündem gönderilerini (`ornek: true`) gerçek gönderilerle değiştir
 - [ ] Kuruluş yılını ve Hakkımızda metnini yönetimle son kez gözden geçir
 
