@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GundemListesi from '../../components/gundem/GundemListesi.astro';
+import { gonderiler } from '../../lib/gundem';
+
+const hepsi = await gonderiler();
+---
+
+<BaseLayout baslik="Gündem" sayfa="gundem" aciklama="DİYAK duyuruları, etkinlikleri ve çağrıları.">
+  <div class="wrap page">
+    <h1>Gündem</h1>
+    <p class="lead">Duyurular, etkinlikler, çağrılar ve topluluktan haberler.</p>
+    <GundemListesi gonderiler={hepsi} />
+  </div>
+</BaseLayout>
+
+<style>
+  .page {
+    padding-block: 56px 72px;
+  }
+  h1 {
+    margin: 0 0 8px;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(36px, 5vw, 52px);
+    line-height: 1.1;
+    color: var(--navy);
+  }
+</style>

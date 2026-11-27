@@ -1,0 +1,134 @@
+{
+  "donem": "2026–2027",
+  "danisman": {
+    "ad": "[Unvan Ad Soyad]",
+    "birim": "[Fakülte], [Bölüm]",
+    "eposta": "[ad.soyad@firat.edu.tr]",
+    "profiller": [
+      { "ad": "ORCID", "url": "#" },
+      { "ad": "LinkedIn", "url": "#" },
+      { "ad": "Google Scholar", "url": "#" },
+      { "ad": "Scopus", "url": "#" },
+      { "ad": "DergiPark", "url": "#" },
+      { "ad": "Web of Science", "url": "#" },
+      { "ad": "YÖK Akademik", "url": "#" }
+    ]
+  },
+  "yonetim": [
+    {
+      "rol": "Başkan",
+      "ad": "[Ad Soyad]",
+      "eposta": "[e-posta adresi]",
+      "baglantilar": { "linkedin": "#", "github": "#" }
+    },
+    {
+      "rol": "Başkan Yardımcısı",
+      "ad": "[Ad Soyad]",
+      "eposta": "[e-posta adresi]",
+      "baglantilar": { "linkedin": "#", "github": "#" }
+    }
+  ],
+  "birimler": [
+    {
+      "ad": "Proje ve Araştırma Birimi",
+      "uyeler": [
+        {
+          "rol": "Birim Sorumlusu",
+          "ad": "[Ad Soyad]",
+          "eposta": "[e-posta adresi]",
+          "baglantilar": { "linkedin": "#", "github": "#" }
+        },
+        {
+          "rol": "Üye",
+          "ad": "[Ad Soyad]",
+          "eposta": "[e-posta adresi]",
+          "baglantilar": { "linkedin": "#", "github": "#" }
+        },
+        {
+          "rol": "Üye",
+          "ad": "[Ad Soyad]",
+          "eposta": "[e-posta adresi]",
+          "baglantilar": { "linkedin": "#", "github": "#" }
+        },
+        {
+          "rol": "Üye",
+          "ad": "[Ad Soyad]",
+          "eposta": "[e-posta adresi]",
+          "baglantilar": { "linkedin": "#", "github": "#" }
+        }
+      ]
+    },
+    {
+      "ad": "İletişim Birimi",
+      "uyeler": [
+        {
+          "rol": "Birim Sorumlusu",
+          "ad": "[Ad Soyad]",
+          "eposta": "[e-posta adresi]",
+          "baglantilar": { "linkedin": "#" }
+        },
+        {
+          "rol": "Üye",
+          "ad": "[Ad Soyad]",
+          "eposta": "[e-posta adresi]",
+          "baglantilar": { "linkedin": "#" }
+        },
+        { "rol": "Üye", "ad": "[Ad Soyad]", "eposta": "[e-posta adresi]" },
+        {
+          "rol": "Üye",
+          "ad": "[Ad Soyad]",
+          "eposta": "[e-posta adresi]",
+          "baglantilar": { "linkedin": "#" }
+        }
+      ]
+    },
+    {
+      "ad": "Etkinlik ve Sponsorluk Birimi",
+      "uyeler": [
+        {
+          "rol": "Birim Sorumlusu",
+          "ad": "[Ad Soyad]",
+          "eposta": "[e-posta adresi]",
+          "baglantilar": { "linkedin": "#" }
+        },
+        {
+          "rol": "Üye",
+          "ad": "[Ad Soyad]",
+          "eposta": "[e-posta adresi]",
+          "baglantilar": { "linkedin": "#" }
+        },
+        { "rol": "Üye", "ad": "[Ad Soyad]", "eposta": "[e-posta adresi]" },
+        {
+          "rol": "Üye",
+          "ad": "[Ad Soyad]",
+          "eposta": "[e-posta adresi]",
+          "baglantilar": { "linkedin": "#" }
+        }
+      ]
+    },
+    {
+      "ad": "Medya ve Tasarım Birimi",
+      "uyeler": [
+        {
+          "rol": "Birim Sorumlusu",
+          "ad": "[Ad Soyad]",
+          "eposta": "[e-posta adresi]",
+          "baglantilar": { "linkedin": "#", "behance": "#" }
+        },
+        {
+          "rol": "Üye",
+          "ad": "[Ad Soyad]",
+          "eposta": "[e-posta adresi]",
+          "baglantilar": { "linkedin": "#" }
+        },
+        { "rol": "Üye", "ad": "[Ad Soyad]", "eposta": "[e-posta adresi]" },
+        {
+          "rol": "Üye",
+          "ad": "[Ad Soyad]",
+          "eposta": "[e-posta adresi]",
+          "baglantilar": { "linkedin": "#" }
+        }
+      ]
+    }
+  ]
+}

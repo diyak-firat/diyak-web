@@ -1,0 +1,62 @@
+---
+import { getCollection } from 'astro:content';
+
+const kaynaklar = (await getCollection('kaynaklar')).sort((a, b) => a.data.sira - b.data.sira);
+---
+
+<section class="band kaynaklar" id="kaynaklar" aria-labelledby="kaynaklar-baslik">
+  <div class="wrap">
+    <div class="section-head head">
+      <h2 class="h2" id="kaynaklar-baslik">
+        Yayınlar ve açık kaynaklar
+      </h2>
+      <!-- TODO: /kaynaklar sayfası yapılınca "Tümü →" bağlantısı eklenecek (STATUS.md) -->
+    </div>
+    <div class="list">
+      {kaynaklar.map(({ data }) => (
+        <div class="row">
+          <p class="row-meta kind">{data.tur}</p>
+          <div class="row-body">
+            <p class="res-title">{data.baslik}</p>
+            <p class="res-sub">{data.alt}</p>
+            <p class="res-links">
+              {data.baglantilar.map((b) => (
+                <a href={b.url}>{b.ad}</a>
+              ))}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .kaynaklar {
+    border-top: 0;
+  }
+  .kaynaklar > .wrap {
+    padding-bottom: 72px;
+  }
+  .head {
+    margin-bottom: 20px;
+  }
+  .res-title {
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.4;
+    margin-bottom: 6px;
+  }
+  .res-sub {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .res-links {
+    font-family: var(--mono);
+    font-size: 13px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+  }
+</style>

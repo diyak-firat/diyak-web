@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout baslik="Sayfa bulunamadı">
+  <div class="wrap page">
+    <p class="eyebrow">404</p>
+    <h1>Aradığınız sayfa bulunamadı</h1>
+    <p class="lead">Bağlantı eskimiş ya da sayfa taşınmış olabilir.</p>
+    <div class="btn-row">
+      <a href="/" class="btn btn-primary">
+        Ana sayfaya dön
+      </a>
+      <a href="/gundem/" class="btn btn-ghost">
+        Gündeme göz at
+      </a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page {
+    padding-block: 96px;
+  }
+  h1 {
+    margin: 16px 0 12px;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(30px, 4.5vw, 44px);
+    line-height: 1.15;
+    color: var(--navy);
+  }
+  .btn-row {
+    margin-top: 32px;
+  }
+</style>

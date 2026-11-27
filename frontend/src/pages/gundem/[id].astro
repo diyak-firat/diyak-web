@@ -1,0 +1,127 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { gonderiler, type Gonderi } from '../../lib/gundem';
+import { etkinlikZamani, isoTarih, kisaTarih } from '../../lib/tarih';
+
+export async function getStaticPaths() {
+  const hepsi = await gonderiler();
+  return hepsi.map((g) => ({ params: { id: g.id }, props: { gonderi: g } }));
+}
+
+interface Props {
+  gonderi: Gonderi;
+}
+const { gonderi } = Astro.props;
+const { data } = gonderi;
+const { Content } = await render(gonderi);
+const etkinlik = data.etiket === 'Etkinlik' ? data.etkinlik : undefined;
+---
+
+<BaseLayout baslik={data.baslik} sayfa="gundem" aciklama={data.ozet}>
+  <article class="wrap post">
+    <a class="back" href="/gundem/">
+      ← Gündem
+    </a>
+    <div class="meta">
+      <span class:list={['chip', { event: data.etiket === 'Etkinlik' }]}>{data.etiket}</span>
+      <time datetime={isoTarih(data.tarih)}>{kisaTarih(data.tarih)}</time>
+    </div>
+    <h1>{data.baslik}</h1>
+    <p class="summary">{data.ozet}</p>
+
+    {etkinlik && (
+      <dl class="event">
+        <div>
+          <dt>Tarih ve saat</dt>
+          <dd>
+            <time datetime={isoTarih(etkinlik.zaman)}>{etkinlikZamani(etkinlik.zaman)}</time>
+          </dd>
+        </div>
+        <div>
+          <dt>Yer</dt>
+          <dd>{etkinlik.yer}</dd>
+        </div>
+      </dl>
+    )}
+
+    <div class="body">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .post {
+    max-width: calc(720px + 2 * var(--gutter));
+    padding-block: 48px 80px;
+  }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 15px;
+    text-decoration: none;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    margin-top: 16px;
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--muted);
+  }
+  h1 {
+    margin: 16px 0 0;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(30px, 4.5vw, 44px);
+    line-height: 1.15;
+    color: var(--navy);
+  }
+  .summary {
+    margin-top: 16px;
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .event {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 40px;
+    margin: 28px 0 0;
+    padding: 18px 20px;
+    background: var(--tint);
+    border-radius: var(--radius);
+  }
+  .event dt {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .event dd {
+    margin: 4px 0 0;
+    font-size: 16px;
+    color: var(--navy);
+  }
+  .body {
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+  .body :global(p + p) {
+    margin-top: 1em;
+  }
+  .body :global(h2) {
+    margin: 1.6em 0 0.4em;
+    font-family: var(--serif);
+    font-size: 24px;
+    color: var(--navy);
+  }
+</style>

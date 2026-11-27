@@ -1,0 +1,26 @@
+---
+import GundemListesi from '../gundem/GundemListesi.astro';
+import { gonderiler } from '../../lib/gundem';
+
+const ANA_SAYFADA_GOSTERILEN = 6;
+const sonGonderiler = (await gonderiler()).slice(0, ANA_SAYFADA_GOSTERILEN);
+---
+
+<section class="band" id="gundem" aria-labelledby="gundem-baslik">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="h2" id="gundem-baslik">
+        Gündem
+      </h2>
+      <a href="/gundem/">Tüm gönderiler ve arşiv →</a>
+    </div>
+    <p class="lead intro">Duyurular, etkinlikler, çağrılar ve topluluktan haberler.</p>
+    <GundemListesi gonderiler={sonGonderiler} />
+  </div>
+</section>
+
+<style>
+  .intro {
+    margin-top: 8px;
+  }
+</style>

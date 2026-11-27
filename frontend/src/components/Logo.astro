@@ -1,0 +1,27 @@
+---
+// DİYAK logosunun çizgi motifi. Gerçek SVG dosyası gelince bu bileşen onunla değiştirilecek.
+interface Props {
+  boyut?: number;
+  /** Koyu zemin için açık renkli sürüm */
+  acik?: boolean;
+}
+const { boyut = 44, acik = false } = Astro.props;
+const renk = acik ? 'var(--on-navy)' : 'var(--navy)';
+---
+
+<svg
+  width={boyut}
+  height={Math.round(boyut * 0.86)}
+  viewBox="0 0 108 100"
+  aria-hidden="true"
+  fill="none"
+  stroke-linecap="round"
+  stroke-width="10"
+>
+  <path d="M8 10H40M54 10H86" stroke={renk}></path>
+  <path d="M8 30H22M62 30H100" stroke={renk}></path>
+  <path d="M8 50H22M54 50H100" stroke={renk}></path>
+  <path d="M8 70H22M62 70H100" stroke={renk}></path>
+  <path d="M8 90H56" stroke={renk}></path>
+  <path d="M70 90H84" stroke="var(--accent)"></path>
+</svg>

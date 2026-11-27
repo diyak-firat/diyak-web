@@ -1,0 +1,97 @@
+---
+import Foto from './Foto.astro';
+import type { Danisman } from '../../lib/ekip';
+
+interface Props {
+  danisman: Danisman;
+}
+const { danisman } = Astro.props;
+---
+
+<div class="advisor">
+  <div class="advisor-photo">
+    <Foto src={danisman.foto} ad={danisman.ad} ikon={56} />
+  </div>
+  <div class="advisor-info">
+    <p class="advisor-name">{danisman.ad}</p>
+    <p class="advisor-unit">{danisman.birim}</p>
+    <p class="advisor-mail">
+      <span>E-posta: </span>
+      <a href={`mailto:${danisman.eposta}`}>{danisman.eposta}</a>
+    </p>
+    {danisman.profiller.length > 0 && (
+      <ul class="profiles" aria-label="Akademik profiller">
+        {danisman.profiller
+          .filter((p) => p.url)
+          .map((p) => (
+            <li>
+              <a href={p.url}>{p.ad}</a>
+            </li>
+          ))}
+      </ul>
+    )}
+  </div>
+</div>
+
+<style>
+  .advisor {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 40px;
+    align-items: center;
+  }
+  .advisor-photo {
+    flex: 0 0 200px;
+    max-width: 100%;
+  }
+  .advisor-info {
+    flex: 1 1 320px;
+    min-width: 0;
+  }
+  .advisor-name {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .advisor-unit {
+    font-size: 15px;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .advisor-mail {
+    font-size: 15px;
+    overflow-wrap: anywhere;
+  }
+  .advisor-mail span {
+    color: var(--muted);
+  }
+  .profiles {
+    list-style: none;
+    margin: 20px 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .profiles a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    font-family: var(--mono);
+    font-size: 13px;
+    text-decoration: none;
+  }
+  .profiles a:hover {
+    border-color: var(--navy);
+  }
+  @media (max-width: 640px) {
+    .advisor-photo {
+      flex-basis: 160px;
+    }
+  }
+</style>

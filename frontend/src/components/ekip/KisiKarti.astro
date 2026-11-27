@@ -1,0 +1,67 @@
+---
+import Foto from './Foto.astro';
+import { BAGLANTI_ADLARI, type Kisi } from '../../lib/ekip';
+
+interface Props {
+  kisi: Kisi;
+  /** Sorumlu ve yönetim rolleri lacivert, üyeler gri gösterilir */
+  vurgulu?: boolean;
+}
+const { kisi, vurgulu = false } = Astro.props;
+const baglantilar = Object.entries(kisi.baglantilar ?? {}).filter(([, url]) => url);
+---
+
+<div class="person">
+  <Foto src={kisi.foto} ad={kisi.ad} />
+  <p class:list={['role', { lead: vurgulu }]}>{kisi.rol}</p>
+  <p class="name">{kisi.ad}</p>
+  {kisi.eposta && (
+    <p class="mail">
+      <a href={`mailto:${kisi.eposta}`}>{kisi.eposta}</a>
+    </p>
+  )}
+  {baglantilar.length > 0 && (
+    <p class="links">
+      {baglantilar.map(([anahtar, url]) => (
+        <a href={url}>{BAGLANTI_ADLARI[anahtar] ?? anahtar}</a>
+      ))}
+    </p>
+  )}
+</div>
+
+<style>
+  .person {
+    min-width: 0;
+  }
+  .role {
+    margin: 14px 0 4px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .role.lead {
+    color: var(--navy);
+  }
+  .name {
+    font-family: var(--serif);
+    font-size: 19px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .mail {
+    font-size: 14px;
+    margin-bottom: 8px;
+    overflow-wrap: anywhere;
+  }
+  .mail a {
+    color: var(--muted);
+  }
+  .links {
+    font-size: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 14px;
+  }
+</style>

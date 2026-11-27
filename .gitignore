@@ -1,0 +1,42 @@
+# Bağımlılıklar
+node_modules/
+
+# Derleme çıktıları
+dist/
+.astro/
+
+# Ortam değişkenleri — asla repoya girmez
+.env
+.env.*
+!.env.example
+
+# Veritabanı yedekleri ve anahtarlar — kişisel veri içerir, asla repoya girmez
+*.dump
+*.age
+*.sql.gz
+yedek/
+secrets/
+
+# Günlükler
+npm-debug.log*
+*.log
+
+# Editör ve işletim sistemi
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# Python (Faz 2)
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.coverage
+htmlcov/
+media/
+staticfiles/
+
+# Geçici referans: logo tasarımı düzeltilene kadar yerelde tutulur
+Tüzük_v1.pdf

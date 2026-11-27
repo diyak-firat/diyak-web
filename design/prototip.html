@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DİYAK Web Sitesi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Düzen: lacivert-beyaz akademik sayfa; içerik 1120px kolonda, bantlar tam genişlikte. Tek görünüm (açık tema) bilinçli seçimdir. */
+:root {
+  color-scheme: light;
+  --navy: #1E2142;
+  --navy-2: #282C55;
+  --navy-3: #161935;
+  --navy-line: #3A3D63;
+  --ink: #1A1A1F;
+  --text: #3A3C4A;
+  --muted: #55586A;
+  --line: #E3E3E8;
+  --line-strong: #C9CBDA;
+  --tint: #F5F5F7;
+  --chip: #EEEEF3;
+  --paper: #FFFFFF;
+  --on-navy: #C9CBDA;
+  --on-navy-muted: #A3A6C2;
+  --placeholder: #9A9CB0;
+  --accent: #E5533A;
+  --hover: #C2412B;
+  --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.5; -webkit-text-size-adjust: 100%; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--paper); }
+a { color: var(--navy); }
+a:hover { color: var(--hover); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+h1, h2, h3 { text-wrap: balance; }
+p { margin: 0; }
+[hidden] { display: none !important; }
+
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font-family: var(--mono); font-size: 13px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+.h2 { margin: 0; font-family: var(--serif); font-weight: 600; font-size: 30px; line-height: 1.2; color: var(--navy); }
+.lead { font-size: 16px; color: var(--text); }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 24px; border-radius: 4px; font-weight: 500; text-decoration: none; border: 1px solid var(--navy); }
+.btn-primary { background: var(--navy); color: var(--paper); }
+.btn-primary:hover { background: var(--navy-2); color: var(--paper); }
+.btn-ghost { background: transparent; color: var(--navy); }
+.btn-ghost:hover { background: var(--tint); color: var(--navy); }
+.btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
+.section-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 24px; }
+.band { border-top: 1px solid var(--line); }
+.band > .wrap { padding-block: 56px; }
+
+/* Üst menü */
+.site-header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--paper); border-bottom: 1px solid var(--line); transition: transform 240ms ease; }
+.site-header.is-hidden { transform: translateY(calc(-100% - env(safe-area-inset-top, 0px))); }
+.header-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--navy); }
+.brand:hover { color: var(--navy); }
+.brand-text { display: flex; flex-direction: column; line-height: 1.15; }
+.brand-name { font-weight: 600; font-size: 20px; letter-spacing: 0.04em; }
+.brand-sub { font-size: 12px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+.header-right { display: flex; align-items: center; gap: 20px; }
+.nav-desktop { display: flex; align-items: center; gap: 22px; font-size: 15px; }
+.nav-desktop a { text-decoration: none; padding: 10px 0; }
+.nav-desktop a[aria-current="page"] { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px; text-decoration-color: var(--accent); }
+.nav-desktop .lang { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.nav-desktop .btn { min-height: 44px; padding: 0 18px; }
+.inst-logos { display: flex; align-items: center; gap: 10px; padding-left: 20px; border-left: 1px solid var(--line); }
+.inst-logos a { display: inline-flex; }
+.nav-toggle { display: none; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--navy); cursor: pointer; }
+.nav-mobile { border-top: 1px solid var(--line); display: flex; flex-direction: column; padding-block: 8px 20px; font-size: 16px; }
+.nav-mobile a { display: flex; align-items: center; min-height: 48px; text-decoration: none; border-bottom: 1px solid var(--chip); }
+.nav-mobile a[aria-current="page"] { font-weight: 600; }
+.nav-mobile .lang { font-family: var(--mono); font-size: 14px; color: var(--muted); border-bottom: 0; }
+.nav-mobile .btn { margin-top: 8px; border-bottom: 1px solid var(--navy); }
+
+/* Giriş */
+.hero { display: flex; flex-wrap: wrap; gap: 48px; align-items: center; padding-block: 72px; }
+.hero-copy { flex: 1 1 500px; min-width: 0; }
+.hero h1 { margin: 18px 0 0; font-family: var(--serif); font-weight: 600; font-size: clamp(32px, 5vw, 52px); line-height: 1.1; letter-spacing: -0.01em; color: var(--navy); }
+.hero-lead { margin-top: 22px; font-size: 18px; line-height: 1.6; color: var(--text); max-width: 600px; }
+.hero .btn-row { margin-top: 32px; }
+.morph { flex: 1 1 380px; min-width: 0; max-width: 100%; margin: 0; padding: 40px 36px 36px; background: var(--tint); border-radius: 8px; }
+.morph-rows { display: flex; flex-direction: column; gap: 24px; font-family: var(--mono); }
+.morph-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.morph-unit { display: flex; flex-direction: column; gap: 8px; }
+.morph-unit b { font-weight: 400; font-size: clamp(28px, 3.6vw, 44px); line-height: 1; color: var(--navy); }
+.morph-unit i { display: block; height: 6px; border-radius: 3px; background: var(--navy); }
+.morph-unit.root i { background: var(--accent); }
+.morph-unit small { font-size: 12px; color: var(--muted); }
+.morph figcaption { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 15px; line-height: 1.55; color: var(--text); }
+
+/* Gündem */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 12px; }
+.filter { min-height: 44px; padding: 0 16px; border: 1px solid var(--line-strong); background: var(--paper); color: var(--navy); border-radius: 22px; font: 500 14px var(--sans); cursor: pointer; }
+.filter:hover { border-color: var(--navy); }
+.filter[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: var(--paper); }
+.list { border-bottom: 1px solid var(--line); }
+.row { display: flex; flex-wrap: wrap; gap: 10px 32px; padding-block: 24px; border-top: 1px solid var(--line); }
+.row-meta { flex: 0 0 120px; padding-top: 3px; font-family: var(--mono); font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.row-meta.kind { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.row-body { flex: 1 1 420px; min-width: 0; }
+.chip { display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 3px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; background: var(--chip); color: var(--navy); }
+.chip.event { background: var(--navy); color: var(--paper); }
+.post-title { margin: 10px 0 0; font-family: var(--serif); font-weight: 600; font-size: 21px; line-height: 1.3; }
+.post-title a { text-decoration: none; }
+.post-summary { margin-top: 6px; font-size: 15px; line-height: 1.55; color: var(--text); max-width: 680px; }
+.event-meta { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin-top: 14px; padding: 10px 14px; background: var(--tint); border-radius: 4px; font-size: 14px; color: var(--navy); }
+.event-meta span { display: inline-flex; align-items: center; gap: 8px; }
+
+/* Çalışma alanları */
+.tinted { background: var(--tint); }
+.tinted > .wrap { padding-block: 56px; }
+.grid4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px; }
+.area { min-width: 0; border-top: 2px solid var(--navy); padding-top: 16px; }
+.area h3 { margin: 10px 0 8px; font-size: 18px; font-weight: 600; color: var(--navy); }
+.area p { font-size: 15px; line-height: 1.55; color: var(--text); }
+
+/* Yayınlar */
+.res-title { font-family: var(--serif); font-size: 19px; line-height: 1.4; margin-bottom: 6px; }
+.res-sub { font-size: 14px; color: var(--muted); margin-bottom: 8px; }
+.res-links { font-family: var(--mono); font-size: 13px; display: flex; flex-wrap: wrap; gap: 4px 18px; }
+
+/* Hakkımızda + üyelik */
+.about { background: var(--navy); color: var(--on-navy); }
+.about > .wrap { padding-block: 80px; }
+.about .eyebrow { color: var(--on-navy-muted); }
+.about-intro { display: flex; flex-wrap: wrap; gap: 32px 64px; align-items: flex-start; margin-top: 24px; }
+.about-intro h2 { flex: 1 1 400px; min-width: 0; margin: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 3.4vw, 38px); line-height: 1.25; color: var(--paper); }
+.about-intro .about-text { flex: 1 1 400px; min-width: 0; font-size: 17px; line-height: 1.7; display: flex; flex-direction: column; gap: 16px; }
+.principles { margin-top: 72px; }
+.principles h3 { margin: 0 0 24px; font-weight: 400; }
+.principle { min-width: 0; border-top: 1px solid var(--navy-line); padding-top: 24px; }
+.principle .num { font-family: var(--serif); font-size: 28px; line-height: 1; color: var(--paper); margin-bottom: 16px; }
+.principle .name { font-weight: 600; font-size: 17px; color: var(--paper); margin-bottom: 8px; }
+.principle .desc { font-size: 15px; line-height: 1.6; }
+.join { margin-top: 72px; padding: 40px; background: var(--navy-2); border-radius: 8px; display: flex; flex-wrap: wrap; gap: 24px 48px; align-items: center; justify-content: space-between; }
+.join-copy { flex: 1 1 420px; min-width: 0; }
+.join h2 { margin: 0 0 10px; font-family: var(--serif); font-weight: 600; font-size: 28px; color: var(--paper); }
+.join p { font-size: 16px; line-height: 1.6; max-width: 560px; }
+.btn-light { background: var(--paper); color: var(--navy); border-color: var(--paper); font-weight: 600; }
+.btn-light:hover { background: var(--chip); color: var(--navy); }
+.btn-outline-light { background: transparent; color: var(--paper); border-color: var(--on-navy-muted); }
+.btn-outline-light:hover { background: var(--navy-line); color: var(--paper); }
+
+/* Ekip */
+.team-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px 48px; padding-block: 56px 48px; }
+.team-head h1 { margin: 0; font-family: var(--serif); font-weight: 600; font-size: clamp(36px, 5vw, 52px); line-height: 1.1; color: var(--navy); }
+.term { font-family: var(--mono); font-size: 14px; color: var(--navy); padding: 8px 14px; border: 1px solid var(--line-strong); border-radius: 4px; }
+.group > .wrap { padding-block: 48px; }
+.group-title { margin: 0 0 28px; display: flex; align-items: baseline; gap: 14px; font-family: var(--serif); font-weight: 600; font-size: 26px; color: var(--navy); }
+.group-title span { font-family: var(--mono); font-weight: 400; font-size: 13px; color: var(--muted); }
+.photo { aspect-ratio: 1 / 1; max-width: 100%; background: var(--chip); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: var(--placeholder); }
+.advisor { display: flex; flex-wrap: wrap; gap: 24px 40px; align-items: center; }
+.advisor .photo { flex: 0 0 200px; }
+.advisor-info { flex: 1 1 320px; min-width: 0; }
+.advisor-name { font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+.profiles { list-style: none; margin: 20px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.profiles a { display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border: 1px solid var(--line-strong); border-radius: 4px; font-family: var(--mono); font-size: 13px; text-decoration: none; }
+.profiles a:hover { border-color: var(--navy); }
+.people { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px 24px; }
+.person { min-width: 0; }
+.person .role { margin: 14px 0 4px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+.person .role.lead-role { color: var(--navy); }
+.person .name { font-family: var(--serif); font-size: 19px; font-weight: 600; margin-bottom: 6px; }
+.person .mail { font-size: 14px; margin-bottom: 8px; overflow-wrap: anywhere; }
+.person .mail a { color: var(--muted); }
+.person .links { font-size: 14px; display: flex; flex-wrap: wrap; gap: 2px 14px; }
+.cta { background: var(--tint); }
+.cta > .wrap { padding-block: 56px; display: flex; flex-wrap: wrap; gap: 24px 48px; align-items: center; justify-content: space-between; }
+.cta-copy { flex: 1 1 480px; min-width: 0; }
+.cta h2 { margin: 0 0 10px; font-family: var(--serif); font-weight: 600; font-size: 26px; color: var(--navy); }
+.cta p { font-size: 16px; line-height: 1.6; color: var(--text); max-width: 600px; }
+
+/* Alt bilgi */
+.site-footer { background: var(--navy-3); color: var(--on-navy); }
+.site-footer > .wrap { padding-block: 56px 32px; }
+.footer-top { display: flex; flex-wrap: wrap; gap: 40px 64px; justify-content: space-between; }
+.footer-about { flex: 1 1 300px; min-width: 0; font-size: 14px; line-height: 1.6; }
+.footer-about strong { display: block; color: var(--paper); font-size: 18px; margin-bottom: 8px; }
+.footer-cols { display: flex; flex-wrap: wrap; gap: 32px 56px; font-size: 14px; }
+.footer-col { display: flex; flex-direction: column; gap: 10px; }
+.footer-col .head { color: var(--paper); font-weight: 600; }
+.footer-col a { color: var(--on-navy); }
+.footer-col a:hover { color: var(--paper); }
+.footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--navy-line); font-size: 13px; }
+.dash { display: flex; gap: 6px; align-items: center; }
+.dash i { display: block; height: 4px; border-radius: 2px; }
+
+@media (max-width: 900px) {
+  .nav-desktop { display: none; }
+  .nav-toggle { display: inline-flex; }
+  .grid4 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+  .people { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .people { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 16px; }
+  .join { padding: 28px 24px; }
+  .advisor .photo { flex-basis: 160px; }
+}
+@media (max-width: 560px) {
+  .grid4 { grid-template-columns: minmax(0, 1fr); }
+  .inst-logos { padding-left: 12px; gap: 6px; }
+  .header-right { gap: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .site-header { transition: none; }
+}
+</style>
+
+<div lang="tr" id="top">
+
+<header class="site-header" id="site-header">
+  <div class="wrap header-row">
+    <a class="brand" href="#anasayfa" aria-label="DİYAK ana sayfa">
+      <svg width="44" height="38" viewBox="0 0 108 100" aria-hidden="true" fill="none" stroke-linecap="round" stroke-width="10">
+        <path d="M8 10H40M54 10H86" stroke="#1E2142"></path>
+        <path d="M8 30H22M62 30H100" stroke="#1E2142"></path>
+        <path d="M8 50H22M54 50H100" stroke="#1E2142"></path>
+        <path d="M8 70H22M62 70H100" stroke="#1E2142"></path>
+        <path d="M8 90H56" stroke="#1E2142"></path>
+        <path d="M70 90H84" stroke="#E5533A"></path>
+      </svg>
+      <span class="brand-text"><span class="brand-name">DİYAK</span><span class="brand-sub">Fırat Üniversitesi</span></span>
+    </a>
+
+    <div class="header-right">
+      <nav class="nav-desktop" aria-label="Ana menü">
+        <a href="#gundem">Gündem</a>
+        <a href="#arastirma">Araştırma</a>
+        <a href="#kaynaklar">Kaynaklar</a>
+        <a href="#hakkimizda">Hakkımızda</a>
+        <a href="#ekip" data-nav="ekip">Ekip</a>
+        <a href="#" class="lang" lang="en">EN</a>
+        <a href="#uyelik" class="btn btn-primary">Üye ol</a>
+      </nav>
+      <div class="inst-logos">
+        <a href="https://www.firat.edu.tr" target="_blank" rel="noopener" aria-label="Fırat Üniversitesi (logo yer tutucu)">
+          <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#F5F5F7" stroke="#9A9CB0" stroke-dasharray="3 3"></circle><text x="20" y="24" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#55586A">FÜ</text></svg>
+        </a>
+        <a href="#" aria-label="Sağlık Kültür ve Spor Daire Başkanlığı (logo yer tutucu)">
+          <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#F5F5F7" stroke="#9A9CB0" stroke-dasharray="3 3"></circle><text x="20" y="24" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#55586A">SKS</text></svg>
+        </a>
+      </div>
+      <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-mobile" aria-label="Menüyü aç">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+      </button>
+    </div>
+  </div>
+  <nav class="nav-mobile wrap" id="nav-mobile" aria-label="Mobil menü" hidden>
+    <a href="#gundem">Gündem</a>
+    <a href="#arastirma">Araştırma</a>
+    <a href="#kaynaklar">Kaynaklar</a>
+    <a href="#hakkimizda">Hakkımızda</a>
+    <a href="#ekip" data-nav="ekip">Ekip</a>
+    <a href="#" class="lang" lang="en">English</a>
+    <a href="#uyelik" class="btn btn-primary">Üye ol</a>
+  </nav>
+</header>
+
+<!-- ============ ANA SAYFA ============ -->
+<main id="view-home">
+  <div class="wrap hero" id="anasayfa">
+    <div class="hero-copy">
+      <p class="eyebrow">Öğrenci Topluluğu · Bilim</p>
+      <h1>Doğal Dil İşleme ve Yapay Zekâ Araştırmaları Topluluğu</h1>
+      <p class="hero-lead">Hesaplamalı dilbilim, doğal dil işleme ve büyük dil modelleri üzerine çalışıyoruz. Önceliğimiz, kaynak bakımından kısıtlı bir dil olan Türkçe için açık veri kümeleri, modeller ve araçlar üretmek.</p>
+      <div class="btn-row">
+        <a href="#uyelik" class="btn btn-primary">Üye ol</a>
+        <a href="#gundem" class="btn btn-ghost">Gündeme göz at</a>
+      </div>
+    </div>
+    <figure class="morph">
+      <div class="morph-rows" aria-label="anlayamadıklarımız sözcüğünün biçimbirimleri: anla, ya, ma, dık, lar, ımız">
+        <div class="morph-row">
+          <div class="morph-unit root"><b>anla</b><i></i><small>kök</small></div>
+          <div class="morph-unit"><b>ya</b><i></i><small>yeterlik</small></div>
+          <div class="morph-unit"><b>ma</b><i></i><small>olumsuz</small></div>
+          <div class="morph-unit"><b>dık-</b><i></i><small>sıfat-fiil</small></div>
+        </div>
+        <div class="morph-row">
+          <div class="morph-unit"><b>lar</b><i></i><small>çoğul</small></div>
+          <div class="morph-unit"><b>ımız</b><i></i><small>iyelik</small></div>
+        </div>
+      </div>
+      <figcaption>Tek sözcük, altı biçimbirim. Sondan eklemeli yapısıyla Türkçe, dil modelleri için hâlâ zorlu bir dil.</figcaption>
+    </figure>
+  </div>
+
+  <section class="band" id="gundem" aria-labelledby="gundem-baslik">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="h2" id="gundem-baslik">Gündem</h2>
+        <a href="#">Tüm gönderiler ve arşiv →</a>
+      </div>
+      <p class="lead" style="margin-top: 8px">Duyurular, etkinlikler, çağrılar ve topluluktan haberler.</p>
+      <div class="filters" role="group" aria-label="Gündemi filtrele" id="filters"></div>
+      <div class="list" id="posts"></div>
+    </div>
+  </section>
+
+  <section class="tinted" id="arastirma" aria-labelledby="arastirma-baslik">
+    <div class="wrap">
+      <h2 class="h2" id="arastirma-baslik">Neler yapıyoruz</h2>
+      <p class="lead" style="margin: 8px 0 32px; max-width: 640px">Öğretim elemanlarının rehberliğinde yürütülen çalışmaları bildiri ve makaleye dönüştürmeyi hedefliyoruz.</p>
+      <div class="grid4">
+        <div class="area"><p class="eyebrow">01</p><h3>Türkçe ve düşük kaynaklı diller</h3><p>Derlem ve veri kümesi oluşturma, veri etiketleme, değerlendirme ölçütleri ve açık kaynak araçlar.</p></div>
+        <div class="area"><p class="eyebrow">02</p><h3>Büyük dil modelleri</h3><p>Çalışma ilkeleri, sınırlılıkları ve sorumlu kullanımı üzerine seminer ve uygulamalı eğitimler.</p></div>
+        <div class="area"><p class="eyebrow">03</p><h3>Okuma grubu</h3><p>Güncel makaleleri birlikte okuyor; bilimsel yazım, sunum ve hakemlik üzerine çalışıyoruz.</p></div>
+        <div class="area"><p class="eyebrow">04</p><h3>Yarışmalar</h3><p>TEKNOFEST, TÜBİTAK ve Kaggle yarışmalarına, uluslararası konferansların ortak görevlerine takım olarak katılıyoruz.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="kaynaklar" aria-labelledby="kaynaklar-baslik" style="border-top: 0">
+    <div class="wrap" style="padding-bottom: 72px">
+      <div class="section-head" style="margin-bottom: 20px">
+        <h2 class="h2" id="kaynaklar-baslik">Yayınlar ve açık kaynaklar</h2>
+        <a href="#">Tümü →</a>
+      </div>
+      <div class="list">
+        <div class="row">
+          <p class="row-meta kind">Yayın</p>
+          <div class="row-body">
+            <p class="res-title">[Makale başlığı]</p>
+            <p class="res-sub">[Yazar A.], [Yazar B.], [Danışman] · <em>[Konferans / Dergi]</em>, [Yıl]</p>
+            <p class="res-links"><a href="#">PDF</a><a href="#">BibTeX</a><a href="#">Kod</a></p>
+          </div>
+        </div>
+        <div class="row">
+          <p class="row-meta kind">Veri kümesi</p>
+          <div class="row-body">
+            <p class="res-title">[Veri kümesi adı]</p>
+            <p class="res-sub">[Bir cümlelik açıklama] · [Boyut] · [Lisans]</p>
+            <p class="res-links"><a href="#">GitHub</a><a href="#">Hugging Face</a><a href="#">Kaggle</a></p>
+          </div>
+        </div>
+        <div class="row">
+          <p class="row-meta kind">Araç</p>
+          <div class="row-body">
+            <p class="res-title">[Araç adı]</p>
+            <p class="res-sub">[Bir cümlelik açıklama] · [Lisans]</p>
+            <p class="res-links"><a href="#">GitHub</a><a href="#">Belgeler</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="hakkimizda" aria-labelledby="hakkimizda-baslik">
+    <div class="wrap">
+      <p class="eyebrow">Hakkımızda</p>
+      <div class="about-intro">
+        <h2 id="hakkimizda-baslik">Türkçenin dil teknolojilerinde <em>güçlü bir bilim dili</em> olması için çalışıyoruz.</h2>
+        <div class="about-text">
+          <p>DİYAK, Fırat Üniversitesi'nde hesaplamalı dilbilim ve doğal dil işleme üzerine çalışan bir öğrenci topluluğudur. Türkçe için derlem, veri kümesi ve açık kaynak araçlar geliştiriyor; üyelerimizin çalışmalarını bildiri ve makaleye dönüştürmelerini destekliyoruz.</p>
+          <p>Yapay zekâ okuryazarlığını kampüsün dışına, toplumun her kesimine taşımayı da görev ediniyoruz.</p>
+        </div>
+      </div>
+
+      <div class="principles">
+        <h3 class="eyebrow">İlkelerimiz</h3>
+        <div class="grid4">
+          <div class="principle"><p class="num">i.</p><p class="name">Bilimsel dürüstlük</p><p class="desc">Yöntemlerimizi ve sonuçlarımızı şeffaf, tekrarlanabilir biçimde paylaşırız.</p></div>
+          <div class="principle"><p class="num">ii.</p><p class="name">Açıklık</p><p class="desc">Ürettiğimiz veri kümeleri ve araçlar açık kaynaktır, herkese ulaşır.</p></div>
+          <div class="principle"><p class="num">iii.</p><p class="name">Sorumluluk</p><p class="desc">Kişisel verilere, telif haklarına ve adil kullanıma özen gösteririz.</p></div>
+          <div class="principle"><p class="num">iv.</p><p class="name">Fırsat eşitliği</p><p class="desc">Bölüm ya da sınıf şartı yok; merak eden herkes katkı sunabilir.</p></div>
+        </div>
+      </div>
+
+      <div class="join" id="uyelik">
+        <div class="join-copy">
+          <h2>Topluluğa katılın</h2>
+          <p>Fırat Üniversitesine kayıtlı her öğrenci üye olabilir. Kayıt formunu doldurup Yönetim Kuruluna iletin; başvurular en geç on gün içinde yanıtlanır.</p>
+        </div>
+        <div class="btn-row">
+          <a href="#" class="btn btn-light">Üye kayıt formu (PDF)</a>
+          <a href="#" class="btn btn-outline-light">Tüzüğü oku</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ EKİP ============ -->
+<main id="view-team" hidden>
+  <div class="wrap team-head">
+    <h1>Ekip</h1>
+    <p class="term">2026–2027 dönemi</p>
+  </div>
+
+  <section class="band group" aria-labelledby="danisman-baslik">
+    <div class="wrap">
+      <h2 class="group-title" id="danisman-baslik"><span>01</span>Akademik Danışman</h2>
+      <div class="advisor">
+        <div class="photo"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"></path></svg></div>
+        <div class="advisor-info">
+          <p class="advisor-name">[Unvan Ad Soyad]</p>
+          <p style="font-size: 15px; color: var(--muted); margin-bottom: 16px">[Fakülte], [Bölüm]</p>
+          <p style="font-size: 15px"><span style="color: var(--muted)">E-posta: </span><a href="#">[ad.soyad@firat.edu.tr]</a></p>
+          <ul class="profiles" aria-label="Akademik profiller">
+            <li><a href="#">ORCID</a></li>
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="#">Google Scholar</a></li>
+            <li><a href="#">Scopus</a></li>
+            <li><a href="#">DergiPark</a></li>
+            <li><a href="#">Web of Science</a></li>
+            <li><a href="#">YÖK Akademik</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="groups"></div>
+
+  <section class="cta" aria-labelledby="gorev-baslik">
+    <div class="wrap">
+      <div class="cta-copy">
+        <h2 id="gorev-baslik">Bir birimde görev almak ister misiniz?</h2>
+        <p>Önce topluluğa üye olun. Birimlere katılım başvuruları dönem dönem açılır; başvuru dönemi başladığında Gündem'de duyurulur ve başvurunuzu o zaman yapabilirsiniz.</p>
+      </div>
+      <div class="btn-row">
+        <a href="#uyelik" class="btn btn-primary">Üye ol</a>
+        <a href="#gundem" class="btn btn-ghost">Gündemi takip et</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-about">
+        <strong>DİYAK</strong>
+        Fırat Üniversitesi Doğal Dil İşleme ve Yapay Zekâ Araştırmaları Öğrenci Topluluğu<br>Sağlık Kültür ve Spor Daire Başkanlığı · Öğrenci Toplulukları Birimi
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <span class="head">Topluluk</span>
+          <a href="#hakkimizda">Hakkımızda</a>
+          <a href="#gundem">Gündem</a>
+          <a href="#ekip">Ekip</a>
+          <a href="#">Tüzük</a>
+        </div>
+        <div class="footer-col">
+          <span class="head">Bizi takip edin</span>
+          <a href="#">LinkedIn</a>
+          <a href="#">Instagram</a>
+          <a href="#">GitHub</a>
+          <a href="#">Hugging Face</a>
+          <a href="#">Kaggle</a>
+        </div>
+        <div class="footer-col">
+          <span class="head">İletişim</span>
+          <a href="#">[topluluk@firat.edu.tr]</a>
+          <span>Akademik Danışman:<br>[Unvan Ad Soyad]</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 DİYAK</span>
+      <span class="dash" aria-hidden="true"><i style="width: 28px; background: var(--on-navy)"></i><i style="width: 10px; background: var(--accent)"></i></span>
+    </div>
+  </div>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  document.documentElement.lang = "tr";
+
+  /* ---------- Gündem ---------- */
+  var POSTS = [
+    { tag: "Etkinlik", date: "[GG.AA.2026]", title: "Okuma grubu: [Makale başlığı]", summary: "[Sunan üye] makaleyi özetleyecek, ardından birlikte tartışacağız. Makaleyi önceden okumanız önerilir.", when: "[GG Ay 2026], [SS:DD]", where: "[Salon, fakülte]" },
+    { tag: "Duyuru", date: "[GG.AA.2026]", title: "Yeni dönem üye kayıtları açıldı", summary: "Fırat Üniversitesine kayıtlı tüm öğrenciler başvurabilir. Başvurular Yönetim Kurulu tarafından en geç on gün içinde yanıtlanır." },
+    { tag: "Çağrı", date: "[GG.AA.2026]", title: "[Yarışma adı] için takım arkadaşları arıyoruz", summary: "[Kısa açıklama, aranan beceriler ve son başvuru tarihi]" },
+    { tag: "Etkinlik", date: "[GG.AA.2026]", title: "[Konuşmacı] ile söyleşi: [Konuşma başlığı]", summary: "[Konuşmanın bir iki cümlelik özeti]", when: "[GG Ay 2026], [SS:DD]", where: "Çevrim içi" },
+    { tag: "Yayın", date: "[GG.AA.2026]", title: "[Makale başlığı] [Konferans adı]'nda kabul edildi", summary: "[Yazarlar] · [Çalışmanın bir cümlelik özeti]" },
+    { tag: "Duyuru", date: "[GG.AA.2026]", title: "Olağan Genel Kurul toplantısı", summary: "Yönetim ve Denetleme Kurullarının seçimi için Genel Kurul [GG Ay 2026] tarihinde [Salon] salonunda toplanacak." }
+  ];
+  var FILTERS = ["Tümü", "Etkinlik", "Duyuru", "Çağrı", "Yayın"];
+  var ICON_CAL = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 10h18"></path></svg>';
+  var ICON_PIN = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>';
+  var current = "Tümü";
+  var filtersEl = document.getElementById("filters");
+  var postsEl = document.getElementById("posts");
+
+  function renderFilters() {
+    filtersEl.innerHTML = FILTERS.map(function (f) {
+      return '<button type="button" class="filter" data-filter="' + f + '" aria-pressed="' + (f === current) + '">' + f + '</button>';
+    }).join("");
+  }
+  function renderPosts() {
+    postsEl.innerHTML = POSTS.filter(function (p) { return current === "Tümü" || p.tag === current; }).map(function (p) {
+      var ev = p.tag === "Etkinlik";
+      return '<article class="row">' +
+        '<div class="row-meta"><time>' + p.date + '</time></div>' +
+        '<div class="row-body">' +
+          '<span class="chip' + (ev ? ' event' : '') + '">' + p.tag + '</span>' +
+          '<h3 class="post-title"><a href="#">' + p.title + '</a></h3>' +
+          '<p class="post-summary">' + p.summary + '</p>' +
+          (ev ? '<div class="event-meta"><span>' + ICON_CAL + p.when + '</span><span>' + ICON_PIN + p.where + '</span></div>' : '') +
+        '</div></article>';
+    }).join("");
+  }
+  filtersEl.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-filter]");
+    if (!b) return;
+    current = b.getAttribute("data-filter");
+    renderFilters();
+    renderPosts();
+  });
+  renderFilters();
+  renderPosts();
+
+  /* ---------- Ekip ---------- */
+  // Bağlantılar isteğe bağlı: her kişi yalnızca eklediği hesapları gösterir.
+  var PER_UNIT = 3;
+  function team(linksFor) {
+    var list = [{ role: "Birim Sorumlusu", lead: true, links: linksFor(0) }];
+    for (var i = 1; i <= PER_UNIT; i++) list.push({ role: "Üye", links: linksFor(i) });
+    return list;
+  }
+  var tech = function () { return ["LinkedIn", "GitHub"]; };
+  var mixed = function (i) { return i === 0 ? ["LinkedIn", "GitHub"] : (i % 2 ? ["LinkedIn"] : []); };
+  var GROUPS = [
+    { no: "02", name: "Yönetim", members: [
+      { role: "Başkan", lead: true, links: ["LinkedIn", "GitHub"] },
+      { role: "Başkan Yardımcısı", lead: true, links: ["LinkedIn", "GitHub"] }
+    ] },
+    { no: "03", name: "Proje ve Araştırma Birimi", members: team(tech) },
+    { no: "04", name: "İletişim Birimi", members: team(mixed) },
+    { no: "05", name: "Etkinlik ve Sponsorluk Birimi", members: team(mixed) },
+    { no: "06", name: "Medya ve Tasarım Birimi", members: team(mixed) }
+  ];
+  var PHOTO = '<div class="photo"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"></path></svg></div>';
+  document.getElementById("groups").innerHTML = GROUPS.map(function (g, gi) {
+    var id = "grup-" + gi;
+    return '<section class="band group" aria-labelledby="' + id + '"><div class="wrap">' +
+      '<h2 class="group-title" id="' + id + '"><span>' + g.no + '</span>' + g.name + '</h2>' +
+      '<div class="people">' + g.members.map(function (m) {
+        return '<div class="person">' + PHOTO +
+          '<p class="role' + (m.lead ? ' lead-role' : '') + '">' + m.role + '</p>' +
+          '<p class="name">[Ad Soyad]</p>' +
+          '<p class="mail"><a href="#">[e-posta adresi]</a></p>' +
+          (m.links.length ? '<p class="links">' + m.links.map(function (l) { return '<a href="#">' + l + '</a>'; }).join("") + '</p>' : '') +
+          '</div>';
+      }).join("") + '</div></div></section>';
+  }).join("");
+
+  /* ---------- Sayfa geçişi (#ekip) ---------- */
+  var home = document.getElementById("view-home");
+  var teamView = document.getElementById("view-team");
+  var navTeamLinks = document.querySelectorAll('[data-nav="ekip"]');
+  function route() {
+    var h = decodeURIComponent(location.hash.slice(1));
+    var isTeam = h === "ekip";
+    home.hidden = isTeam;
+    teamView.hidden = !isTeam;
+    navTeamLinks.forEach(function (a) {
+      if (isTeam) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+    document.title = isTeam ? "Ekip · DİYAK" : "DİYAK Web Sitesi";
+    if (isTeam || !h || h === "anasayfa") {
+      window.scrollTo(0, 0);
+    } else {
+      var el = document.getElementById(h);
+      if (el) el.scrollIntoView();
+    }
+  }
+  window.addEventListener("hashchange", route);
+  route();
+
+  /* ---------- Yer tutucu bağlantılar (#) sayfayı oynatmasın ---------- */
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("a");
+    if (a && a.getAttribute("href") === "#") e.preventDefault();
+  });
+
+  /* ---------- Mobil menü ---------- */
+  var header = document.getElementById("site-header");
+  var toggle = document.getElementById("nav-toggle");
+  var mobile = document.getElementById("nav-mobile");
+  function setMenu(open) {
+    mobile.hidden = !open;
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Menüyü kapat" : "Menüyü aç");
+    if (open) header.classList.remove("is-hidden");
+  }
+  toggle.addEventListener("click", function () { setMenu(mobile.hidden); });
+  mobile.addEventListener("click", function (e) { if (e.target.closest("a")) setMenu(false); });
+
+  /* ---------- Menü: aşağı kaydırınca gizlen, yukarı kaydırınca görün ---------- */
+  var last = window.scrollY || 0;
+  window.addEventListener("scroll", function () {
+    var y = window.scrollY || 0;
+    var d = y - last;
+    if (y < 80) { header.classList.remove("is-hidden"); last = y; return; }
+    if (d > 8) {
+      if (mobile.hidden) header.classList.add("is-hidden");
+      last = y;
+    } else if (d < -8) {
+      header.classList.remove("is-hidden");
+      last = y;
+    }
+  }, { passive: true });
+})();
+</script>
+
+</html>

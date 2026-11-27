@@ -1,0 +1,53 @@
+---
+// Tüm sayfaların ortak iskeleti: <head>, üst menü, alt bilgi.
+import '@fontsource-variable/source-serif-4/opsz.css';
+import '@fontsource-variable/source-serif-4/opsz-italic.css';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/500.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '../styles/global.css';
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site, type Sayfa } from '../config/site';
+
+interface Props {
+  /** Sekme başlığı. Verilmezse yalnızca site adı kullanılır. */
+  baslik?: string;
+  aciklama?: string;
+  sayfa?: Sayfa;
+}
+
+const { baslik, aciklama = site.aciklama, sayfa = 'diger' } = Astro.props;
+const tamBaslik = baslik ? `${baslik} · ${site.kisaAd}` : `${site.kisaAd} · ${site.universite}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{tamBaslik}</title>
+    <meta name="description" content={aciklama} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:title" content={tamBaslik} />
+    <meta property="og:description" content={aciklama} />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:type" content="website" />
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body>
+    <a class="skip-link" href="#icerik">
+      İçeriğe geç
+    </a>
+    <Header sayfa={sayfa} />
+    <main id="icerik">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

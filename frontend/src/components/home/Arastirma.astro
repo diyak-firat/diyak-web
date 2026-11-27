@@ -1,0 +1,68 @@
+---
+const alanlar = [
+  {
+    baslik: 'Türkçe ve düşük kaynaklı diller',
+    metin:
+      'Derlem ve veri kümesi oluşturma, veri etiketleme, değerlendirme ölçütleri ve açık kaynak araçlar.',
+  },
+  {
+    baslik: 'Büyük dil modelleri',
+    metin:
+      'Çalışma ilkeleri, sınırlılıkları ve sorumlu kullanımı üzerine seminer ve uygulamalı eğitimler.',
+  },
+  {
+    baslik: 'Okuma grubu',
+    metin:
+      'Güncel makaleleri birlikte okuyor; bilimsel yazım, sunum ve hakemlik üzerine çalışıyoruz.',
+  },
+  {
+    baslik: 'Yarışmalar',
+    metin:
+      'TEKNOFEST, TÜBİTAK ve Kaggle yarışmalarına, uluslararası konferansların ortak görevlerine takım olarak katılıyoruz.',
+  },
+];
+---
+
+<section class="tinted" id="arastirma" aria-labelledby="arastirma-baslik">
+  <div class="wrap">
+    <h2 class="h2" id="arastirma-baslik">
+      Neler yapıyoruz
+    </h2>
+    <p class="lead intro">
+      Öğretim elemanlarının rehberliğinde yürütülen çalışmaları bildiri ve makaleye dönüştürmeyi
+      hedefliyoruz.
+    </p>
+    <div class="grid4">
+      {alanlar.map((a, i) => (
+        <div class="area">
+          <p class="eyebrow">{String(i + 1).padStart(2, '0')}</p>
+          <h3>{a.baslik}</h3>
+          <p>{a.metin}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .intro {
+    margin: 8px 0 32px;
+    max-width: 640px;
+  }
+  .area {
+    min-width: 0;
+    border-top: 2px solid var(--navy);
+    padding-top: 16px;
+  }
+  .area h3 {
+    margin: 10px 0 8px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .area p:last-child {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--text);
+  }
+</style>

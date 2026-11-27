@@ -1,0 +1,184 @@
+---
+// Hakkımızda + Üyelik: tek koyu blok. Ardından gelen alt bilgi bir ton daha koyu.
+// Aradaki beyaz bölüm bilinçli olarak kaldırıldı (bkz. docs/DESIGN.md).
+import { site } from '../../config/site';
+
+const ilkeler = [
+  {
+    no: 'i.',
+    ad: 'Bilimsel dürüstlük',
+    metin: 'Yöntemlerimizi ve sonuçlarımızı şeffaf, tekrarlanabilir biçimde paylaşırız.',
+  },
+  {
+    no: 'ii.',
+    ad: 'Açıklık',
+    metin: 'Ürettiğimiz veri kümeleri ve araçlar açık kaynaktır, herkese ulaşır.',
+  },
+  {
+    no: 'iii.',
+    ad: 'Sorumluluk',
+    metin: 'Kişisel verilere, telif haklarına ve adil kullanıma özen gösteririz.',
+  },
+  {
+    no: 'iv.',
+    ad: 'Fırsat eşitliği',
+    metin: 'Bölüm ya da sınıf şartı yok; merak eden herkes katkı sunabilir.',
+  },
+];
+---
+
+<section class="about" id="hakkimizda" aria-labelledby="hakkimizda-baslik">
+  <div class="wrap">
+    <p class="eyebrow">Hakkımızda</p>
+    <div class="about-intro">
+      <h2 id="hakkimizda-baslik">
+        Türkçenin dil teknolojilerinde <em>güçlü bir bilim dili</em> olması için çalışıyoruz.
+      </h2>
+      <div class="about-text">
+        <p>
+          DİYAK, Fırat Üniversitesi'nde hesaplamalı dilbilim ve doğal dil işleme üzerine çalışan bir
+          öğrenci topluluğudur. Türkçe için derlem, veri kümesi ve açık kaynak araçlar geliştiriyor;
+          üyelerimizin çalışmalarını bildiri ve makaleye dönüştürmelerini destekliyoruz.
+        </p>
+        <p>
+          Yapay zekâ okuryazarlığını kampüsün dışına, toplumun her kesimine taşımayı da görev
+          ediniyoruz.
+        </p>
+      </div>
+    </div>
+
+    <div class="principles">
+      <h3 class="eyebrow">İlkelerimiz</h3>
+      <div class="grid4">
+        {ilkeler.map((i) => (
+          <div class="principle">
+            <p class="num">{i.no}</p>
+            <p class="name">{i.ad}</p>
+            <p class="desc">{i.metin}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="join" id="uyelik">
+      <div class="join-copy">
+        <h2>Topluluğa katılın</h2>
+        <p>
+          Fırat Üniversitesine kayıtlı her öğrenci üye olabilir. Kayıt formunu doldurup Yönetim
+          Kuruluna iletin; başvurular en geç on gün içinde yanıtlanır.
+        </p>
+      </div>
+      <div class="btn-row">
+        <a href={site.belgeler.uyeKayitFormu} class="btn btn-light">
+          Üye kayıt formu (PDF)
+        </a>
+        <a href={site.belgeler.tuzuk} class="btn btn-outline-light">
+          Tüzüğü oku
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    background: var(--navy);
+    color: var(--on-navy);
+  }
+  .about > .wrap {
+    padding-block: 80px;
+  }
+  .eyebrow {
+    color: var(--on-navy-muted);
+  }
+  .about-intro {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px 64px;
+    align-items: flex-start;
+    margin-top: 24px;
+  }
+  .about-intro h2 {
+    flex: 1 1 400px;
+    min-width: 0;
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(28px, 3.4vw, 38px);
+    line-height: 1.25;
+    color: var(--paper);
+  }
+  .about-text {
+    flex: 1 1 400px;
+    min-width: 0;
+    font-size: 17px;
+    line-height: 1.7;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .principles {
+    margin-top: 72px;
+  }
+  .principles h3 {
+    margin: 0 0 24px;
+    font-weight: 400;
+  }
+  .principle {
+    min-width: 0;
+    border-top: 1px solid var(--navy-line);
+    padding-top: 24px;
+  }
+  .num {
+    font-family: var(--serif);
+    font-size: 28px;
+    line-height: 1;
+    color: var(--paper);
+    margin-bottom: 16px;
+  }
+  .name {
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--paper);
+    margin-bottom: 8px;
+  }
+  .desc {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .join {
+    margin-top: 72px;
+    padding: 40px;
+    background: var(--navy-2);
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 48px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .join-copy {
+    flex: 1 1 420px;
+    min-width: 0;
+  }
+  .join h2 {
+    margin: 0 0 10px;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 28px;
+    color: var(--paper);
+  }
+  .join p {
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 560px;
+  }
+  @media (max-width: 640px) {
+    .about > .wrap {
+      padding-block: 56px;
+    }
+    .join {
+      padding: 28px 24px;
+    }
+  }
+</style>

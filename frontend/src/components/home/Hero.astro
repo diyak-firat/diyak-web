@@ -1,0 +1,152 @@
+---
+// Giriş bölümü: topluluk adı ve "anlayamadıklarımız" biçimbirim ayrıştırması.
+const satirlar = [
+  [
+    { parca: 'anla', ad: 'kök', kok: true },
+    { parca: 'ya', ad: 'yeterlik' },
+    { parca: 'ma', ad: 'olumsuz' },
+    { parca: 'dık-', ad: 'sıfat-fiil' },
+  ],
+  [
+    { parca: 'lar', ad: 'çoğul' },
+    { parca: 'ımız', ad: 'iyelik' },
+  ],
+];
+---
+
+<div class="wrap hero">
+  <div class="hero-copy">
+    <p class="eyebrow">Öğrenci Topluluğu · Bilim</p>
+    <h1>Doğal Dil İşleme ve Yapay Zekâ Araştırmaları Topluluğu</h1>
+    <p class="hero-lead">
+      Hesaplamalı dilbilim, doğal dil işleme ve büyük dil modelleri üzerine çalışıyoruz.
+      Önceliğimiz, kaynak bakımından kısıtlı bir dil olan Türkçe için açık veri kümeleri, modeller
+      ve araçlar üretmek.
+    </p>
+    <div class="btn-row">
+      <a href="#uyelik" class="btn btn-primary">
+        Üye ol
+      </a>
+      <a href="#gundem" class="btn btn-ghost">
+        Gündeme göz at
+      </a>
+    </div>
+  </div>
+
+  <figure class="morph">
+    <div
+      class="morph-rows"
+      role="img"
+      aria-label="anlayamadıklarımız sözcüğünün biçimbirimleri: anla (kök), ya (yeterlik), ma (olumsuz), dık (sıfat-fiil), lar (çoğul), ımız (iyelik)"
+    >
+      {satirlar.map((satir) => (
+        <div class="morph-row">
+          {satir.map((b) => (
+            <div class:list={['morph-unit', { root: b.kok }]}>
+              <b>{b.parca}</b>
+              <i />
+              <small>{b.ad}</small>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+    <figcaption>
+      Tek sözcük, altı biçimbirim. Sondan eklemeli yapısıyla Türkçe, dil modelleri için hâlâ zorlu
+      bir dil.
+    </figcaption>
+  </figure>
+</div>
+
+<style>
+  .hero {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px;
+    align-items: center;
+    padding-block: 72px;
+  }
+  .hero-copy {
+    flex: 1 1 500px;
+    min-width: 0;
+  }
+  h1 {
+    margin: 18px 0 0;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+  }
+  .hero-lead {
+    margin-top: 22px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--text);
+    max-width: 600px;
+  }
+  .btn-row {
+    margin-top: 32px;
+  }
+  .morph {
+    flex: 1 1 380px;
+    min-width: 0;
+    max-width: 100%;
+    margin: 0;
+    padding: 40px 36px 36px;
+    background: var(--tint);
+    border-radius: 8px;
+  }
+  .morph-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    font-family: var(--mono);
+  }
+  .morph-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .morph-unit {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .morph-unit b {
+    font-weight: 400;
+    font-size: clamp(28px, 3.6vw, 44px);
+    line-height: 1;
+    color: var(--navy);
+  }
+  .morph-unit i {
+    display: block;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--navy);
+  }
+  .morph-unit.root i {
+    background: var(--accent);
+  }
+  .morph-unit small {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  figcaption {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--text);
+  }
+  @media (max-width: 640px) {
+    .hero {
+      padding-block: 48px;
+    }
+    .morph {
+      padding: 28px 24px;
+    }
+  }
+</style>

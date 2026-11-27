@@ -1,0 +1,37 @@
+[
+  {
+    "id": "ornek-yayin",
+    "sira": 1,
+    "tur": "Yayın",
+    "baslik": "[Makale başlığı]",
+    "alt": "[Yazar A.], [Yazar B.], [Danışman] · [Konferans / Dergi], [Yıl]",
+    "baglantilar": [
+      { "ad": "PDF", "url": "#" },
+      { "ad": "BibTeX", "url": "#" },
+      { "ad": "Kod", "url": "#" }
+    ]
+  },
+  {
+    "id": "ornek-veri-kumesi",
+    "sira": 2,
+    "tur": "Veri kümesi",
+    "baslik": "[Veri kümesi adı]",
+    "alt": "[Bir cümlelik açıklama] · [Boyut] · [Lisans]",
+    "baglantilar": [
+      { "ad": "GitHub", "url": "#" },
+      { "ad": "Hugging Face", "url": "#" },
+      { "ad": "Kaggle", "url": "#" }
+    ]
+  },
+  {
+    "id": "ornek-arac",
+    "sira": 3,
+    "tur": "Araç",
+    "baslik": "[Araç adı]",
+    "alt": "[Bir cümlelik açıklama] · [Lisans]",
+    "baglantilar": [
+      { "ad": "GitHub", "url": "#" },
+      { "ad": "Belgeler", "url": "#" }
+    ]
+  }
+]

@@ -1,0 +1,152 @@
+---
+// Ekip sayfası. Veriler src/data/ekip.json dosyasından gelir.
+// Açıklama metni, birim görev tanımları ve yol gösterici bilinçli olarak yok (docs/DESIGN.md).
+import BaseLayout from '../layouts/BaseLayout.astro';
+import DanismanKarti from '../components/ekip/DanismanKarti.astro';
+import KisiKarti from '../components/ekip/KisiKarti.astro';
+import { ekip } from '../lib/ekip';
+
+const no = (i: number) => String(i).padStart(2, '0');
+const gruplar = [
+  { ad: 'Yönetim', uyeler: ekip.yonetim, hepsiVurgulu: true },
+  ...ekip.birimler.map((b) => ({ ad: b.ad, uyeler: b.uyeler, hepsiVurgulu: false })),
+];
+---
+
+<BaseLayout baslik="Ekip" sayfa="ekip" aciklama="DİYAK akademik danışmanı, yönetimi ve birimleri.">
+  <div class="wrap team-head">
+    <h1>Ekip</h1>
+    <p class="term">{ekip.donem} dönemi</p>
+  </div>
+
+  <section class="band group" aria-labelledby="grup-1">
+    <div class="wrap">
+      <h2 class="group-title" id="grup-1">
+        <span>{no(1)}</span>Akademik Danışman
+      </h2>
+      <DanismanKarti danisman={ekip.danisman} />
+    </div>
+  </section>
+
+  {gruplar.map((g, i) => (
+    <section class="band group" aria-labelledby={`grup-${i + 2}`}>
+      <div class="wrap">
+        <h2 class="group-title" id={`grup-${i + 2}`}>
+          <span>{no(i + 2)}</span>
+          {g.ad}
+        </h2>
+        <div class="people">
+          {g.uyeler.map((k) => (
+            <KisiKarti kisi={k} vurgulu={g.hepsiVurgulu || k.rol !== 'Üye'} />
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="tinted cta" aria-labelledby="gorev-baslik">
+    <div class="wrap">
+      <div class="cta-copy">
+        <h2 id="gorev-baslik">Bir birimde görev almak ister misiniz?</h2>
+        <p>
+          Önce topluluğa üye olun. Birimlere katılım başvuruları dönem dönem açılır; başvuru dönemi
+          başladığında Gündem'de duyurulur ve başvurunuzu o zaman yapabilirsiniz.
+        </p>
+      </div>
+      <div class="btn-row">
+        <a href="/#uyelik" class="btn btn-primary">
+          Üye ol
+        </a>
+        <a href="/gundem/" class="btn btn-ghost">
+          Gündemi takip et
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .team-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px 48px;
+    padding-block: 56px 48px;
+  }
+  h1 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(36px, 5vw, 52px);
+    line-height: 1.1;
+    color: var(--navy);
+  }
+  .term {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--navy);
+    padding: 8px 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+  }
+  .group > .wrap {
+    padding-block: 48px;
+  }
+  .group-title {
+    margin: 0 0 28px;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 26px;
+    color: var(--navy);
+  }
+  .group-title span {
+    font-family: var(--mono);
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .people {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 40px 24px;
+  }
+  .cta > .wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 48px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .cta-copy {
+    flex: 1 1 480px;
+    min-width: 0;
+  }
+  .cta h2 {
+    margin: 0 0 10px;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 26px;
+    color: var(--navy);
+  }
+  .cta p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text);
+    max-width: 600px;
+  }
+  @media (max-width: 900px) {
+    .people {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 640px) {
+    .people {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 32px 16px;
+    }
+  }
+</style>

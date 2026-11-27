@@ -1,0 +1,29 @@
+---
+// Kare fotoğraf. Fotoğraf yoksa silüet yer tutucusu gösterir.
+interface Props {
+  src?: string;
+  ad: string;
+  ikon?: number;
+}
+const { src, ad, ikon = 44 } = Astro.props;
+---
+
+<div class="photo">
+  {src ? (
+    <img src={src} alt={ad} loading="lazy" width="400" height="400" />
+  ) : (
+    <svg
+      width={ikon}
+      height={ikon}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
+    </svg>
+  )}
+</div>
