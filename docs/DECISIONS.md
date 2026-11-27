@@ -147,3 +147,16 @@ Biçim: **Karar** · **Gerekçe** · **Bedeli** (vazgeçtiğimiz şey)
 **Karar:** Üst menüde Fırat Üniversitesi'nin resmî kurumsal kimlik kılavuzundan alınan dairesel logosu durur (`frontend/public/logolar/firat.svg`). SKS Daire Başkanlığı'nın ayrı bir logosu bulunmadığı için SKS üst menüde yer almaz; tam adı alt bilgide yazar.
 **Gerekçe:** Tüzük 9/7 "adı ve/veya logosu" der; ad yeterli. SKS'nin kendi sitesi de FÜ logosunu kullanıyor. Var olmayan bir logo uydurulmaz.
 **Bedeli:** SKS ileride resmî bir logo yayımlarsa üst menüye eklenip eklenmeyeceği yeniden değerlendirilir.
+
+### K-23 · API katmanı: Django REST Framework
+**Tarih:** 2026-11-27
+**Karar:** Faz 2'deki API, Django REST Framework (DRF) ile yazılır. API'nin kapsamı dardır: Astro'nun derleme sırasında okuduğu salt okunur, yalnızca yayımlanmış içeriği döndüren uç noktalar (`/api/duyurular/`, `/api/etkinlikler/`, `/api/ekip/`; PANEL.md). Panel, formlar, giriş ve yetki DRF'den değil, Django görünümleri ve şablonlarından geçer. DRF'nin tarayıcıdan gezilebilen API arayüzü (browsable API) kapalı tutulur, yalnızca JSON döner.
+**Gerekçe:**
+- Topluluk her yıl el değiştirir. DRF en yaygın Django API kütüphanesi; yeni gelen öğrencinin bilme, sorusuna yanıt bulma ve agent'ların doğru kod yazma olasılığı en yüksek olan seçenek (ARCHITECTURE.md ilke 4: yaygın framework).
+- Uzun ömürlü ve geniş bakım ekibine sahip; Django sürümleriyle uyumu düzenli izleniyor. Django Ninja daha genç ve bakımı daha dar bir ekibe dayanıyor.
+- Serializer'larda alanlar tek tek yazılır (`fields = [...]`, `__all__` yasak). Ekip uç noktasının yalnızca yayın onaylı alanları döndürmesi (KVKK) böylece kodda açıkça görünür ve test edilir.
+- Ninja'nın üstünlükleri (daha az kod, tip ipuçları, hız, otomatik OpenAPI) üç salt okunur uç noktada belirgin bir kazanç sağlamıyor.
+**Bedeli:** DRF'de aynı iş için biraz daha fazla kod yazılır (serializer + view/viewset). Kullanılmayan özellikler bilinçli olarak kapalı tutulmalı:
+- Genel ayarda yalnızca `JSONRenderer` açık (browsable API yok); varsayılan izin **kapalı** (`DEFAULT_PERMISSION_CLASSES = [IsAdminUser]`), varsayılan kimlik doğrulama sınıfı yok.
+- Herkese açık uç noktalar görünüm düzeyinde açıkça `AllowAny` alır ve yalnızca `ReadOnlyModelViewSet` / `ListAPIView` gibi salt okunur görünümlerdir. Yazma işlemi API'den yapılmaz.
+- Her uç nokta için "taslak/onaysız kayıt dönmüyor" ve "izin verilmeyen alan dönmüyor" testleri yazılır.
