@@ -1,6 +1,6 @@
 # DİYAK logosu
 
-`DIYAK_*.png` referans görsellerinden ölçülerek çizilen SVG sürümler. Çubuk yüksekliği 10 birim, logo 110×110 birimlik kareye oturur.
+Topluluğun ilk PNG logolarından ölçülerek çizilen SVG sürümler; artık esas kaynak bunlardır (K-21). Çubuk yüksekliği 10 birim, logo 110×110 birimlik kareye oturur.
 
 | Dosya | Kullanım |
 | --- | --- |
