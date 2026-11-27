@@ -7,7 +7,9 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 
 ## Şu an
 
-- [ ] Tüzüğün son hâlinin olup olmadığını ekipten öğren (yanıta göre aşağıdaki tüzük maddesi)
+- [ ] Fırat Üniversitesi ve SKS logolarını resmî kaynaklardan bul, doğrula, SVG olarak `frontend/public/logolar/` altına ekle
+- [ ] Kaynaklar sayfası (`/kaynaklar`), BibTeX kopyalama düğmesi
+- [ ] Gündem için RSS beslemesi (`@astrojs/rss`, onaylandı)
 
 ## Sıradaki
 
@@ -16,12 +18,8 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 - [ ] Bilgi İşlem'den alt alan adı talep et (ör. `diyak.firat.edu.tr`), `astro.config.mjs` içindeki `site` değerini güncelle
 
 **Gerçek içerik ve görseller**
-- [ ] Fırat Üniversitesi ve SKS logoları (kullanım izniyle) → `frontend/public/logolar/`, `Header.astro` içindeki yer tutucuların yerine
-- [ ] Akademik danışman bilgileri ve profil bağlantıları → `frontend/src/data/ekip.json`
-- [ ] Ekip üyeleri: isim, e-posta, isteğe bağlı bağlantılar ve fotoğraflar (yazılı onayla) → `ekip.json` ve `frontend/public/ekip/`
 - [ ] Topluluk e-postası ve sosyal medya bağlantıları → `frontend/src/config/site.ts`
 - [ ] Üye kayıt formu (Ek-4) PDF → `frontend/public/belgeler/uye-kayit-formu.pdf`
-- [ ] Tüzük: ekibe soruldu. Son hâli varsa PDF → `frontend/public/belgeler/tuzuk.pdf`; hâlâ akademik danışmandaysa sitede tüzük hiç yer almaz ve `Footer.astro`, `Hakkimizda.astro` içindeki tüzük bağlantıları ile `site.ts` içindeki `belgeler.tuzuk` kaldırılır
 - [ ] Örnek gündem gönderilerini (`ornek: true`) gerçek gönderilerle değiştir
 - [ ] Kuruluş yılını ve Hakkımızda metnini yönetimle son kez gözden geçir
 
@@ -38,9 +36,6 @@ Siteyi bir bağlantıyla ekibe/danışmana göstermek gerektiğinde veya alan ad
 ## Birikmiş işler
 
 - [ ] İngilizce sürüm (Astro i18n, `/en/` altında). Menüdeki EN bağlantısı o zaman eklenecek
-- [ ] Yayınlar ve açık kaynaklar için ayrı sayfa (`/kaynaklar`), BibTeX kopyalama düğmesi
-- [ ] Gündem için RSS beslemesi
-- [ ] Gündem arşivinde yıla göre gruplama
 - [ ] Sosyal medya önizlemesi için Open Graph görseli
 - [ ] GitHub Actions'a testleri ekle (ilk testler yazıldığında, `.github/workflows/frontend.yml`)
 
@@ -70,7 +65,7 @@ Faz 1 kısa tutulur: Faz 1'de duyuru yazma aracı kurulmaz, hızla Faz 2'ye geç
 **Yönetim paneli** (PANEL.md §12)
 - [ ] A1 · Temel ve hesaplar: davet, dönemlik rol atama, 2FA, giriş kilidi, yeni cihaz uyarısı, işlem kaydı
 - [ ] A2 · Onay altyapısı ve duyurular: Yönetim Kurulu onayı, metin editörü, önizleme, API, Astro bağlantısı, Markdown'dan aktarım
-- [ ] A3 · Ekip sayfası: panelden yönetim, yayın onayı, fotoğraflar, `ekip.json`'dan aktarım
+- [ ] A3 · Ekip sayfası: panelden yönetim, yayın onayı, fotoğraflar, `ekip.json`'dan aktarım. Akademik danışman ve ekip üyelerinin gerçek bilgileri ilk kez bu arayüzden girilecek; panelin ilk gerçek testi olur (o zamana kadar `ekip.json` yer tutucu kalır)
 - [ ] A4 · Etkinlikler ve formlar: hazır ama kaldırılabilir alanlar, zorunlu aydınlatma onayı, onay kontrol listesi, herkese açık form sayfası
 - [ ] A5 · Yanıtlar ve saklama: tablo, CSV, otomatik silme
 - [ ] A6 · Cilalama ve kullanım rehberi
@@ -88,6 +83,7 @@ Aylık geri yükleme provaları buraya yazılır: `tarih · yedek adı · kayıt
 
 ## Tamamlananlar
 
+- [x] Tüzüğün son hâli eklendi → `frontend/public/belgeler/tuzuk.pdf`
 - [x] Repo ayarları: yalnızca squash merge, birleşen dallar otomatik silinir
 - [x] main koruması: PR zorunlu (onay 0, ikinci geliştirici gelince 1), yöneticiler dahil, force push ve silme kapalı, `check ve build` geçmeli
 - [x] GitHub Actions: her PR'da `npm run check` ve `npm run build` → `.github/workflows/frontend.yml`
