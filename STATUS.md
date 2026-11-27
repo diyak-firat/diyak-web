@@ -13,11 +13,9 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 
 **Repo ve yayın**
 - [ ] Organizasyonda en az iki owner (geliştirici + akademik danışman veya bir yönetim kurulu üyesi)
-- [ ] Cloudflare Pages'i repoya bağla: kök klasör `frontend`, komut `npm run build`, çıktı `dist`
 - [ ] Bilgi İşlem'den alt alan adı talep et (ör. `diyak.firat.edu.tr`), `astro.config.mjs` içindeki `site` değerini güncelle
 
 **Gerçek içerik ve görseller**
-- [ ] Tasarımcıdan DİYAK logosunun asıl SVG dosyasını al; şimdiki çizim PNG referanslardan ölçülerek yapıldı (`Logo.astro`, `favicon.svg`)
 - [ ] Fırat Üniversitesi ve SKS logoları (kullanım izniyle) → `frontend/public/logolar/`, `Header.astro` içindeki yer tutucuların yerine
 - [ ] Akademik danışman bilgileri ve profil bağlantıları → `frontend/src/data/ekip.json`
 - [ ] Ekip üyeleri: isim, e-posta, isteğe bağlı bağlantılar ve fotoğraflar (yazılı onayla) → `ekip.json` ve `frontend/public/ekip/`
@@ -26,6 +24,12 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 - [ ] Tüzük: ekibe soruldu. Son hâli varsa PDF → `frontend/public/belgeler/tuzuk.pdf`; hâlâ akademik danışmandaysa sitede tüzük hiç yer almaz ve `Footer.astro`, `Hakkimizda.astro` içindeki tüzük bağlantıları ile `site.ts` içindeki `belgeler.tuzuk` kaldırılır
 - [ ] Örnek gündem gönderilerini (`ornek: true`) gerçek gönderilerle değiştir
 - [ ] Kuruluş yılını ve Hakkımızda metnini yönetimle son kez gözden geçir
+
+## Yayına hazırlanırken
+
+Siteyi bir bağlantıyla ekibe/danışmana göstermek gerektiğinde veya alan adı geldiğinde yapılır (K-07 geçerli, yalnızca zamanı ertelendi).
+
+- [ ] Cloudflare Pages'i repoya bağla: kök klasör `frontend`, komut `npm run build`, çıktı `dist`, ortam değişkeni `NODE_VERSION=22`; GitHub uygulaması yalnızca `diyak-web` reposuna izinli
 
 ## Masaüstü tamamlandıktan sonra
 
