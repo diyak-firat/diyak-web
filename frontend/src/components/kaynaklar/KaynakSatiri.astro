@@ -1,0 +1,168 @@
+---
+// Tek bir yayın, veri kümesi veya araç satırı. Ana sayfada ve /kaynaklar sayfasında kullanılır.
+// BibTeX <details> içinde durur: JS kapalıyken de açılıp okunabilir, JS açıkken "Kopyala" düğmesi görünür.
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  kaynak: CollectionEntry<'kaynaklar'>;
+  /** Türler ayrı başlıklar altında listeleniyorsa soldaki tür sütunu gizlenir. */
+  turGoster?: boolean;
+}
+const { kaynak, turGoster = true } = Astro.props;
+const { data } = kaynak;
+---
+
+<div class="row">
+  {turGoster && <p class="row-meta kind">{data.tur}</p>}
+  <div class="row-body">
+    <p class="res-title">{data.baslik}</p>
+    <p class="res-sub">{data.alt}</p>
+    {data.baglantilar.length > 0 && (
+      <p class="res-links">
+        {data.baglantilar.map((b) => (
+          <a href={b.url}>{b.ad}</a>
+        ))}
+      </p>
+    )}
+    {data.bibtex && (
+      <details class="bibtex">
+        <summary>
+          <span class="summary-text">BibTeX</span>
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </summary>
+        <div class="bibtex-body">
+          <pre><code data-bibtex>{data.bibtex.trim()}</code></pre>
+          <button type="button" class="copy" data-kopyala hidden>
+            Kopyala
+          </button>
+          <span class="copy-status" role="status" data-kopyala-durum></span>
+        </div>
+      </details>
+    )}
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-kopyala]').forEach((btn) => {
+    const kutu = btn.closest('.bibtex-body');
+    const kod = kutu?.querySelector<HTMLElement>('[data-bibtex]');
+    const durum = kutu?.querySelector<HTMLElement>('[data-kopyala-durum]');
+    if (!kod || !durum || !navigator.clipboard) return;
+    btn.hidden = false;
+    let zamanlayici: number | undefined;
+
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(kod.textContent ?? '');
+        durum.textContent = 'Kopyalandı';
+      } catch {
+        // Pano izni yoksa metni seçili bırak; kullanıcı elle kopyalayabilir.
+        const secim = window.getSelection();
+        const aralik = document.createRange();
+        aralik.selectNodeContents(kod);
+        secim?.removeAllRanges();
+        secim?.addRange(aralik);
+        durum.textContent = 'Metin seçildi, Ctrl+C ile kopyalayın';
+      }
+      window.clearTimeout(zamanlayici);
+      zamanlayici = window.setTimeout(() => (durum.textContent = ''), 3000);
+    });
+  });
+</script>
+
+<style>
+  .res-title {
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.4;
+    margin-bottom: 6px;
+  }
+  .res-sub {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .res-links {
+    font-family: var(--mono);
+    font-size: 13px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+  }
+  .bibtex {
+    margin-top: 4px;
+  }
+  .bibtex summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: var(--mono);
+    font-size: 13px;
+    gap: 6px;
+    color: var(--navy);
+    cursor: pointer;
+    list-style: none;
+  }
+  .bibtex summary::-webkit-details-marker {
+    display: none;
+  }
+  .summary-text {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .bibtex summary svg {
+    transition: transform 0.15s;
+  }
+  .bibtex[open] summary svg {
+    transform: rotate(180deg);
+  }
+  .bibtex-body {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 8px 12px;
+  }
+  .bibtex pre {
+    flex: 1 1 420px;
+    min-width: 0;
+    margin: 0;
+    padding: 14px 16px;
+    overflow-x: auto;
+    background: var(--tint);
+    border-radius: var(--radius);
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .copy {
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background: var(--paper);
+    color: var(--navy);
+    font: 500 14px var(--sans);
+    cursor: pointer;
+  }
+  .copy:hover {
+    border-color: var(--navy);
+  }
+  .copy-status {
+    align-self: center;
+    font-size: 14px;
+    color: var(--muted);
+  }
+</style>

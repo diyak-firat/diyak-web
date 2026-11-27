@@ -1,7 +1,9 @@
 ---
-import { getCollection } from 'astro:content';
+import KaynakSatiri from '../kaynaklar/KaynakSatiri.astro';
+import { kaynaklar } from '../../lib/kaynaklar';
 
-const kaynaklar = (await getCollection('kaynaklar')).sort((a, b) => a.data.sira - b.data.sira);
+const ANA_SAYFADA_GOSTERILEN = 5;
+const ilkler = (await kaynaklar()).slice(0, ANA_SAYFADA_GOSTERILEN);
 ---
 
 <section class="band kaynaklar" id="kaynaklar" aria-labelledby="kaynaklar-baslik">
@@ -10,22 +12,11 @@ const kaynaklar = (await getCollection('kaynaklar')).sort((a, b) => a.data.sira 
       <h2 class="h2" id="kaynaklar-baslik">
         Yayınlar ve açık kaynaklar
       </h2>
-      <!-- TODO: /kaynaklar sayfası yapılınca "Tümü →" bağlantısı eklenecek (STATUS.md) -->
+      <a href="/kaynaklar/">Tüm yayınlar ve kaynaklar →</a>
     </div>
     <div class="list">
-      {kaynaklar.map(({ data }) => (
-        <div class="row">
-          <p class="row-meta kind">{data.tur}</p>
-          <div class="row-body">
-            <p class="res-title">{data.baslik}</p>
-            <p class="res-sub">{data.alt}</p>
-            <p class="res-links">
-              {data.baglantilar.map((b) => (
-                <a href={b.url}>{b.ad}</a>
-              ))}
-            </p>
-          </div>
-        </div>
+      {ilkler.map((k) => (
+        <KaynakSatiri kaynak={k} />
       ))}
     </div>
   </div>
@@ -40,23 +31,5 @@ const kaynaklar = (await getCollection('kaynaklar')).sort((a, b) => a.data.sira 
   }
   .head {
     margin-bottom: 20px;
-  }
-  .res-title {
-    font-family: var(--serif);
-    font-size: 19px;
-    line-height: 1.4;
-    margin-bottom: 6px;
-  }
-  .res-sub {
-    font-size: 14px;
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
-  .res-links {
-    font-family: var(--mono);
-    font-size: 13px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px 18px;
   }
 </style>

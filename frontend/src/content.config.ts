@@ -3,6 +3,7 @@ import { defineCollection } from 'astro:content';
 import { glob, file } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { ETIKETLER } from './lib/etiketler';
+import { TURLER } from './lib/kaynakTurleri';
 
 const gundem = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/gundem' }),
@@ -32,10 +33,12 @@ const kaynaklar = defineCollection({
   loader: file('src/data/kaynaklar.json'),
   schema: z.object({
     sira: z.number(),
-    tur: z.enum(['Yayın', 'Veri kümesi', 'Araç']),
+    tur: z.enum(TURLER),
     baslik: z.string(),
     alt: z.string(),
     baglantilar: z.array(z.object({ ad: z.string(), url: z.string() })),
+    /** Ham BibTeX kaydı. Verilirse satırda açılır kutu ve kopyalama düğmesi çıkar. */
+    bibtex: z.string().optional(),
   }),
 });
 

@@ -6,10 +6,16 @@
     "baslik": "[Makale başlığı]",
     "alt": "[Yazar A.], [Yazar B.], [Danışman] · [Konferans / Dergi], [Yıl]",
     "baglantilar": [
-      { "ad": "PDF", "url": "#" },
-      { "ad": "BibTeX", "url": "#" },
-      { "ad": "Kod", "url": "#" }
-    ]
+      {
+        "ad": "PDF",
+        "url": "#"
+      },
+      {
+        "ad": "Kod",
+        "url": "#"
+      }
+    ],
+    "bibtex": "@inproceedings{[anahtar],\n  title     = {[Makale başlığı]},\n  author    = {[Soyad, Ad] and [Soyad, Ad]},\n  booktitle = {[Konferans adı]},\n  year      = {[Yıl]}\n}"
   },
   {
     "id": "ornek-veri-kumesi",
@@ -18,9 +24,18 @@
     "baslik": "[Veri kümesi adı]",
     "alt": "[Bir cümlelik açıklama] · [Boyut] · [Lisans]",
     "baglantilar": [
-      { "ad": "GitHub", "url": "#" },
-      { "ad": "Hugging Face", "url": "#" },
-      { "ad": "Kaggle", "url": "#" }
+      {
+        "ad": "GitHub",
+        "url": "#"
+      },
+      {
+        "ad": "Hugging Face",
+        "url": "#"
+      },
+      {
+        "ad": "Kaggle",
+        "url": "#"
+      }
     ]
   },
   {
@@ -30,8 +45,14 @@
     "baslik": "[Araç adı]",
     "alt": "[Bir cümlelik açıklama] · [Lisans]",
     "baglantilar": [
-      { "ad": "GitHub", "url": "#" },
-      { "ad": "Belgeler", "url": "#" }
+      {
+        "ad": "GitHub",
+        "url": "#"
+      },
+      {
+        "ad": "Belgeler",
+        "url": "#"
+      }
     ]
   }
 ]

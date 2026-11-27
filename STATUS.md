@@ -7,7 +7,6 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 
 ## Şu an
 
-- [ ] Kaynaklar sayfası (`/kaynaklar`), BibTeX kopyalama düğmesi
 - [ ] Gündem için RSS beslemesi (`@astrojs/rss`, onaylandı)
 
 ## Sıradaki
@@ -82,6 +81,8 @@ Aylık geri yükleme provaları buraya yazılır: `tarih · yedek adı · kayıt
 
 ## Tamamlananlar
 
+- [x] Kaynaklar sayfası (`/kaynaklar`): türlere göre gruplu, BibTeX açılır kutusu ve kopyalama düğmesi
+- [x] Gündem arşivinde yıla göre gruplama (`/gundem`); filtrede boş kalan yıl gizlenir
 - [x] Fırat Üniversitesi logosu resmî kurumsal kimlik kılavuzundan SVG olarak eklendi; SKS adıyla alt bilgide (K-22)
 - [x] Tüzüğün son hâli eklendi → `frontend/public/belgeler/tuzuk.pdf`
 - [x] Repo ayarları: yalnızca squash merge, birleşen dallar otomatik silinir
