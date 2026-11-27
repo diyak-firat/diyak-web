@@ -38,5 +38,6 @@ htmlcov/
 media/
 staticfiles/
 
-# Geçici referans: yerelde tutulur
+# Tüzük kaynak dosyaları yerelde tutulur; sitedeki kopya frontend/public/belgeler/tuzuk.pdf
 Tüzük_v1.pdf
+Tüzük.pdf
