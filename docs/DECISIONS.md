@@ -141,3 +141,9 @@ Biçim: **Karar** · **Gerekçe** · **Bedeli** (vazgeçtiğimiz şey)
 **Karar:** Logo, `design/logo/` altındaki SVG'ler ve sitedeki `Logo.astro` olarak kullanılır. Renkleri `tokens.css` ile aynıdır: lacivert `#1E2142`, mercan `#E5533A`. İlk referans PNG'lerdeki biraz farklı tonlar esas alınmaz.
 **Gerekçe:** Logo ile sitenin renkleri tek kaynaktan gelir, iki ayrı lacivert ve mercan oluşmaz.
 **Bedeli:** Eski PNG'ler kullanılırsa ton farkı görünür; yeni basılı ve dijital materyaller `design/logo/` dosyalarından üretilmeli.
+
+### K-22 · Kurum logoları: üst menüde yalnızca FÜ logosu, SKS adıyla
+**Tarih:** 2026-11-27
+**Karar:** Üst menüde Fırat Üniversitesi'nin resmî kurumsal kimlik kılavuzundan alınan dairesel logosu durur (`frontend/public/logolar/firat.svg`). SKS Daire Başkanlığı'nın ayrı bir logosu bulunmadığı için SKS üst menüde yer almaz; tam adı alt bilgide yazar.
+**Gerekçe:** Tüzük 9/7 "adı ve/veya logosu" der; ad yeterli. SKS'nin kendi sitesi de FÜ logosunu kullanıyor. Var olmayan bir logo uydurulmaz.
+**Bedeli:** SKS ileride resmî bir logo yayımlarsa üst menüye eklenip eklenmeyeceği yeniden değerlendirilir.

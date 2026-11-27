@@ -50,4 +50,4 @@ diyak-web/
 
 ## Kurumsal bilgi
 
-Topluluk, Fırat Üniversitesi Sağlık Kültür ve Spor Daire Başkanlığı Öğrenci Toplulukları Birimi'ne bağlıdır. Sitede Fırat Üniversitesi ve SKS adının veya logosunun bulunması tüzük gereğidir (Madde 9/7).
+Topluluk, Fırat Üniversitesi Sağlık Kültür ve Spor Daire Başkanlığı Öğrenci Toplulukları Birimi'ne bağlıdır. Sitede Fırat Üniversitesi ve SKS adının ve/veya logosunun bulunması tüzük gereğidir (Madde 9/7).

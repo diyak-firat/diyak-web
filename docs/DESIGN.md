@@ -65,7 +65,7 @@ Tüm renkler `frontend/src/styles/tokens.css` içinde tanımlıdır. Kodda sabit
 ## Bileşenler
 
 **Üst menü (Header)**
-- Solda logo + "DİYAK / Fırat Üniversitesi". Sağda bağlantılar, "Üye ol" düğmesi, ince bir çizgiyle ayrılmış FÜ ve SKS logoları.
+- Solda logo + "DİYAK / Fırat Üniversitesi". Sağda bağlantılar, "Üye ol" düğmesi, ince bir çizgiyle ayrılmış Fırat Üniversitesi logosu (resmî kurumsal kimlik kılavuzundaki dairesel sürüm). SKS'nin ayrı logosu olmadığı için adı alt bilgide yazar (K-22).
 - Sayfanın üstüne yapışır. Aşağı kaydırınca gizlenir, biraz yukarı kaydırınca geri gelir.
 - 900px altında bağlantılar bir menü düğmesinin içine toplanır.
 - Bulunulan sayfa mercan alt çizgiyle işaretlenir.
