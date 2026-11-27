@@ -28,6 +28,11 @@ export function etkinlikZamani(d: Date): string {
   return `${gun}, ${saat}`;
 }
 
+/** 2026 — Türkiye saatine göre yıl */
+export function yil(d: Date): number {
+  return Number(new Intl.DateTimeFormat('tr-TR', { year: 'numeric', timeZone: TZ }).format(d));
+}
+
 /** <time datetime="..."> için */
 export function isoTarih(d: Date): string {
   return d.toISOString();
