@@ -12,8 +12,6 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 ## Sıradaki
 
 **Repo ve yayın**
-- [ ] Repo ayarları: yalnızca "Squash and merge" açık, "Automatically delete head branches" açık
-- [ ] main için kural: PR zorunlu (onay sayısı şimdilik 0, ikinci geliştirici gelince 1)
 - [ ] Organizasyonda en az iki owner (geliştirici + akademik danışman veya bir yönetim kurulu üyesi)
 - [ ] Cloudflare Pages'i repoya bağla: kök klasör `frontend`, komut `npm run build`, çıktı `dist`
 - [ ] Bilgi İşlem'den alt alan adı talep et (ör. `diyak.firat.edu.tr`), `astro.config.mjs` içindeki `site` değerini güncelle
@@ -40,7 +38,7 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 - [ ] Gündem için RSS beslemesi
 - [ ] Gündem arşivinde yıla göre gruplama
 - [ ] Sosyal medya önizlemesi için Open Graph görseli
-- [ ] GitHub Actions: her PR'da `npm run check` ve `npm run build`. İlk testler yazıldığında testler de eklenecek
+- [ ] GitHub Actions'a testleri ekle (ilk testler yazıldığında, `.github/workflows/frontend.yml`)
 
 ## Faz 2 (backend)
 
@@ -86,6 +84,9 @@ Aylık geri yükleme provaları buraya yazılır: `tarih · yedek adı · kayıt
 
 ## Tamamlananlar
 
+- [x] Repo ayarları: yalnızca squash merge, birleşen dallar otomatik silinir
+- [x] main koruması: PR zorunlu (onay 0, ikinci geliştirici gelince 1), yöneticiler dahil, force push ve silme kapalı, `check ve build` geçmeli
+- [x] GitHub Actions: her PR'da `npm run check` ve `npm run build` → `.github/workflows/frontend.yml`
 - [x] Git reposu açıldı, GitHub'a (`diyak-firat/diyak-web`) push edildi
 - [x] İskelet yerelde doğrulandı (`npm run check`, `npm run build`)
 - [x] Logo ve favicon referans PNG'lere göre yeniden çizildi: 6 satırlık "D" motifi
