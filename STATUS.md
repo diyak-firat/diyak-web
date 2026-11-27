@@ -7,8 +7,7 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 
 ## Şu an
 
-- [ ] Repoyu GitHub organizasyonunda boş olarak oluştur (README eklemeden) ve ilk push'u yap
-- [ ] `frontend/` içinde `npm install` ve `npm run dev` ile iskeleti yerelde doğrula
+- [ ] Logo PR'ını (`fix/logo`) gözden geçir ve birleştir
 
 ## Sıradaki
 
@@ -20,7 +19,7 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 - [ ] Bilgi İşlem'den alt alan adı talep et (ör. `diyak.firat.edu.tr`), `astro.config.mjs` içindeki `site` değerini güncelle
 
 **Gerçek içerik ve görseller**
-- [ ] DİYAK logosunun SVG dosyası → `frontend/src/components/Logo.astro` ve `frontend/public/favicon.svg`
+- [ ] Tasarımcıdan DİYAK logosunun asıl SVG dosyasını al; şimdiki çizim PNG referanslardan ölçülerek yapıldı (`Logo.astro`, `favicon.svg`)
 - [ ] Fırat Üniversitesi ve SKS logoları (kullanım izniyle) → `frontend/public/logolar/`, `Header.astro` içindeki yer tutucuların yerine
 - [ ] Akademik danışman bilgileri ve profil bağlantıları → `frontend/src/data/ekip.json`
 - [ ] Ekip üyeleri: isim, e-posta, isteğe bağlı bağlantılar ve fotoğraflar (yazılı onayla) → `ekip.json` ve `frontend/public/ekip/`
@@ -87,6 +86,9 @@ Aylık geri yükleme provaları buraya yazılır: `tarih · yedek adı · kayıt
 
 ## Tamamlananlar
 
+- [x] Git reposu açıldı, GitHub'a (`diyak-firat/diyak-web`) push edildi
+- [x] İskelet yerelde doğrulandı (`npm run check`, `npm run build`)
+- [x] Logo ve favicon referans PNG'lere göre yeniden çizildi: 6 satırlık "D" motifi
 - [x] Tasarım prototipi onaylandı → `design/prototip.html`
 - [x] Mimari ve teknoloji kararları yazıldı → `docs/ARCHITECTURE.md`, `docs/DECISIONS.md`
 - [x] Çalışma düzeni belirlendi → `CONTRIBUTING.md`
