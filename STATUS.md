@@ -7,13 +7,13 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 
 ## Şu an
 
-- [ ] Gündem için RSS beslemesi (`@astrojs/rss`, onaylandı)
+- [ ] Astro'yu güvenlik düzeltmesi için 7.4.1 → 7.4.13'e yükselt (`npm audit`: orta seviye, GHSA-mh32-jxcr-mh9f)
 
 ## Sıradaki
 
 **Repo ve yayın**
 - [ ] Organizasyonda en az iki owner (geliştirici + akademik danışman veya bir yönetim kurulu üyesi)
-- [ ] Bilgi İşlem'den alt alan adı talep et (ör. `diyak.firat.edu.tr`), `astro.config.mjs` içindeki `site` değerini güncelle
+- [ ] Bilgi İşlem'den alt alan adı talep et (ör. `diyak.firat.edu.tr`), `astro.config.mjs` içindeki `site` değerini güncelle. RSS ve canonical bağlantıları bu değerden üretilir; şu an `diyak.example.org`
 
 **Gerçek içerik ve görseller**
 - [ ] Topluluk e-postası ve sosyal medya bağlantıları → `frontend/src/config/site.ts`
@@ -81,6 +81,7 @@ Aylık geri yükleme provaları buraya yazılır: `tarih · yedek adı · kayıt
 
 ## Tamamlananlar
 
+- [x] Gündem RSS beslemesi → `/gundem/rss.xml` (`<head>` ve alt bilgide bağlantı)
 - [x] Kaynaklar sayfası (`/kaynaklar`): türlere göre gruplu, BibTeX açılır kutusu ve kopyalama düğmesi
 - [x] Gündem arşivinde yıla göre gruplama (`/gundem`); filtrede boş kalan yıl gizlenir
 - [x] Fırat Üniversitesi logosu resmî kurumsal kimlik kılavuzundan SVG olarak eklendi; SKS adıyla alt bilgide (K-22)
