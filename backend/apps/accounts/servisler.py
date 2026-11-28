@@ -15,7 +15,7 @@ from django.utils import timezone
 from apps.denetim.kayit import kaydet
 from apps.denetim.models import Eylem
 
-from .models import Davet, Rol, RolAtamasi
+from .models import GOREV_BASKAN, Davet, Rol, RolAtamasi
 from .yetki import rol_atayabilir_mi
 
 
@@ -53,6 +53,29 @@ def davet_olustur(davet_eden, eposta: str, rol: str, bitis: date, gorev_adi: str
     _rol_denetle(rol)
     if not rol_atayabilir_mi(davet_eden, rol):
         raise PermissionDenied("Bu rol için davet gönderme yetkiniz yok.")
+    return _davet_kaydet(davet_eden, eposta, rol, bitis, gorev_adi)
+
+
+def ilk_davet_olustur(eposta: str, bitis: date, teknik: bool = False) -> tuple[Davet, str]:
+    """Yalnızca ``manage.py ilk_yonetici`` içindir: ilk Başkan veya ilk Teknik sorumlu daveti.
+
+    Etkin bir Başkan (ya da ``teknik=True`` iken etkin bir Teknik sorumlu) varken çalışmaz;
+    sonraki hesaplar panelden, yetki kurallarıyla açılır.
+    """
+    if teknik:
+        rol, gorev_adi = Rol.TEKNIK, ""
+        var_mi = RolAtamasi.objects.etkin().filter(rol=Rol.TEKNIK).exists()
+        mesaj = "Etkin bir Teknik sorumlu zaten var; yeni teknik hesaplar panelden davet edilir."
+    else:
+        rol, gorev_adi = Rol.YONETIM_KURULU, GOREV_BASKAN
+        var_mi = RolAtamasi.objects.etkin().filter(rol=Rol.YONETIM_KURULU, gorev_adi=GOREV_BASKAN).exists()
+        mesaj = "Etkin bir Başkan zaten var; diğer hesaplar panelden davet edilir."
+    if var_mi:
+        raise ValidationError(mesaj)
+    return _davet_kaydet(None, eposta, rol, bitis, gorev_adi, kaynak="ilk_yonetici")
+
+
+def _davet_kaydet(davet_eden, eposta: str, rol: str, bitis: date, gorev_adi: str, kaynak: str = "") -> tuple[Davet, str]:
     eposta = get_user_model().objects.normalize_email(eposta).lower()
     if get_user_model().objects.filter(email__iexact=eposta).exists():
         raise ValidationError({"eposta": "Bu e-postayla bir hesap zaten var. Rolü Kullanıcılar ekranından atayın."})
@@ -73,7 +96,8 @@ def davet_olustur(davet_eden, eposta: str, rol: str, bitis: date, gorev_adi: str
             Eylem.DAVET,
             kullanici=davet_eden,
             nesne=davet,
-            ayrinti={"rol": rol, "gorev_adi": davet.gorev_adi, "bitis": bitis.isoformat()},
+            ayrinti={"rol": rol, "gorev_adi": davet.gorev_adi, "bitis": bitis.isoformat()}
+            | ({"kaynak": kaynak} if kaynak else {}),
         )
     return davet, token
 

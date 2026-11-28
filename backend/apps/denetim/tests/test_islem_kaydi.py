@@ -3,6 +3,7 @@ from django.contrib.auth.models import AnonymousUser
 from django.urls import reverse
 
 from apps.denetim.kayit import kaydet
+from conftest import dogrulanmis_giris
 from apps.denetim.models import Eylem, IslemKaydi
 
 pytestmark = pytest.mark.django_db
@@ -23,7 +24,7 @@ def test_admin_islem_kaydini_degistiremez_silemez(client, db):
     from django.contrib.auth import get_user_model
 
     su = get_user_model().objects.create_superuser(email="su@ornek.org", password="x" * 12)
-    client.force_login(su)
+    dogrulanmis_giris(client, su)
     kayit = kaydet(Eylem.GIRIS, kullanici=su)
     assert client.get(reverse("admin:denetim_islemkaydi_changelist")).status_code == 200
     assert client.get(reverse("admin:denetim_islemkaydi_add")).status_code == 403
@@ -35,7 +36,7 @@ def test_admin_rol_atamasi_ekleyemez(client, db):
     from django.contrib.auth import get_user_model
 
     su = get_user_model().objects.create_superuser(email="su@ornek.org", password="x" * 12)
-    client.force_login(su)
+    dogrulanmis_giris(client, su)
     assert client.get(reverse("admin:accounts_rolatamasi_changelist")).status_code == 200
     assert client.get(reverse("admin:accounts_rolatamasi_add")).status_code == 403
     assert client.get(reverse("admin:accounts_davet_add")).status_code == 403

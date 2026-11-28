@@ -8,6 +8,9 @@ dependencies = [
     "djangorestframework>=3.16,<4",
     "psycopg[binary]>=3.2,<4",
     "gunicorn>=23,<24",
+    "django-otp>=1.7,<2",
+    "django-axes>=9.1,<10",
+    "segno>=1.6,<2",
 ]
 
 [dependency-groups]

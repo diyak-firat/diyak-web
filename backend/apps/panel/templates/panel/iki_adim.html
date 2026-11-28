@@ -1,0 +1,13 @@
+{% extends "panel/_giris_kalibi.html" %}
+{% block baslik %}Doğrulama kodu · DİYAK Panel{% endblock %}
+{% block icerik %}
+<h1>Doğrulama kodu</h1>
+<p>Telefonunuzdaki doğrulama uygulamasında görünen 6 haneli kodu girin.</p>
+<form method="post" novalidate>
+  {% csrf_token %}
+  {% include "panel/_form_alanlari.html" %}
+  <button type="submit">Giriş yap</button>
+</form>
+<p class="ikincil">Telefonunuza erişemiyorsanız teknik sorumluya yazın; 2FA'nızı sıfırlayabilir.</p>
+<form method="post" action="{% url 'panel:cikis' %}">{% csrf_token %}<button type="submit" class="metin-dugme">Vazgeç ve çık</button></form>
+{% endblock %}

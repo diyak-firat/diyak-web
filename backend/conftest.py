@@ -5,6 +5,8 @@ from datetime import timedelta
 import pytest
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from django_otp import DEVICE_ID_SESSION_KEY
+from django_otp.plugins.otp_totp.models import TOTPDevice
 
 from apps.accounts.models import GOREV_BASKAN, Rol, RolAtamasi
 
@@ -46,3 +48,24 @@ def teknik(kullanici_yap):
 @pytest.fixture
 def donem_sonu():
     return timezone.localdate() + timedelta(days=200)
+
+
+def dogrulanmis_giris(client, kullanici) -> TOTPDevice:
+    """Şifre + 2FA ile tam girişin test kısayolu: onaylı TOTP cihazı açar ve oturumu doğrular."""
+    cihaz = TOTPDevice.objects.filter(user=kullanici, confirmed=True).first() or TOTPDevice.objects.create(
+        user=kullanici, name="Test", confirmed=True
+    )
+    client.force_login(kullanici)
+    oturum = client.session
+    oturum[DEVICE_ID_SESSION_KEY] = cihaz.persistent_id
+    oturum.save()
+    return cihaz
+
+
+@pytest.fixture
+def tam_giris(client):
+    def giris(kullanici):
+        dogrulanmis_giris(client, kullanici)
+        return kullanici
+
+    return giris

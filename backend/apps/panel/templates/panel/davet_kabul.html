@@ -1,0 +1,12 @@
+{% extends "panel/_giris_kalibi.html" %}
+{% block baslik %}Hesabınızı açın · DİYAK Panel{% endblock %}
+{% block icerik %}
+<h1>Hesabınızı açın</h1>
+<p><strong>{{ davet.eposta }}</strong> adresi için <strong>{{ davet.get_rol_display }}</strong>{% if davet.gorev_adi %} ({{ davet.gorev_adi }}){% endif %} rolüyle davet edildiniz. Rolünüz {{ davet.bitis|date:"j F Y" }} tarihine kadar geçerlidir.</p>
+<form method="post" novalidate>
+  {% csrf_token %}
+  {% include "panel/_form_alanlari.html" %}
+  <button type="submit">Hesabı aç</button>
+</form>
+<p class="ikincil">Sonraki adımda telefonunuza iki adımlı doğrulama kuracaksınız.</p>
+{% endblock %}

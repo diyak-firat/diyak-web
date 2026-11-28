@@ -1,0 +1,7 @@
+{% extends "panel/_giris_kalibi.html" %}
+{% block baslik %}Davet geçersiz · DİYAK Panel{% endblock %}
+{% block icerik %}
+<h1>Davet bağlantısı geçersiz</h1>
+<p>Bu bağlantı kullanılmış, süresi dolmuş (davetler 48 saat geçerlidir) veya yanlış kopyalanmış olabilir. Sizi davet eden kişiden yeni bir davet isteyin.</p>
+<p><a href="{% url 'panel:giris' %}">Zaten hesabınız varsa giriş yapın</a></p>
+{% endblock %}

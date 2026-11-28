@@ -1,0 +1,7 @@
+{% extends "panel/base.html" %}
+{% block baslik %}Ana ekran · DİYAK Panel{% endblock %}
+{% block icerik %}
+<h1>Ana ekran</h1>
+<p>Hoş geldiniz, {{ request.user.get_full_name|default:request.user.email }}.</p>
+<form method="post" action="{% url 'panel:cikis' %}">{% csrf_token %}<button type="submit">Çıkış yap</button></form>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% autoescape off %}Merhaba,
+
+DİYAK yönetim paneline {{ davet.get_rol_display }}{% if davet.gorev_adi %} ({{ davet.gorev_adi }}){% endif %} rolüyle davet edildiniz.
+
+Hesabınızı açmak için bu bağlantıyı kullanın:
+{{ baglanti }}
+
+Bağlantı tek kullanımlıktır ve {{ son_gecerlilik|date:"j F Y H:i" }} tarihine kadar geçerlidir. Hesabı açtıktan sonra telefonunuza iki adımlı doğrulama kurmanız istenecek.
+
+Bu daveti beklemiyorsanız e-postayı silebilirsiniz.
+
+DİYAK · Fırat Üniversitesi Doğal Dil İşleme ve Yapay Zekâ Araştırmaları Topluluğu
+{% endautoescape %}

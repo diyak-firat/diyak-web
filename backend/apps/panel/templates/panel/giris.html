@@ -1,0 +1,12 @@
+{% extends "panel/_giris_kalibi.html" %}
+{% block baslik %}Giriş · DİYAK Panel{% endblock %}
+{% block icerik %}
+<h1>Giriş</h1>
+{% if oturum_doldu %}<p class="bilgi" role="status">Oturumunuzun süresi doldu. Yeniden giriş yapın.</p>{% endif %}
+<form method="post" novalidate>
+  {% csrf_token %}
+  {% include "panel/_form_alanlari.html" %}
+  <button type="submit">Devam et</button>
+</form>
+<p class="ikincil">Hesaplar yalnızca davetle açılır. Şifrenizi unuttuysanız teknik sorumluya yazın.</p>
+{% endblock %}

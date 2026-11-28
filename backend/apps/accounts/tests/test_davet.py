@@ -4,6 +4,7 @@ from datetime import timedelta
 
 import pytest
 from django.contrib.auth import authenticate, get_user_model
+from django.test import RequestFactory
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.utils import timezone
 
@@ -22,7 +23,7 @@ def test_baskan_davet_eder_ve_kabul_hesap_ile_rol_acar(baskan, donem_sonu):
     assert servisler.davet_bul(token) == davet
 
     k = servisler.daveti_kullan(token, SIFRE, "Ad", "Soyad")
-    assert authenticate(email="yeni.uye@firat.edu.tr", password=SIFRE) == k
+    assert authenticate(RequestFactory().post("/giris/"), email="yeni.uye@firat.edu.tr", password=SIFRE) == k
     atama = RolAtamasi.objects.get(kullanici=k)
     assert (atama.rol, atama.gorev_adi, atama.bitis, atama.atayan) == (Rol.EDITOR, "İletişim Birimi", donem_sonu, baskan)
     assert servisler.davet_bul(token) is None
