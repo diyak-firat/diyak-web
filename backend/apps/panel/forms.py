@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 
 
 class GirisFormu(AuthenticationForm):
@@ -81,3 +81,22 @@ class DavetFormu(_RolAlanlari):
 
 class RolAtamaFormu(_RolAlanlari):
     pass
+
+
+class SifreDegistirmeFormu(PasswordChangeForm):
+    error_messages = {
+        **PasswordChangeForm.error_messages,
+        # Bandit B105 yanlış alarm: bunlar şifre değil, hata mesajı.
+        "password_incorrect": "Mevcut şifreniz hatalı. Yeniden girin.",  # nosec B105
+        "password_mismatch": "İki yeni şifre aynı değil.",  # nosec B105
+    }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["old_password"].label = "Mevcut şifre"
+        self.fields["new_password1"].label = "Yeni şifre"
+        self.fields["new_password1"].help_text = (
+            "En az 12 karakter. Yaygın şifreler ve yalnızca rakamdan oluşan şifreler kabul edilmez."
+        )
+        self.fields["new_password2"].label = "Yeni şifre (tekrar)"
+        self.fields["new_password2"].help_text = "Yeni şifreyi bir kez daha yazın."

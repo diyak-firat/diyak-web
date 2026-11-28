@@ -1,0 +1,10 @@
+{% autoescape off %}Merhaba,
+
+Aşağıdaki panel rollerinin süresi yakında doluyor. Süresi dolan rol hiçbir yetki vermez. Kişi görevine devam edecekse panelin Kullanıcılar ekranından yeni bitiş tarihiyle rolü yeniden atayın.
+
+{% for a in bitenler %}- {{ a.kullanici.get_full_name|default:a.kullanici.email }}: {{ a.get_rol_display }}{% if a.gorev_adi %} ({{ a.gorev_adi }}){% endif %}, bitiş {{ a.bitis|date:"d.m.Y" }}
+{% endfor %}
+Panel: {{ panel_adresi }}/kullanicilar/
+
+DİYAK · Fırat Üniversitesi Doğal Dil İşleme ve Yapay Zekâ Araştırmaları Topluluğu
+{% endautoescape %}

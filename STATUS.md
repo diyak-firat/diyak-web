@@ -11,7 +11,7 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
   - [x] Roller (`RolAtamasi`, bitiş tarihli), `Davet` (tek kullanımlık, 48 saat, belirteç özeti saklanır), yetki kuralları, `denetim.IslemKaydi`
   - [x] Giriş, zorunlu 2FA (Admin dahil), `django-axes` kilidi (IP saklanmaz), yeni cihaz uyarısı, oturum süreleri, davet kabul ekranı, `ilk_yonetici` (K-25)
   - [x] Panel iskeleti ve menüsü (`tokens.css` ve yazı tipleri kopyası, kaynakla aynı olduğu testle denetlenir), Kullanıcılar ekranı (davet, rol ata/kaldır, hesabı kapat; teknik için 2FA sıfırlama ve kilit açma)
-  - [ ] Hesabım (şifre değiştir, 2FA cihazı, son girişler), rolü 14 gün içinde bitecekler için Başkan'a e-posta (yönetim komutu; zamanlaması OPERASYON.md'deki cron ile)
+  - [x] Hesabım (şifre değiştir, 2FA cihazı, son giriş olayları), `manage.py gece_gorevleri` (rol bitiş hatırlatması 14 ve 3 gün kala; 1 yıldan eski işlem kaydı, süresi dolmuş davet, onaysız 2FA cihazı ve eski giriş denemelerinin silinmesi)
 
 ## Sıradaki
 
@@ -49,7 +49,7 @@ Faz 1 kısa tutulur: Faz 1'de duyuru yazma aracı kurulmaz, hızla Faz 2'ye geç
 - [ ] Aydınlatma metni ve açık rıza metni taslakları, üniversitenin hukuk birimiyle (formların ön şartı)
 - [ ] E-posta gönderim servisi (davet, onay bildirimi, kayıt onayı): önce Bilgi İşlem'in SMTP sunucusu sorulur; yurt dışındaki bir servis KVKK açısından yurt dışına aktarım sayılır
 - [ ] Bütçe: giderlerin nereden karşılanacağı (SKS?) ve ödeme yapılan hesapların topluluk adına açılması
-- [ ] Yayın hazırlığı (Compose): Caddy (TLS ve statik dosyalar), `collectstatic`, Redis; sunucuda `secrets/` dosya izinleri (web konteyneri `uid 10001` ile çalışır, `chmod 600` + root sahipliği onun okumasını engeller; OPERASYON.md §3 buna göre güncellenmeli)
+- [ ] Yayın hazırlığı (Compose): Caddy (TLS ve statik dosyalar), `collectstatic`, Redis, `manage.py gece_gorevleri` için her gece çalışan zamanlayıcı; sunucuda `secrets/` dosya izinleri (web konteyneri `uid 10001` ile çalışır, `chmod 600` + root sahipliği onun okumasını engeller; OPERASYON.md §3 buna göre güncellenmeli)
 - [ ] Object storage ve dosya yükleme akışı
 - [ ] Yurt içi VPS seç: 4 GB RAM; paket yükseltmeyi yeniden kurulum gerektirmeden destekleyen bir sağlayıcı (K-19)
 - [ ] Deneme ortamı aynı sunucuda, ayrı Docker Compose projesi olarak (OPERASYON.md §12)

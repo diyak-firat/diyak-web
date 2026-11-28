@@ -20,6 +20,7 @@ class Eylem(models.TextChoices):
     IKI_ADIM_SIFIRLAMA = "iki_adim_sifirlama", "2FA sıfırlama"
     KILIT_ACMA = "kilit_acma", "Hesap kilidini açma"
     HESAP_KAPATMA = "hesap_kapatma", "Hesap kapatma"
+    SIFRE_DEGISTIRME = "sifre_degistirme", "Şifre değiştirme"
     ONAYA_GONDERME = "onaya_gonderme", "Onaya gönderme"
     ONAYLAMA = "onaylama", "Onaylama"
     DUZELTME_ISTEME = "duzeltme_isteme", "Düzeltme isteme"
