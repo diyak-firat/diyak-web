@@ -1,0 +1,81 @@
+{% extends "panel/base.html" %}
+{% block baslik %}Kullanıcılar · DİYAK Panel{% endblock %}
+{% block icerik %}
+<header class="sayfa-basi">
+  <div>
+    <p class="ust-baslik">Kullanıcılar</p>
+    <h1>Kullanıcılar ve roller</h1>
+  </div>
+  {% if davet_edebilir %}<a class="dugme" href="{% url 'panel:kullanici_davet' %}">Kişi davet et</a>{% endif %}
+</header>
+
+{% if yakinda_bitenler %}
+<section class="bolum" aria-labelledby="bitecekler">
+  <h2 id="bitecekler">14 gün içinde bitecek roller</h2>
+  <div class="tablo-kutu">
+    <table>
+      <thead><tr><th scope="col">Kişi</th><th scope="col">Rol</th><th scope="col">Bitiş</th></tr></thead>
+      <tbody>
+        {% for a in yakinda_bitenler %}
+        <tr>
+          <td><a href="{% url 'panel:kullanici' a.kullanici_id %}">{{ a.kullanici.get_full_name|default:a.kullanici.email }}</a></td>
+          <td>{{ a.get_rol_display }}{% if a.gorev_adi %} · {{ a.gorev_adi }}{% endif %}</td>
+          <td class="tarih">{{ a.bitis|date:"d.m.Y" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+
+<section class="bolum" aria-labelledby="hesaplar">
+  <h2 id="hesaplar">Hesaplar</h2>
+  <div class="tablo-kutu">
+    <table>
+      <thead><tr><th scope="col">Kişi</th><th scope="col">E-posta</th><th scope="col">Etkin roller</th></tr></thead>
+      <tbody>
+        {% for k in kullanicilar %}
+        <tr>
+          <td><a href="{% url 'panel:kullanici' k.pk %}">{{ k.get_full_name|default:"(adsız)" }}</a></td>
+          <td>{{ k.email }}</td>
+          <td>
+            <div class="etiketler">
+              {% if not k.is_active %}<span class="etiket etiket-cizgi">Kapalı</span>{% endif %}
+              {% for a in k.etkin_atamalar %}
+              <span class="etiket{% if a.rol == 'yonetim_kurulu' %} etiket-koyu{% endif %}">{{ a.get_rol_display }}{% if a.gorev_adi %} · {{ a.gorev_adi }}{% endif %}</span>
+              {% empty %}{% if k.is_active %}<span class="etiket etiket-cizgi">Rol yok</span>{% endif %}
+              {% endfor %}
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3" class="bos-durum">Henüz hesap yok.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="bolum" aria-labelledby="davetler">
+  <h2 id="davetler">Bekleyen davetler</h2>
+  {% if davetler %}
+  <div class="tablo-kutu">
+    <table>
+      <thead><tr><th scope="col">E-posta</th><th scope="col">Rol</th><th scope="col">Son geçerlilik</th></tr></thead>
+      <tbody>
+        {% for d in davetler %}
+        <tr>
+          <td>{{ d.eposta }}</td>
+          <td>{{ d.get_rol_display }}{% if d.gorev_adi %} · {{ d.gorev_adi }}{% endif %}</td>
+          <td class="tarih">{{ d.son_gecerlilik|date:"d.m.Y H:i" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="bos-durum">Bekleyen davet yok.{% if davet_edebilir %} Yeni bir kişiyi panele eklemek için “Kişi davet et”e basın.{% endif %}</p>
+  {% endif %}
+</section>
+{% endblock %}

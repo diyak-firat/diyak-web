@@ -61,6 +61,7 @@ backend/
 ├── apps/denetim/             IslemKaydi ve kaydet() (kişisel veri yazılmaz)
 ├── apps/panel/               Giriş, 2FA (django-otp), kilit (django-axes), davet kabul, oturum süresi;
 │                             erisim.py: her panel görünümü panel_gerekli ile sarılır
+│                             kullanicilar.py: Kullanıcılar ekranı · static/panel/: stiller (README)
 ├── conftest.py               Ortak test fixture'ları (sahte kullanıcı ve roller)
 └── tests/                    Ayar ve uç nokta testleri (uygulama testleri apps/*/tests/ altında)
 ```

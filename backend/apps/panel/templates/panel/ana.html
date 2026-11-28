@@ -1,7 +1,28 @@
 {% extends "panel/base.html" %}
 {% block baslik %}Ana ekran · DİYAK Panel{% endblock %}
 {% block icerik %}
-<h1>Ana ekran</h1>
-<p>Hoş geldiniz, {{ request.user.get_full_name|default:request.user.email }}.</p>
-<form method="post" action="{% url 'panel:cikis' %}">{% csrf_token %}<button type="submit">Çıkış yap</button></form>
+<header class="sayfa-basi">
+  <div>
+    <p class="ust-baslik">Ana ekran</p>
+    <h1>Hoş geldiniz, {{ request.user.first_name|default:request.user.email }}</h1>
+  </div>
+</header>
+<section class="bolum" aria-labelledby="rollerim">
+  <h2 id="rollerim">Rolleriniz</h2>
+  <div class="tablo-kutu">
+    <table>
+      <thead><tr><th scope="col">Rol</th><th scope="col">Görev</th><th scope="col">Bitiş</th></tr></thead>
+      <tbody>
+        {% for a in rollerim %}
+        <tr><td>{{ a.get_rol_display }}</td><td>{{ a.gorev_adi|default:"—" }}</td><td class="tarih">{{ a.bitis|date:"d.m.Y" }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="ikincil ust-bosluk">Rolünüzün süresi dolunca yetkileriniz kendiliğinden kalkar. Yeni dönemde rolleri Başkan yeniden atar.</p>
+</section>
+<section class="bolum" aria-labelledby="yakinda">
+  <h2 id="yakinda">Yakında</h2>
+  <p class="aciklama">Duyurular, etkinlik kayıt formları, yanıtlar ve ekip sayfası bu panele sırayla eklenecek. Onay bekleyen işler burada listelenecek.</p>
+</section>
 {% endblock %}

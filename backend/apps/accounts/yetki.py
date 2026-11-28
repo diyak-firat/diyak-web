@@ -59,3 +59,20 @@ def rol_atayabilir_mi(kullanici, rol: str, gun=None) -> bool:
 def kullanicilari_yonetebilir_mi(kullanici, gun=None) -> bool:
     """Kullanıcılar ekranını açabilir mi (Başkan, Başkan Yrd., Teknik)."""
     return bool(atanabilir_roller(kullanici, gun))
+
+
+def teknik_mi(kullanici, gun=None) -> bool:
+    """2FA sıfırlama ve hesap kilidini açma yalnızca teknik sorumlunundur (PANEL.md §4)."""
+    return rolu_var(kullanici, Rol.TEKNIK, gun=gun)
+
+
+def hesabi_kapatabilir_mi(kapatan, hedef, gun=None) -> bool:
+    """Kendi hesabını kimse kapatamaz. Hedefin etkin rollerinin hepsini yönetebilen kişi kapatır;
+    hiç rolü olmayan hesabı Başkan veya Başkan Yardımcısı kapatır.
+    """
+    if hedef.pk == getattr(kapatan, "pk", None) or not hedef.is_active:
+        return False
+    roller = etkin_roller(hedef, gun)
+    if not roller:
+        return baskan_veya_yardimcisi_mi(kapatan, gun)
+    return roller <= atanabilir_roller(kapatan, gun)
