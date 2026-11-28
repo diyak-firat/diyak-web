@@ -202,3 +202,11 @@ Biçim: **Karar** · **Gerekçe** · **Bedeli** (vazgeçtiğimiz şey)
 - Valkey, Redis'in Linux Foundation altındaki BSD lisanslı çatalıdır ve aynı protokolü konuşur. Redis 7.4 sonrası sürümlerin lisansı değişti; ileride lisans sorusu çıkmasın diye Valkey seçildi. `django-redis` ikisiyle de çalışır.
 - Kalıcılık kapalı olduğu için yedeklenecek bir şey tutmaz; yeniden başlayınca sayaçlar sıfırlanır, bu kabul edilebilir.
 **Bedeli:** Sunucuda bir konteyner daha (birkaç MB bellek). Valkey çökerse form gönderimi istek sınırı denetiminde hata vermemeli (A4'te ele alınır).
+
+### K-29 · Form yanıtları 10 yıl saklanır; katılım işaretlenir
+**Tarih:** 2026-11-28
+**Karar:** Etkinlik formlarının ilk aydınlatma metni, Fırat Üniversitesi'nin "Öğrenci Topluluğu Üyesi İlgili Kişi Aydınlatma Metni"dir (üniversitenin açık rıza sistemi). Bu metin faaliyet ve üye kayıt listelerinin 10 yıl saklanacağını söyler; PANEL.md'deki "etkinlikten 90 gün sonra sil" önerisi kaldırıldı, varsayılan saklama süresi aydınlatma metnindeki süre (10 yıl) oldu. Süre dolunca yanıtlar yine otomatik silinir. Ayrıca etkinlikten sonra her kayıt için katılım (katıldı / katılmadı) işaretlenir; yeni formların yanıt tablosunda, tekil alanı daha önce "katılmadı" işaretli bir yanıtla eşleşen kişinin yanında bilgi notu çıkar.
+**Gerekçe:** Kullanıcı kararı (2026-11-28). Kontenjanlı etkinliklerde, daha önce kayıt olup gelmeyen kişileri ikinci sıraya koymak topluluk için faydalı. Saklama süresi üniversitenin yayımladığı metinle uyumlu olmalı.
+**Bedeli:**
+- Katılımcı verisi 10 yıl panelde ve yedeklerde durur; yetki ve işlem kaydı kuralları bu yüzden daha önemli hale gelir.
+- Metin e-posta adresini ve topluluk üyesi olmayan katılımcıları açıkça saymıyor. Formlarda yalnızca aydınlatma onayı zorunlu, diğer alanlar kaldırılabilir; hangi alanların sorulacağına form hazırlanırken ve Yönetim Kurulu onayında dikkat edilir. Etkinliklere özgü bir aydınlatma metni için SKS ve kvkk@firat.edu.tr'ye danışılması STATUS.md'de.
