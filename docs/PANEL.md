@@ -28,7 +28,7 @@ Bu belge, yönetimin ve birim ekiplerinin duyuru yayımlamak, etkinlik kayıt fo
 - **Sitenin parçası gibi görünür.** Aynı renkler, yazı tipleri ve bileşenler (`tokens.css`).
 - **Güvenliğin zor kısmı hazır araçlarda.** Giriş, oturum, 2FA, HTML temizleme ve dosya yükleme sınanmış kütüphanelerle yapılır. Kendimiz yazmayız.
 - **Yayına giden her şeyi Yönetim Kurulu onaylar.** Onay, panele kendi hesabıyla girmiş bir Yönetim Kurulu üyesi tarafından verilir.
-- **Kişisel veri en az düzeyde.** Formlarda yalnızca aydınlatma metni onayı zorunludur. Her yanıtın bir silinme tarihi vardır.
+- **Kişisel veri en az düzeyde.** Formlarda yalnızca aydınlatma metni onayı zorunludur; hazır gelen diğer alanlar kaldırılabilir. Her yanıtın bir silinme tarihi vardır: aydınlatma metnindeki saklama süresi (şu an 10 yıl, K-29) dolunca yanıt silinir.
 
 ## 2. Kapsam
 
@@ -40,6 +40,7 @@ Bu belge, yönetimin ve birim ekiplerinin duyuru yayımlamak, etkinlik kayıt fo
 - Herkese açık form sayfası, kontenjan ve kapanış tarihi
 - Yanıtları tablo halinde görme, arama, CSV indirme
 - Saklama süresi dolan yanıtların otomatik silinmesi
+- Etkinlikten sonra katılımın işaretlenmesi (katıldı / katılmadı) ve sonraki formların yanıtlarında, aynı kişinin daha önce kayıt olup katılmadığının gösterilmesi (K-29)
 - **Ekip sayfasının yönetimi:** dönem, danışman, yönetim, birimler, kişiler, fotoğraflar
 - Davetle hesap açma, dönemlik rol atama, 2FA
 - İşlem kaydı (kim neyi ne zaman yaptı)
@@ -125,7 +126,7 @@ Tüm ekranlar Türkçe.
 | **Etkinlikler** | Liste: ad, tarih, yer, form durumu, kayıt sayısı / kontenjan | Editör, Yönetim Kurulu |
 | **Form oluştur / düzenle** | Form ayarları (açılış, kapanış, kontenjan, saklama süresi, aydınlatma metni, açık rıza gerekli mi, form sahipleri) ve alanlar (§7). Formun **önizlemesi** | Editör, Yönetim Kurulu |
 | **Onay ekranı** | Onaya gönderilen duyuru, form veya ekip değişikliğinin tam görünümü; formlar için kontrol listesi; Onayla / Düzeltme iste (not ile) | Yönetim Kurulu |
-| **Yanıtlar** | Formun yanıt tablosu, arama, CSV indir, tek yanıt silme. Üstte: "Bu yanıtlar GG.AA.YYYY tarihinde otomatik silinecek" | Form sahibi, Yönetim Kurulu, Danışman |
+| **Yanıtlar** | Formun yanıt tablosu, arama, CSV indir, tek yanıt silme, katılım işaretleme (katıldı / katılmadı). Daha önce kayıt olup katılmayan kişilerin yanında bilgi notu. Üstte: "Bu yanıtlar GG.AA.YYYY tarihinde otomatik silinecek" | Form sahibi, Yönetim Kurulu, Danışman |
 | **Ekip** | Dönem; danışman; yönetim; birimler ve kişiler. Kişi: ad, görev, e-posta, fotoğraf, isteğe bağlı bağlantılar, **"yayın için yazılı onay alındı"** kutusu. Sıralama sürükleyerek. Değişiklikler onaya gönderilir | Editör, Yönetim Kurulu |
 | **Kullanıcılar** | Davet et, rol ata (bitiş tarihiyle), rolü kaldır, hesabı kapat; rolü yakında bitecekler listesi | Başkan, Başkan Yrd., Teknik (kısıtlı) |
 | **İşlem kaydı** | Tarih, kişi, işlem, nesne. Filtrelenebilir | Yönetim Kurulu, Danışman, Teknik |
@@ -171,6 +172,8 @@ etkinlikler.Etkinlik
 
 formlar.AydinlatmaMetni       Sürümlü: yanıt hangi metne onay verdiyse o kayıtlıdır
   baslik, metin, surum, yururluk_tarihi
+  kaynak_adresi     resmî metnin bağlantısı, isteğe bağlı (ör. üniversitenin açık rıza sistemi)
+  saklama_gun       bu metinle toplanan yanıtların saklanma süresi (ilk metin: 3650 gün = 10 yıl)
 
 formlar.Form
   etkinlik          → Etkinlik, isteğe bağlı
@@ -182,7 +185,7 @@ formlar.Form
   tekil_alan        alan kimliği, isteğe bağlı (ör. "eposta": aynı değerle ikinci gönderim engellenir)
   aydinlatma_metni  → AydinlatmaMetni (zorunlu)
   acik_riza_gerekli bool + acik_riza_metni
-  saklama_gun       int, zorunlu (önerilen: etkinlik bitişinden 90 gün sonra)
+  saklama_gun       int, zorunlu; varsayılan aydınlatma metnindeki süre (K-29), metindekinden uzun olamaz
   silinme_tarihi    hesaplanır: etkinlik bitişi (yoksa kapanış) + saklama_gun
   sahipler          → Kullanici (çoka çok)
   olusturan, onaylayan, onay_notu, zaman damgaları
@@ -194,6 +197,7 @@ formlar.Yanit
   aydinlatma_surumu → AydinlatmaMetni (zorunlu)
   acik_riza         bool (gerekliyse true olmalı)
   gonderim          tarih-saat
+  katilim           bilinmiyor | katildi | katilmadi (etkinlikten sonra form sahibi veya Yönetim Kurulu işaretler)
 
 ekip.Donem
   ad ("2026–2027"), baslangic, bitis, aktif
@@ -324,6 +328,15 @@ Editör: form taslağı ──▶ onaya gönder ──▶ Yönetim Kurulu: kontr
 
 Editör kişileri ekler, düzenler veya sıralar ve değişikliği onaya gönderir. Yönetim Kurulu onaylayınca site yeniden derlenir. "Yayın için yazılı onay alındı" kutusu işaretli olmayan kişi sitede görünmez. Yeni dönem başlarken önceki dönem kopyalanıp düzenlenebilir.
 
+### Katılım (K-29)
+
+Etkinlikten sonra form sahibi veya Yönetim Kurulu, yanıt tablosunda her kayıt için **katıldı** veya **katılmadı** işaretler. Kontenjanlı sonraki etkinliklerde öncelik belirlemek için, yeni bir formun yanıt tablosunda, **tekil alanı** (ör. e-posta, öğrenci numarası) daha önceki bir formda "katılmadı" işaretli bir yanıtla eşleşen kişilerin yanında "Daha önce N etkinliğe kayıt olup katılmadı" notu görünür.
+
+- Eşleştirme yalnızca normalize edilmiş tekil değerle yapılır; tekil alanı olmayan formlarda not çıkmaz.
+- Not yalnızca o formun yanıtlarını görmeye yetkili kişilere görünür; kayıt olan kişiye, herkese açık sayfaya, CSV'ye ve API'ye çıkmaz.
+- Saklama süresi dolup silinen yanıtlar hesaba katılmaz.
+- Not bir öneridir; kimse otomatik olarak reddedilmez. Seçimi form sahibi ve Yönetim Kurulu yapar.
+
 ### Kişi verilerinin silinmesini isterse
 
 Yönetim Kurulu ilgili yanıtı panelden siler. Silme işlemi işlem kaydına yazılır (kimin yanıtı olduğu değil, yalnızca yanıt kimliği). Yedeklerden de saklama süresi sonunda kendiliğinden silinir (OPERASYON.md).
@@ -331,7 +344,7 @@ Yönetim Kurulu ilgili yanıtı panelden siler. Silme işlemi işlem kaydına ya
 ### Gece görevleri
 
 - Kapanış tarihi geçen formları kapat.
-- Silinme tarihi geçen formların yanıtlarını sil, formu arşivle.
+- Silinme tarihi geçen formların yanıtlarını sil, formu arşivle (saklama süresi aydınlatma metnindeki süre, şu an 10 yıl).
 - Bitiş tarihi geçen rol atamalarını etkisizleştir; 14 gün içinde bitecekler için Başkan'a e-posta gönder.
 - 1 yıldan eski işlem kayıtlarını sil.
 
@@ -411,8 +424,8 @@ Her aşama ayrı PR'lar halinde, kabul ölçütleri sağlanınca tamamlanır. He
 - *Kabul:* Aydınlatma metni onayı kaldırılamıyor ve işaretlenmeden form gönderilemiyor. Şemaya uymayan form kaydedilemiyor. Kontenjan aşılamıyor (eşzamanlı gönderim testiyle). Tekil alanla ikinci kayıt engelleniyor. Kapanış tarihinden sonra gönderim kabul edilmiyor. Yanıt geldikten sonra alan silinemiyor.
 
 **A5: Yanıtlar ve saklama**
-- Yanıt tablosu, arama, CSV indirme (formül enjeksiyonu korumalı), tek yanıt silme, gece görevleri.
-- *Kabul:* Form sahibi başka formun yanıtlarını göremiyor (test). Görüntüleme ve indirme işlem kaydına düşüyor. `=HYPERLINK(...)` içeren yanıt CSV'de etkisizleşiyor. Silinme tarihi geçen yanıtlar gece görevinde siliniyor.
+- Yanıt tablosu, arama, CSV indirme (formül enjeksiyonu korumalı), tek yanıt silme, katılım işaretleme ve önceki katılmama notu, gece görevleri.
+- *Kabul:* Form sahibi başka formun yanıtlarını göremiyor (test). Görüntüleme ve indirme işlem kaydına düşüyor. `=HYPERLINK(...)` içeren yanıt CSV'de etkisizleşiyor. Silinme tarihi geçen yanıtlar gece görevinde siliniyor. Katılmama notu yalnızca tekil değeri eşleşen yanıtlarda ve yalnızca yanıtları görmeye yetkili kişilere görünüyor; CSV'ye ve API'ye çıkmıyor.
 
 **A6: Cilalama**
 - Ana ekran özetleri, boş durumlar, telefon görünümü, erişilebilirlik kontrolü, kullanım rehberinin (`docs/PANEL-KULLANIM.md`, A1'den beri her aşamada güncellenir) panel içinde Yardım sayfası olarak gösterilmesi.
