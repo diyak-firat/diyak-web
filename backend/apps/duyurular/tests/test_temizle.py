@@ -27,6 +27,8 @@ from apps.duyurular.temizle import html_temizle
         ("<ul><li>a</li></ul><ol><li>b</li></ol><blockquote>c</blockquote><p>d<br>e<em>f</em></p>",
          "<ul><li>a</li></ul><ol><li>b</li></ol><blockquote>c</blockquote><p>d<br>e<em>f</em></p>"),
         ('<iframe src="https://kotu.example"></iframe>', ""),
+        # Editörün ürettiği iç içe liste (madde içinde paragraf ve alt liste) korunur.
+        ("<ol><li><p>bir</p><ul><li><p>alt</p></li></ul></li></ol>", "<ol><li><p>bir</p><ul><li><p>alt</p></li></ul></li></ol>"),
     ],
 )
 def test_html_temizle(girdi, cikti):

@@ -177,7 +177,9 @@ Taslak ──▶ Onaya gönder ──▶ Yönetim Kurulu: Onayla ve yayımla ─
 2. **Başlık** (en fazla 140 karakter) ve **etiketi** seçin: Etkinlik, Duyuru, Çağrı veya Yayın.
 3. Etiket **Etkinlik** ise etkinliğin **tarihini, saatini** ve **yerini** girin. Sitede gönderinin altında gri bir kutuda görünür.
 4. **Özet**: gündem listesinde başlığın altında görünen bir iki cümle (en fazla 300 karakter).
-5. **Metin**: araç çubuğuyla biçimlendirin. Kalın, italik, başlık, alt başlık, madde ve numaralı liste, alıntı ve bağlantı kullanılabilir. Bağlantı için metni seçip **Bağlantı**ya basın ve adresi yazın; adres `https://` veya `mailto:` ile başlamalıdır.
+5. **Metin**: araç çubuğuyla biçimlendirin. Kalın, italik, başlık, alt başlık, madde ve numaralı liste, alıntı ve bağlantı kullanılabilir.
+   - **İç içe liste:** Bir liste maddesindeyken **İçeri al** (ya da klavyede Tab) o maddeyi bir üsttekinin altına alır; **Dışarı al** (Shift+Tab) geri çıkarır. Alt maddelerin türünü değiştirmek için imleç alt maddedeyken **Madde listesi** veya **Numaralı liste**ye basın; örneğin numaralı maddelerin altında madde işaretli bir alt liste olur.
+   - **Bağlantı:** **Bağlantı**ya basın. **Görünecek metin**i ve adresi yazıp **Bağlantıyı ekle**ye basın. Önce metni seçerseniz görünecek metin kendiliğinden dolar. Var olan bağlantıyı değiştirmek veya kaldırmak için imleci bağlantının üzerine getirip **Bağlantı**ya basın. Adres `https://` veya `mailto:` ile başlamalıdır.
 6. Sayfanın altındaki **Önizleme** siz yazdıkça güncellenir ve duyurunun sitede nasıl görüneceğini gösterir. **Tam sayfa önizleme** son kaydedilen hali gösterir.
 7. **Kaydet**: taslak olarak saklar, istediğiniz zaman dönüp devam edersiniz. **Onaya gönder**: Yönetim Kurulu'na iletir; Yönetim Kurulu üyelerine "onay bekleyen 1 duyuru var" e-postası gider.
 
