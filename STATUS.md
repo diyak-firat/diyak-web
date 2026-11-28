@@ -9,7 +9,7 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 
 - [ ] **A2 · Onay altyapısı ve duyurular** (PANEL.md §12; editör Tiptap, Astro bağlantısı sonra: K-26)
   - [x] `duyurular.Duyuru`, `etkinlikler.Etkinlik` (yalın), ortak onay akışı (`apps/onay`), gövde temizliği (`nh3`)
-  - [ ] Panel ekranları: duyuru listesi, düzenleme (Tiptap), önizleme, onay ekranı, e-posta bildirimleri
+  - [x] Panel ekranları: duyuru listesi ve filtre, düzenleme (Tiptap; `backend/editor/`), canlı önizleme, onay ekranı (onayla, düzeltme iste, geri çek), yayından kaldırma, taslak silme, ana ekranda onay bekleyenler ve taslaklarım, e-posta bildirimleri; rehber güncellendi
   - [ ] `/api/duyurular/` (yalnızca yayımlanmış), deploy hook, `faz1_aktar` (Markdown'dan aktarım)
   - Kapak görseli alanı dosya yükleme akışıyla (A3 fotoğraflarıyla birlikte) eklenecek
 

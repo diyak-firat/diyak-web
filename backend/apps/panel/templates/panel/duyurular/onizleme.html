@@ -1,0 +1,15 @@
+{% extends "panel/base.html" %}
+{% block baslik %}Önizleme: {{ duyuru.baslik }} · DİYAK Panel{% endblock %}
+{% block icerik %}
+<header class="sayfa-basi">
+  <div>
+    <p class="ust-baslik"><a href="{% url 'panel:duyuru' duyuru.pk %}">Duyuruya dön</a></p>
+    <h1>Önizleme</h1>
+  </div>
+  <div class="etiketler">{% include "panel/duyurular/_durum.html" with d=duyuru %}</div>
+</header>
+<p class="aciklama">Duyuru sitede bu şekilde görünecek (son kaydedilen hali).</p>
+<div class="ust-bosluk">
+{% include "panel/duyurular/_onizleme.html" with baslik=duyuru.baslik ozet=duyuru.ozet etiket=duyuru.etiket etiket_adi=duyuru.get_etiket_display govde=duyuru.govde tarih=duyuru.yayin_tarihi|default:duyuru.guncelleme etkinlik_zaman=duyuru.etkinlik.baslangic etkinlik_yer=duyuru.etkinlik.yer %}
+</div>
+{% endblock %}

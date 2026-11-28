@@ -1,0 +1,17 @@
+{
+  "name": "diyak-panel-editor",
+  "private": true,
+  "description": "Panel duyuru editörü (Tiptap). Çıktı: ../apps/panel/static/panel/editor.js (K-26)",
+  "type": "module",
+  "scripts": {
+    "build": "esbuild src/editor.js --bundle --minify --format=iife --target=es2020 --legal-comments=eof --outfile=../apps/panel/static/panel/editor.js '--banner:js=/* DİYAK panel editörü. Tiptap ve ProseMirror (MIT lisansı). Kaynak: backend/editor/ */'"
+  },
+  "dependencies": {
+    "@tiptap/core": "3.35.1",
+    "@tiptap/pm": "3.35.1",
+    "@tiptap/starter-kit": "3.35.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}

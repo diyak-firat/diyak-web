@@ -1,0 +1,11 @@
+{% autoescape off %}Merhaba,
+
+“{{ baslik }}” başlıklı {{ tur }} Yönetim Kurulu onayını bekliyor.
+
+Panelde açmak için:
+{{ baglanti }}
+
+Bu bağlantı onay vermez; onay yalnızca panele kendi hesabınızla girip “Onayla”ya basarak verilir.
+
+DİYAK · Fırat Üniversitesi Doğal Dil İşleme ve Yapay Zekâ Araştırmaları Topluluğu
+{% endautoescape %}

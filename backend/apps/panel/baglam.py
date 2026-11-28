@@ -1,6 +1,11 @@
 """Panel şablonlarına menüyü verir. Menüde yalnızca kişinin açabildiği ekranlar görünür."""
 
-from apps.accounts.yetki import islem_kaydini_gorebilir_mi, kullanicilari_yonetebilir_mi, panel_kullanicisi_mi
+from apps.accounts.yetki import (
+    icerigi_gorebilir_mi,
+    islem_kaydini_gorebilir_mi,
+    kullanicilari_yonetebilir_mi,
+    panel_kullanicisi_mi,
+)
 
 
 def menu(request):
@@ -10,6 +15,8 @@ def menu(request):
     eslesme = getattr(request, "resolver_match", None)
     ad = eslesme.url_name if eslesme and eslesme.namespace == "panel" else ""
     ogeler = [("Ana ekran", "panel:ana", ad == "ana")]
+    if icerigi_gorebilir_mi(k):
+        ogeler.append(("Duyurular", "panel:duyurular", ad.startswith("duyuru")))
     if kullanicilari_yonetebilir_mi(k):
         ogeler.append(("Kullanıcılar", "panel:kullanicilar", ad.startswith("kullanici")))
     if islem_kaydini_gorebilir_mi(k):

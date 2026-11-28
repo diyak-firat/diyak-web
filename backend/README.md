@@ -62,6 +62,8 @@ backend/
 ├── apps/duyurular/           Duyuru; temizle.py: gövdenin nh3 ile temizliği; servisler.py: düzenleme kuralları
 ├── apps/etkinlikler/         Etkinlik (A2'de yalın; ekranlar ve formlar A4'te)
 ├── apps/onay/                Ortak onay akışı: onaya gönder, onayla, düzeltme iste, geri çek
+├── editor/                   Panel metin editörü kaynağı (Tiptap, K-26); derlenmiş hali
+│                             apps/panel/static/panel/editor.js. Değiştirince: npm ci && npm run build
 ├── apps/panel/               Giriş, 2FA (django-otp), kilit (django-axes), davet kabul, oturum süresi;
 │                             erisim.py: her panel görünümü panel_gerekli ile sarılır
 │                             kullanicilar.py: Kullanıcılar ekranı · static/panel/: stiller (README)

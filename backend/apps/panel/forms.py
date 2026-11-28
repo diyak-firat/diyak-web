@@ -100,3 +100,58 @@ class SifreDegistirmeFormu(PasswordChangeForm):
         )
         self.fields["new_password2"].label = "Yeni şifre (tekrar)"
         self.fields["new_password2"].help_text = "Yeni şifreyi bir kez daha yazın."
+
+
+class DuyuruFormu(forms.Form):
+    """Duyuru düzenleme formu. Gövde editörden HTML gelir; sunucu kaydederken temizler."""
+
+    baslik = forms.CharField(label="Başlık", max_length=140)
+    etiket = forms.ChoiceField(label="Etiket")
+    ozet = forms.CharField(
+        label="Özet",
+        max_length=300,
+        widget=forms.Textarea(attrs={"rows": 3}),
+        help_text="Gündem listesinde başlığın altında görünür. En fazla 300 karakter.",
+    )
+    govde = forms.CharField(label="Metin", required=False, widget=forms.Textarea(attrs={"rows": 14}))
+    etkinlik_baslangic = forms.DateTimeField(
+        label="Etkinlik tarihi ve saati",
+        required=False,
+        widget=forms.DateTimeInput(attrs={"type": "datetime-local"}, format="%Y-%m-%dT%H:%M"),
+        input_formats=["%Y-%m-%dT%H:%M"],
+    )
+    etkinlik_yer = forms.CharField(label="Etkinlik yeri", max_length=200, required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        from apps.duyurular.models import Etiket
+
+        self.fields["etiket"].choices = Etiket.choices
+
+    def clean(self):
+        temiz = super().clean()
+        from apps.duyurular.models import Etiket
+
+        if temiz.get("etiket") == Etiket.ETKINLIK:
+            zaman, yer = temiz.get("etkinlik_baslangic"), (temiz.get("etkinlik_yer") or "").strip()
+            if zaman and not yer:
+                self.add_error("etkinlik_yer", "Etkinliğin yerini yazın (ör. salon adı veya “Çevrim içi”).")
+            if yer and not zaman:
+                self.add_error("etkinlik_baslangic", "Etkinliğin tarihini ve saatini girin.")
+        return temiz
+
+    def duyuru_verisi(self) -> dict:
+        return {k: self.cleaned_data[k] for k in ("baslik", "etiket", "ozet", "govde")}
+
+    def etkinlik_bilgisi(self) -> dict | None:
+        zaman, yer = self.cleaned_data.get("etkinlik_baslangic"), (self.cleaned_data.get("etkinlik_yer") or "").strip()
+        return {"baslangic": zaman, "yer": yer} if zaman and yer else None
+
+
+class DuzeltmeFormu(forms.Form):
+    not_ = forms.CharField(
+        label="Neyin düzeltilmesi gerekiyor?",
+        max_length=2000,
+        widget=forms.Textarea(attrs={"rows": 4}),
+        help_text="Not hazırlayan kişiye panelde gösterilir.",
+    )
