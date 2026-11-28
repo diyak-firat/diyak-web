@@ -25,8 +25,21 @@
     {% with a=form.etiket %}{% include "panel/_alan.html" %}{% endwith %}
     <fieldset class="etkinlik-alanlari" data-etkinlik-alanlari>
       <legend>Etkinlik bilgisi <span class="ikincil">(yalnızca “Etkinlik” etiketinde)</span></legend>
-      {% with a=form.etkinlik_baslangic %}{% include "panel/_alan.html" %}{% endwith %}
-      {% with a=form.etkinlik_yer %}{% include "panel/_alan.html" %}{% endwith %}
+      <div class="form-alan">
+        <label for="id_etkinlik_secimi">{{ form.etkinlik_secimi.label }}</label>
+        <select name="etkinlik_secimi" id="id_etkinlik_secimi" data-etkinlik-secimi>
+          {% for deger, ad in form.etkinlik_secimi.field.choices %}
+          <option value="{{ deger }}"{% if deger|stringformat:"s" == form.etkinlik_secimi.value|stringformat:"s" %} selected{% endif %}>{{ ad }}</option>
+          {% endfor %}
+        </select>
+        <p class="form-yardim">{{ form.etkinlik_secimi.help_text }}{% if duyuru.etkinlik %} Seçili etkinliğin tarihini ve yerini <a href="{% url 'panel:etkinlik' duyuru.etkinlik_id %}">Etkinlikler ekranında</a> değiştirebilirsiniz.{% endif %}</p>
+        {% for h in form.etkinlik_secimi.errors %}<p class="form-hata" role="alert">{{ h }}</p>{% endfor %}
+      </div>
+      <div data-yeni-etkinlik>
+        {% with a=form.etkinlik_baslangic %}{% include "panel/_alan.html" %}{% endwith %}
+        {% with a=form.etkinlik_yer %}{% include "panel/_alan.html" %}{% endwith %}
+        {% with a=form.etkinlik_harita %}{% include "panel/_alan.html" %}{% endwith %}
+      </div>
     </fieldset>
     {% with a=form.ozet %}{% include "panel/_alan.html" %}{% endwith %}
     <div class="form-alan form-alan-genis" data-editor data-etiket="govde-etiketi">
@@ -48,7 +61,7 @@
 
   <section class="onizleme-kutu" aria-labelledby="onizleme-baslik">
     <h2 id="onizleme-baslik" class="ust-baslik">Önizleme</h2>
-    {% include "panel/duyurular/_onizleme.html" with baslik=form.baslik.value ozet=form.ozet.value etiket=form.etiket.value etiket_adi=duyuru.get_etiket_display|default:"Duyuru" govde=duyuru.govde tarih=duyuru.yayin_tarihi|default:simdi etkinlik_zaman=duyuru.etkinlik.baslangic etkinlik_yer=duyuru.etkinlik.yer %}
+    {% include "panel/duyurular/_onizleme.html" with baslik=form.baslik.value ozet=form.ozet.value etiket=form.etiket.value etiket_adi=duyuru.get_etiket_display|default:"Duyuru" govde=duyuru.govde tarih=duyuru.yayin_tarihi|default:simdi etkinlik_zaman=duyuru.etkinlik.baslangic etkinlik_yer=duyuru.etkinlik.yer etkinlik_harita=duyuru.etkinlik.harita_baglantisi %}
   </section>
 </div>
 

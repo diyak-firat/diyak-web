@@ -1,0 +1,41 @@
+{% extends "panel/base.html" %}
+{% block baslik %}{% if etkinlik %}{{ etkinlik.ad }}{% else %}Yeni etkinlik{% endif %} · DİYAK Panel{% endblock %}
+{% block icerik %}
+<header class="sayfa-basi">
+  <div><p class="ust-baslik"><a href="{% url 'panel:etkinlikler' %}">Etkinlikler</a></p><h1>{% if etkinlik %}{{ etkinlik.ad }}{% else %}Yeni etkinlik{% endif %}</h1></div>
+</header>
+
+{% if yayina_bagli %}
+<p class="bilgi bolum-ici">Bu etkinlik yayındaki veya onay bekleyen bir duyuruya bağlı.{% if form %} Yaptığınız değişiklik onay beklemeden sitede görünür ve işlem kaydına yazılır.{% else %} Değiştirmek için Yönetim Kurulu'na yazın.{% endif %}</p>
+{% endif %}
+
+{% if form %}
+<form method="post" novalidate>
+  {% csrf_token %}
+  {% include "panel/_form_alanlari.html" %}
+  <div class="dugmeler">
+    <button type="submit">Kaydet</button>
+    <a href="{% url 'panel:etkinlikler' %}">Vazgeç</a>
+    {% if silinebilir %}<a href="{% url 'panel:etkinlik_sil' etkinlik.pk %}">Etkinliği sil</a>{% endif %}
+  </div>
+</form>
+{% else %}
+<dl class="bilgiler">
+  <dt>Başlangıç</dt><dd>{{ etkinlik.baslangic|date:"j F Y, H:i" }}</dd>
+  {% if etkinlik.bitis %}<dt>Bitiş</dt><dd>{{ etkinlik.bitis|date:"j F Y, H:i" }}</dd>{% endif %}
+  <dt>Yer</dt><dd>{% include "panel/etkinlikler/_yer.html" with e=etkinlik %}</dd>
+  {% if etkinlik.aciklama %}<dt>Açıklama</dt><dd>{{ etkinlik.aciklama }}</dd>{% endif %}
+</dl>
+{% endif %}
+
+{% if etkinlik %}
+<section class="bolum" aria-labelledby="bagli">
+  <h2 id="bagli">Bağlı duyurular</h2>
+  {% for d in etkinlik.duyurular.all %}
+  <p><a href="{% url 'panel:duyuru' d.pk %}">{{ d.baslik }}</a> <span class="etiket">{{ d.get_durum_display }}</span></p>
+  {% empty %}
+  <p class="bos-durum">Bu etkinliğe bağlı duyuru yok. Duyuru yazarken etiketi “Etkinlik” seçip bu etkinliği listeden seçebilirsiniz.</p>
+  {% endfor %}
+</section>
+{% endif %}
+{% endblock %}

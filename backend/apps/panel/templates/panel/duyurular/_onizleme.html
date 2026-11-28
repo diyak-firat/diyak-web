@@ -13,7 +13,7 @@ data-onizleme-* nitelikleri düzenleme ekranındaki canlı önizleme içindir (p
   <p class="onizleme-ozet" data-onizleme-ozet>{{ ozet|default:"[Özet]" }}</p>
   <dl class="onizleme-etkinlik" data-onizleme-etkinlik{% if etiket != 'etkinlik' %} hidden{% endif %}>
     <div><dt>Tarih ve saat</dt><dd data-onizleme-zaman>{% if etkinlik_zaman %}{{ etkinlik_zaman|date:"j F Y, H:i" }}{% else %}[Tarih ve saat]{% endif %}</dd></div>
-    <div><dt>Yer</dt><dd data-onizleme-yer>{{ etkinlik_yer|default:"[Yer]" }}</dd></div>
+    <div><dt>Yer</dt><dd data-onizleme-yer>{% if etkinlik_harita %}<a href="{{ etkinlik_harita }}" target="_blank" rel="noopener noreferrer">{{ etkinlik_yer }}</a>{% else %}{{ etkinlik_yer|default:"[Yer]" }}{% endif %}</dd></div>
   </dl>
   {# Gövde kaydedilirken nh3 ile temizlenir (apps/duyurular/temizle.py); |safe yalnızca burada kullanılır (AGENTS.md). #}
   <div class="onizleme-govde" data-onizleme-govde>{{ govde|safe }}</div>

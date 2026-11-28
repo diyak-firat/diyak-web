@@ -17,6 +17,7 @@ def menu(request):
     ogeler = [("Ana ekran", "panel:ana", ad == "ana")]
     if icerigi_gorebilir_mi(k):
         ogeler.append(("Duyurular", "panel:duyurular", ad.startswith("duyuru")))
+        ogeler.append(("Etkinlikler", "panel:etkinlikler", ad.startswith("etkinlik")))
         ogeler.append(("Ekip", "panel:ekip", ad.startswith("ekip")))
     if kullanicilari_yonetebilir_mi(k):
         ogeler.append(("Kullanıcılar", "panel:kullanicilar", ad.startswith("kullanici")))

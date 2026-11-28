@@ -15,7 +15,7 @@ from .models import Durum, Duyuru
 class EtkinlikSerializer(serializers.ModelSerializer):
     class Meta:
         model = Etkinlik
-        fields = ["baslangic", "bitis", "yer", "cevrim_ici"]
+        fields = ["baslangic", "bitis", "yer", "cevrim_ici", "harita_baglantisi"]
 
 
 class DuyuruSerializer(serializers.ModelSerializer):

@@ -13,7 +13,7 @@
 <p class="bilgi bolum-ici">Bu duyuru Yönetim Kurulu onayını bekliyor; onay bekleyen içerik düzenlenemez.{% if geri_cekebilir %} Değiştirmek için önce taslağa geri alın.{% endif %}</p>
 {% endif %}
 
-{% include "panel/duyurular/_onizleme.html" with baslik=duyuru.baslik ozet=duyuru.ozet etiket=duyuru.etiket etiket_adi=duyuru.get_etiket_display govde=duyuru.govde tarih=duyuru.yayin_tarihi|default:duyuru.guncelleme etkinlik_zaman=duyuru.etkinlik.baslangic etkinlik_yer=duyuru.etkinlik.yer %}
+{% include "panel/duyurular/_onizleme.html" with baslik=duyuru.baslik ozet=duyuru.ozet etiket=duyuru.etiket etiket_adi=duyuru.get_etiket_display govde=duyuru.govde tarih=duyuru.yayin_tarihi|default:duyuru.guncelleme etkinlik_zaman=duyuru.etkinlik.baslangic etkinlik_yer=duyuru.etkinlik.yer etkinlik_harita=duyuru.etkinlik.harita_baglantisi %}
 
 <p class="ikincil ust-bosluk">Hazırlayan: {{ duyuru.olusturan.get_full_name|default:duyuru.olusturan.email|default:"—" }}{% if duyuru.onaylayan %} · Onaylayan: {{ duyuru.onaylayan.get_full_name|default:duyuru.onaylayan.email }}{% endif %} · Son değişiklik: {{ duyuru.guncelleme|date:"d.m.Y H:i" }}</p>
 

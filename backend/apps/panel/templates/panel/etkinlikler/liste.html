@@ -1,0 +1,18 @@
+{% extends "panel/base.html" %}
+{% block baslik %}Etkinlikler · DİYAK Panel{% endblock %}
+{% block icerik %}
+<header class="sayfa-basi">
+  <div><p class="ust-baslik">Etkinlikler</p><h1>Etkinlikler</h1></div>
+  {% if yeni_ekleyebilir %}<a class="dugme" href="{% url 'panel:etkinlik_yeni' %}">Yeni etkinlik</a>{% endif %}
+</header>
+<p class="aciklama">Etkinlik sitede tek başına görünmez; bir duyuruya bağlanınca tarihi, saati ve yeri gönderinin altında çıkar. Kayıt formları buradan açılacak.</p>
+
+<section class="bolum" aria-labelledby="yaklasan">
+  <h2 id="yaklasan">Yaklaşan</h2>
+  {% include "panel/etkinlikler/_tablo.html" with etkinlikler=yaklasan bos="Yaklaşan etkinlik yok." %}
+</section>
+<section class="bolum" aria-labelledby="gecmis">
+  <h2 id="gecmis">Geçmiş</h2>
+  {% include "panel/etkinlikler/_tablo.html" with etkinlikler=gecmis bos="Geçmiş etkinlik yok." %}
+</section>
+{% endblock %}

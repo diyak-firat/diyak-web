@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import duyurular, ekip, hesabim, islem_kaydi, kullanicilar, views
+from . import duyurular, ekip, etkinlikler, hesabim, islem_kaydi, kullanicilar, views
 
 app_name = "panel"
 
@@ -22,6 +22,10 @@ urlpatterns = [
     path("duyurular/<int:pk>/geri-cek/", duyurular.geri_cek, name="duyuru_geri_cek"),
     path("duyurular/<int:pk>/yayindan-kaldir/", duyurular.yayindan_kaldir, name="duyuru_yayindan_kaldir"),
     path("duyurular/<int:pk>/sil/", duyurular.sil, name="duyuru_sil"),
+    path("etkinlikler/", etkinlikler.liste, name="etkinlikler"),
+    path("etkinlikler/yeni/", etkinlikler.yeni, name="etkinlik_yeni"),
+    path("etkinlikler/<int:pk>/", etkinlikler.detay, name="etkinlik"),
+    path("etkinlikler/<int:pk>/sil/", etkinlikler.sil, name="etkinlik_sil"),
     path("ekip/", ekip.ana, name="ekip"),
     path("ekip/onizleme/", ekip.onizleme, name="ekip_onizleme"),
     path("ekip/donem/yeni/", ekip.donem_yeni, name="ekip_donem_yeni"),

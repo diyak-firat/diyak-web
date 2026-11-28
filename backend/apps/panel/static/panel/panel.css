@@ -878,3 +878,7 @@ fieldset.alan-grubu legend {
   font-family: var(--mono);
   font-size: 13px;
 }
+
+.sabit-tablo {
+  table-layout: fixed;
+}

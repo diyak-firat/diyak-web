@@ -1,4 +1,5 @@
 from django import forms
+from django.utils import timezone
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 
 
@@ -121,18 +122,37 @@ class DuyuruFormu(forms.Form):
         input_formats=["%Y-%m-%dT%H:%M"],
     )
     etkinlik_yer = forms.CharField(label="Etkinlik yeri", max_length=200, required=False)
+    etkinlik_harita = forms.URLField(
+        label="Harita bağlantısı", required=False, max_length=500, assume_scheme="https",
+        help_text="İsteğe bağlı. Google Haritalar'daki “Paylaş” bağlantısı.",
+        widget=forms.URLInput(attrs={"placeholder": "https://maps.app.goo.gl/…"}),
+    )
+    etkinlik_secimi = forms.ChoiceField(
+        label="Etkinlik", required=False,
+        help_text="Etkinlikler ekranında açılmış bir etkinliği seçin ya da aşağıya yeni etkinliğin bilgilerini yazın.",
+    )
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, etkinlikler=(), **kwargs):
         super().__init__(*args, **kwargs)
         from apps.duyurular.models import Etiket
 
         self.fields["etiket"].choices = Etiket.choices
+        self.fields["etkinlik_secimi"].choices = [("", "Yeni etkinlik (aşağıdaki bilgilerle)")] + [
+            (str(e.pk), f"{e.ad} · {timezone.localtime(e.baslangic):%d.%m.%Y %H:%M}") for e in etkinlikler
+        ]
 
     def clean(self):
         temiz = super().clean()
         from apps.duyurular.models import Etiket
 
-        if temiz.get("etiket") == Etiket.ETKINLIK:
+        if temiz.get("etkinlik_harita"):
+            from apps.etkinlikler.models import harita_baglantisi_dogrula
+
+            try:
+                harita_baglantisi_dogrula(temiz["etkinlik_harita"])
+            except forms.ValidationError as hata:
+                self.add_error("etkinlik_harita", hata)
+        if temiz.get("etiket") == Etiket.ETKINLIK and not temiz.get("etkinlik_secimi"):
             zaman, yer = temiz.get("etkinlik_baslangic"), (temiz.get("etkinlik_yer") or "").strip()
             if zaman and not yer:
                 self.add_error("etkinlik_yer", "Etkinliğin yerini yazın (ör. salon adı veya “Çevrim içi”).")
@@ -144,8 +164,16 @@ class DuyuruFormu(forms.Form):
         return {k: self.cleaned_data[k] for k in ("baslik", "etiket", "ozet", "govde")}
 
     def etkinlik_bilgisi(self) -> dict | None:
+        if self.cleaned_data.get("etkinlik_secimi"):
+            return None
         zaman, yer = self.cleaned_data.get("etkinlik_baslangic"), (self.cleaned_data.get("etkinlik_yer") or "").strip()
-        return {"baslangic": zaman, "yer": yer} if zaman and yer else None
+        if not (zaman and yer):
+            return None
+        return {"baslangic": zaman, "yer": yer, "harita_baglantisi": self.cleaned_data.get("etkinlik_harita") or ""}
+
+    def secilen_etkinlik_id(self) -> int | None:
+        deger = self.cleaned_data.get("etkinlik_secimi")
+        return int(deger) if deger else None
 
 
 class DuzeltmeFormu(forms.Form):
@@ -249,3 +277,32 @@ class EkipOnayFormu(forms.Form):
         max_length=300,
         help_text="Yönetim Kurulu onay ekranında görür. ör. “İletişim Birimi'ne iki yeni üye eklendi.”",
     )
+
+
+class EtkinlikFormu(forms.Form):
+    ad = forms.CharField(label="Etkinlik adı", max_length=200)
+    aciklama = forms.CharField(label="Kısa açıklama", max_length=300, required=False, widget=forms.Textarea(attrs={"rows": 2}))
+    baslangic = forms.DateTimeField(
+        label="Başlangıç", input_formats=["%Y-%m-%dT%H:%M"],
+        widget=forms.DateTimeInput(attrs={"type": "datetime-local"}, format="%Y-%m-%dT%H:%M"),
+    )
+    bitis = forms.DateTimeField(
+        label="Bitiş", required=False, input_formats=["%Y-%m-%dT%H:%M"],
+        widget=forms.DateTimeInput(attrs={"type": "datetime-local"}, format="%Y-%m-%dT%H:%M"),
+        help_text="İsteğe bağlı.",
+    )
+    yer = forms.CharField(label="Yer", max_length=200, help_text="ör. Mühendislik Fakültesi, [Salon]; ya da “Çevrim içi”.")
+    harita_baglantisi = forms.URLField(
+        label="Harita bağlantısı", required=False, max_length=500, assume_scheme="https",
+        help_text="İsteğe bağlı. Google Haritalar'da yeri bulun, “Paylaş”a basın, bağlantıyı kopyalayıp buraya yapıştırın. "
+        "Sitede yer adına tıklayan ziyaretçi haritada açar.",
+        widget=forms.URLInput(attrs={"placeholder": "https://maps.app.goo.gl/…"}),
+    )
+    cevrim_ici = forms.BooleanField(label="Çevrim içi etkinlik", required=False)
+
+    def clean(self):
+        temiz = super().clean()
+        b, s = temiz.get("baslangic"), temiz.get("bitis")
+        if b and s and s < b:
+            self.add_error("bitis", "Bitiş başlangıçtan önce olamaz.")
+        return temiz

@@ -29,11 +29,22 @@
     etiketOge.classList.toggle('etkinlik', etkinlik);
     etkinlikAlanlari.hidden = !etkinlik;
     hedef('etkinlik').hidden = !etkinlik;
-    const zaman = alan('etkinlik_baslangic').value;
-    hedef('zaman').textContent = zaman ? zamanBicimi.format(new Date(zaman)) : '[Tarih ve saat]';
-    hedef('yer').textContent = alan('etkinlik_yer').value.trim() || '[Yer]';
+    // Var olan etkinlik seçiliyse yeni etkinlik alanları gizlenir; önizleme kaydedilmiş bilgiyi gösterir.
+    const secim = form.querySelector('[data-etkinlik-secimi]');
+    const yeni = !secim || !secim.value;
+    form.querySelector('[data-yeni-etkinlik]').hidden = !yeni;
+    if (yeni) {
+      const zaman = alan('etkinlik_baslangic').value;
+      hedef('zaman').textContent = zaman ? zamanBicimi.format(new Date(zaman)) : '[Tarih ve saat]';
+      hedef('yer').textContent = alan('etkinlik_yer').value.trim() || '[Yer]';
+    } else if (secim.value !== secim.dataset.ilk) {
+      hedef('zaman').textContent = secim.options[secim.selectedIndex].text.split(' · ').pop();
+      hedef('yer').textContent = '(kaydedince görünür)';
+    }
   }
 
+  const ilkSecim = form.querySelector('[data-etkinlik-secimi]');
+  if (ilkSecim) ilkSecim.dataset.ilk = ilkSecim.value;
   form.addEventListener('input', guncelle);
   form.addEventListener('change', guncelle);
   // Gövde editörden gelir (editor.js). Editörün ürettiği HTML yalnızca izin listesindeki öğeleri
