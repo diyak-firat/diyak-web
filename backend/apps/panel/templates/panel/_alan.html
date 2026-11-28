@@ -1,0 +1,6 @@
+<div class="form-alan">
+  <label for="{{ a.id_for_label }}">{{ a.label }}</label>
+  {{ a }}
+  {% if a.help_text %}<p class="form-yardim">{{ a.help_text }}</p>{% endif %}
+  {% for h in a.errors %}<p class="form-hata" role="alert">{{ h }}</p>{% endfor %}
+</div>

@@ -1,0 +1,9 @@
+{% autoescape off %}Merhaba,
+
+Hazırladığınız “{{ baslik }}” başlıklı {{ tur }} için Yönetim Kurulu düzeltme istedi. Not ve {{ tur }} panelde sizi bekliyor:
+{{ baglanti }}
+
+Düzelttikten sonra yeniden onaya gönderin.
+
+DİYAK · Fırat Üniversitesi Doğal Dil İşleme ve Yapay Zekâ Araştırmaları Topluluğu
+{% endautoescape %}

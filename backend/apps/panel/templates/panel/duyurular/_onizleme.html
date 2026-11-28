@@ -1,0 +1,20 @@
+{% comment %}
+Sitedeki gündem gönderisi sayfasının (frontend/src/pages/gundem/[id].astro) yapısı. Site tasarımı
+değişirse bu şablon ve panel.css'teki .onizleme kuralları da güncellenir (PANEL.md §11).
+data-onizleme-* nitelikleri düzenleme ekranındaki canlı önizleme içindir (panel/duyuru.js).
+{% endcomment %}
+<article class="onizleme" aria-label="Sitedeki görünüm">
+  <p class="onizleme-geri">← Gündem</p>
+  <div class="onizleme-meta">
+    <span class="onizleme-etiket{% if etiket == 'etkinlik' %} etkinlik{% endif %}" data-onizleme-etiket>{{ etiket_adi }}</span>
+    <time>{{ tarih|date:"d.m.Y" }}</time>
+  </div>
+  <h1 data-onizleme-baslik>{{ baslik|default:"[Başlık]" }}</h1>
+  <p class="onizleme-ozet" data-onizleme-ozet>{{ ozet|default:"[Özet]" }}</p>
+  <dl class="onizleme-etkinlik" data-onizleme-etkinlik{% if etiket != 'etkinlik' %} hidden{% endif %}>
+    <div><dt>Tarih ve saat</dt><dd data-onizleme-zaman>{% if etkinlik_zaman %}{{ etkinlik_zaman|date:"j F Y, H:i" }}{% else %}[Tarih ve saat]{% endif %}</dd></div>
+    <div><dt>Yer</dt><dd data-onizleme-yer>{{ etkinlik_yer|default:"[Yer]" }}</dd></div>
+  </dl>
+  {# Gövde kaydedilirken nh3 ile temizlenir (apps/duyurular/temizle.py); |safe yalnızca burada kullanılır (AGENTS.md). #}
+  <div class="onizleme-govde" data-onizleme-govde>{{ govde|safe }}</div>
+</article>

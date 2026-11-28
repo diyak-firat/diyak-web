@@ -163,5 +163,19 @@ def davet_kabul(request):
 def ana(request):
     from apps.accounts.models import RolAtamasi
 
-    rollerim = RolAtamasi.objects.etkin().filter(kullanici=request.user).order_by("rol")
-    return render(request, "panel/ana.html", {"rollerim": rollerim})
+    from apps.accounts.yetki import icerik_hazirlayabilir_mi, onaylayabilir_mi
+    from apps.duyurular.models import Durum, Duyuru
+
+    k = request.user
+    rollerim = RolAtamasi.objects.etkin().filter(kullanici=k).order_by("rol")
+    onay_bekleyenler = Duyuru.objects.filter(durum=Durum.ONAY_BEKLIYOR).order_by("guncelleme") if onaylayabilir_mi(k) else None
+    taslaklarim = (
+        Duyuru.objects.filter(olusturan=k, durum__in=[Durum.TASLAK, Durum.ONAY_BEKLIYOR]).order_by("-guncelleme")
+        if icerik_hazirlayabilir_mi(k)
+        else None
+    )
+    return render(
+        request,
+        "panel/ana.html",
+        {"rollerim": rollerim, "onay_bekleyenler": onay_bekleyenler, "taslaklarim": taslaklarim},
+    )

@@ -1,0 +1,48 @@
+{% extends "panel/base.html" %}
+{% block baslik %}Duyurular · DİYAK Panel{% endblock %}
+{% block icerik %}
+<header class="sayfa-basi">
+  <div>
+    <p class="ust-baslik">Duyurular</p>
+    <h1>Duyurular</h1>
+  </div>
+  {% if yeni_yazabilir %}<a class="dugme" href="{% url 'panel:duyuru_yeni' %}">Yeni duyuru</a>{% endif %}
+</header>
+
+<form method="get" class="filtre" aria-label="Duyuruları filtrele">
+  <div class="form-alan">
+    <label for="durum">Durum</label>
+    <select id="durum" name="durum">
+      <option value="">Tümü</option>
+      {% for deger, ad in durumlar %}<option value="{{ deger }}"{% if deger == secili_durum %} selected{% endif %}>{{ ad }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="form-alan">
+    <label for="etiket">Etiket</label>
+    <select id="etiket" name="etiket">
+      <option value="">Tümü</option>
+      {% for deger, ad in etiketler %}<option value="{{ deger }}"{% if deger == secili_etiket %} selected{% endif %}>{{ ad }}</option>{% endfor %}
+    </select>
+  </div>
+  <button type="submit" class="dugme-ikincil">Filtrele</button>
+</form>
+
+<div class="tablo-kutu">
+  <table>
+    <thead><tr><th scope="col">Başlık</th><th scope="col">Etiket</th><th scope="col">Durum</th><th scope="col">Hazırlayan</th><th scope="col">Son değişiklik</th></tr></thead>
+    <tbody>
+      {% for d in duyurular %}
+      <tr>
+        <td><a href="{% url 'panel:duyuru' d.pk %}">{{ d.baslik }}</a>{% if d.durum == 'taslak' and d.onay_notu %} <span class="etiket etiket-cizgi">Düzeltme istendi</span>{% endif %}</td>
+        <td>{{ d.get_etiket_display }}</td>
+        <td>{% include "panel/duyurular/_durum.html" %}</td>
+        <td>{{ d.olusturan.get_full_name|default:d.olusturan.email|default:"—" }}</td>
+        <td class="tarih">{{ d.guncelleme|date:"d.m.Y H:i" }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5" class="bos-durum">{% if secili_durum or secili_etiket %}Bu filtreye uyan duyuru yok.{% elif yeni_yazabilir %}Henüz duyuru yok. İlk duyuruyu yazmak için “Yeni duyuru”ya basın.{% else %}Henüz duyuru yok.{% endif %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

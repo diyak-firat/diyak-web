@@ -7,3 +7,4 @@ htmlcov
 staticfiles
 media
 .env
+editor

@@ -4,7 +4,7 @@ Bu rehber paneli kullanacak Yönetim Kurulu üyeleri, birim editörleri, akademi
 
 > **Bu rehber herkese açık bir depoda durur.** İçindeki isimler ve e-postalar uydurmadır (ör. Ayşe Yılmaz, `ornek@firat.edu.tr`). Rehbere gerçek kişi adı, e-posta, şifre, davet bağlantısı, sunucu bilgisi veya gerçek verinin ekran görüntüsü eklenmez. Ayrıntı: [Bu rehberi güncellerken](#bu-rehberi-güncellerken).
 
-Panel aşama aşama geliştiriliyor. Şu an kullanılabilen bölümler: giriş ve iki adımlı doğrulama, Kullanıcılar, Hesabım ve İşlem kaydı. Duyurular, ekip sayfası, etkinlik formları ve yanıtlar sırayla eklenecek; her biri eklendiğinde bu rehbere de bölümü yazılacak.
+Panel aşama aşama geliştiriliyor. Şu an kullanılabilen bölümler: giriş ve iki adımlı doğrulama, Duyurular, Kullanıcılar, Hesabım ve İşlem kaydı. Ekip sayfası, etkinlik formları ve yanıtlar sırayla eklenecek; her biri eklendiğinde bu rehbere de bölümü yazılacak.
 
 ## İçindekiler
 
@@ -17,8 +17,9 @@ Panel aşama aşama geliştiriliyor. Şu an kullanılabilen bölümler: giriş v
 7. [Hesabım](#7-hesabım)
 8. [Kullanıcılar (Başkan, Başkan Yardımcısı, Teknik sorumlu)](#8-kullanıcılar-başkan-başkan-yardımcısı-teknik-sorumlu)
 9. [İşlem kaydı](#9-işlem-kaydı)
-10. [Yakında eklenecek bölümler](#10-yakında-eklenecek-bölümler)
-11. [Sık sorulanlar](#11-sık-sorulanlar)
+10. [Duyurular](#10-duyurular)
+11. [Yakında eklenecek bölümler](#11-yakında-eklenecek-bölümler)
+12. [Sık sorulanlar](#12-sık-sorulanlar)
 
 ---
 
@@ -96,7 +97,7 @@ Her rolün bir **bitiş tarihi** vardır, genellikle dönem sonu (bir sonraki Ol
 | **Danışman** | Akademik danışman | Her şeyi görüntüler, işlem kaydını izler, değiştirmez |
 | **Teknik sorumlu** | 1–2 kişi | Hesap bakımı: 2FA sıfırlama, giriş kilidi açma, teknik sorumlu daveti. İçeriklere ve form yanıtlarına erişmez |
 
-\* Duyuru, form ve ekip ekranları henüz eklenmedi ([10. bölüm](#10-yakında-eklenecek-bölümler)). Şu an bir editör panelde yalnızca Ana ekranı ve Hesabım'ı görür; bu beklenen durumdur.
+\* Form ve ekip ekranları henüz eklenmedi ([11. bölüm](#11-yakında-eklenecek-bölümler)). Şu an editör panelde Ana ekranı, Duyuruları ve Hesabım'ı görür.
 
 **Kimse kendi rolünü değiştiremez.** Başkan kendine rol veremez, kendi rolünü uzatamaz veya kaldıramaz; bunu Başkan Yardımcısı yapar (ya da tersi). Kimse kendi hesabını kapatamaz.
 
@@ -154,32 +155,77 @@ Bu işlemlerin hepsi işlem kaydına yazılır.
 
 ## 9. İşlem kaydı
 
-Yönetim Kurulu, Danışman ve Teknik sorumlu görür. Kim, neyi, ne zaman yaptı: girişler, hatalı denemeler, davetler, rol atama ve kaldırmalar, hesap kapatmalar, 2FA sıfırlamaları, şifre değişiklikleri. İleride onaylar, yayınlar ve yanıt indirmeleri de buraya düşecek.
+Yönetim Kurulu, Danışman ve Teknik sorumlu görür. Kim, neyi, ne zaman yaptı: girişler, hatalı denemeler, davetler, rol atama ve kaldırmalar, hesap kapatmalar, 2FA sıfırlamaları, şifre değişiklikleri. Duyurularda onaya gönderme, onaylama, düzeltme isteme, yayımlama ve yayından kaldırma da buraya düşer. İleride yanıt görüntüleme ve indirmeleri de eklenecek.
 
 - Eyleme ve kişiye göre filtreleyebilirsiniz.
 - Kayıtlar değiştirilemez ve silinemez; 1 yıl sonra kendiliğinden silinir.
 - Kayıtta kişisel veri (form yanıtı, IP adresi) tutulmaz.
 
-## 10. Yakında eklenecek bölümler
+## 10. Duyurular
+
+Duyurular sitenin **Gündem** bölümünde yayımlanan gönderilerdir. Editörler ve Yönetim Kurulu yazar; Danışman okur ama değiştirmez. Yayına çıkan her duyuruyu bir Yönetim Kurulu üyesi onaylar.
+
+```
+Taslak ──▶ Onaya gönder ──▶ Yönetim Kurulu: Onayla ve yayımla ──▶ Sitede
+              ▲                        │
+              └──── Düzeltme iste ◀────┘
+```
+
+### Duyuru yazmak (Editör, Yönetim Kurulu)
+
+1. Menüden **Duyurular** → **Yeni duyuru**.
+2. **Başlık** (en fazla 140 karakter) ve **etiketi** seçin: Etkinlik, Duyuru, Çağrı veya Yayın.
+3. Etiket **Etkinlik** ise etkinliğin **tarihini, saatini** ve **yerini** girin. Sitede gönderinin altında gri bir kutuda görünür.
+4. **Özet**: gündem listesinde başlığın altında görünen bir iki cümle (en fazla 300 karakter).
+5. **Metin**: araç çubuğuyla biçimlendirin. Kalın, italik, başlık, alt başlık, madde ve numaralı liste, alıntı ve bağlantı kullanılabilir. Bağlantı için metni seçip **Bağlantı**ya basın ve adresi yazın; adres `https://` veya `mailto:` ile başlamalıdır.
+6. Sayfanın altındaki **Önizleme** siz yazdıkça güncellenir ve duyurunun sitede nasıl görüneceğini gösterir. **Tam sayfa önizleme** son kaydedilen hali gösterir.
+7. **Kaydet**: taslak olarak saklar, istediğiniz zaman dönüp devam edersiniz. **Onaya gönder**: Yönetim Kurulu'na iletir; Yönetim Kurulu üyelerine "onay bekleyen 1 duyuru var" e-postası gider.
+
+Başka bir yerden (Word, e-posta) yapıştırdığınız metindeki renk, yazı tipi, görsel gibi biçimler atılır; yalnızca yukarıdaki biçimler kalır.
+
+**Onay beklerken** duyuru düzenlenemez. Bir şeyi değiştirmek isterseniz duyuruyu açıp **Taslağa geri al**a basın, düzeltip yeniden onaya gönderin.
+
+**Düzeltme istenirse** e-postanıza bildirim gelir. Duyuruyu açtığınızda Yönetim Kurulu'nun notu en üstte görünür; düzeltip yeniden **Onaya gönder**e basın. Ana ekrandaki **Taslaklarım** listesinde bu duyurular "Düzeltme istendi" etiketiyle görünür.
+
+Hiç yayımlanmamış bir taslağı **Taslağı sil** ile silebilirsiniz (yalnızca kendi taslaklarınızı; Yönetim Kurulu tüm taslakları).
+
+### Onaylamak (Yönetim Kurulu)
+
+1. Ana ekranın en üstündeki **Onay bekleyenler** listesinden duyuruyu açın (ya da e-postadaki bağlantıdan; e-postadaki bağlantı yalnızca paneli açar, onay vermez).
+2. Duyuruyu sitede görüneceği haliyle okuyun.
+3. Uygunsa **Onayla ve yayımla**. Değilse kutuya neyin düzeltilmesi gerektiğini yazıp **Düzeltme iste**; duyuru notla birlikte hazırlayana döner.
+
+Tek bir Yönetim Kurulu üyesinin onayı yeterlidir. Kendi yazdığınız duyuruyu düzenleme ekranındaki **Onayla ve yayımla** ile doğrudan yayımlayabilirsiniz; işlem kaydında "kendi içeriğini onayladı" olarak görünür.
+
+### Yayındaki duyuru
+
+- **Değiştirmek:** Yayındaki duyuruyu yalnızca Yönetim Kurulu üyeleri düzenleyebilir; kaydettiğiniz değişiklik onay beklemeden sitede görünür ve işlem kaydına yazılır. Editörler yayındaki duyuruyu değiştiremez; değişiklik gerekiyorsa Yönetim Kurulu'na yazın.
+- **Yayından kaldırmak** (Yönetim Kurulu): duyuruyu açın → **Yayından kaldır** → onay. Duyuru sitedeki gündemden kalkar. Kaldırılan duyuru düzenlenip yeniden onaya gönderilebilir.
+
+> Not: Panel şu an sitenin kendisine bağlı değil. Onaylanan duyurular panelde "Yayında" görünür; sitenin gündemi bu duyurulardan beslenmeye ileride geçecek. O zamana kadar sitedeki gündem eski yöntemle güncellenir.
+
+## 11. Yakında eklenecek bölümler
 
 Bu ekranlar eklendikçe rehbere adım adım bölümleri yazılacak:
 
 | Bölüm | Kimler | Ne yapılacak |
 | --- | --- | --- |
-| **Duyurular** | Editör, Yönetim Kurulu | Duyuru yazma, önizleme, onaya gönderme; Yönetim Kurulu onayıyla sitede yayımlama |
 | **Ekip** | Editör, Yönetim Kurulu | Ekip sayfasındaki kişileri ve fotoğrafları düzenleme, onaya gönderme |
 | **Etkinlikler ve formlar** | Editör, Yönetim Kurulu | Etkinlik kayıt formu oluşturma, onaya gönderme, kontenjan ve kapanış tarihi |
 | **Yanıtlar** | Form sahibi, Yönetim Kurulu, Danışman | Yanıtları görme, CSV indirme, tek yanıt silme |
 
 Ortak kural: yayına giden her şey (duyuru, form, ekip değişikliği) bir Yönetim Kurulu üyesinin panelde **Onayla**ya basmasıyla yayımlanır. E-postadaki bir bağlantıya tıklamak onay vermez.
 
-## 11. Sık sorulanlar
+## 12. Sık sorulanlar
 
 **Doğrulama uygulaması sürekli kod üretiyor, bir sorun mu var?**
 Hayır. Uygulama her 30 saniyede yeni kod gösterir; panel yalnızca giriş sırasında sorar ([3. bölüm](#3-iki-adımlı-doğrulamayı-2fa-kurmak)).
 
 **Menüde Duyurular yok.**
-Henüz eklenmedi ([10. bölüm](#10-yakında-eklenecek-bölümler)).
+Duyurular Editör, Yönetim Kurulu ve Danışman rollerine açıktır. Teknik sorumlu içerik görmez. Rolünüzü Hesabım'da kontrol edin.
+
+**Onayladığım duyuru sitede görünmüyor.**
+Panel henüz siteye bağlanmadı ([10. bölümdeki not](#yayındaki-duyuru)).
 
 **Bir sayfada "403" veya "yetkiniz yok" görüyorum.**
 O ekran rolünüze açık değil ya da rolünüzün süresi dolmuş. Hesabım'da rollerinizi ve bitiş tarihlerini kontrol edin; gerekiyorsa Başkan veya Başkan Yardımcısı'na yazın.

@@ -7,22 +7,59 @@
     <h1>Hoş geldiniz, {{ request.user.first_name|default:request.user.email }}</h1>
   </div>
 </header>
-<section class="bolum" aria-labelledby="rollerim">
-  <h2 id="rollerim">Rolleriniz</h2>
+
+{% if onay_bekleyenler is not None %}
+<section class="bolum" aria-labelledby="onay-bekleyenler">
+  <h2 id="onay-bekleyenler">Onay bekleyenler</h2>
+  {% if onay_bekleyenler %}
   <div class="tablo-kutu">
     <table>
-      <thead><tr><th scope="col">Rol</th><th scope="col">Görev</th><th scope="col">Bitiş</th></tr></thead>
+      <thead><tr><th scope="col">Duyuru</th><th scope="col">Hazırlayan</th><th scope="col">Gönderildi</th></tr></thead>
       <tbody>
-        {% for a in rollerim %}
-        <tr><td>{{ a.get_rol_display }}</td><td>{{ a.gorev_adi|default:"—" }}</td><td class="tarih">{{ a.bitis|date:"d.m.Y" }}</td></tr>
+        {% for d in onay_bekleyenler %}
+        <tr>
+          <td><a href="{% url 'panel:duyuru' d.pk %}">{{ d.baslik }}</a></td>
+          <td>{{ d.olusturan.get_full_name|default:d.olusturan.email|default:"—" }}</td>
+          <td class="tarih">{{ d.guncelleme|date:"d.m.Y H:i" }}</td>
+        </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
-  <p class="ikincil ust-bosluk">Rolünüzün süresi dolunca yetkileriniz kendiliğinden kalkar. Yeni dönemde rolleri Başkan yeniden atar.</p>
+  {% else %}
+  <p class="bos-durum">Onay bekleyen bir şey yok.</p>
+  {% endif %}
 </section>
-<section class="bolum" aria-labelledby="yakinda">
-  <h2 id="yakinda">Yakında</h2>
-  <p class="aciklama">Duyurular, etkinlik kayıt formları, yanıtlar ve ekip sayfası bu panele sırayla eklenecek. Onay bekleyen işler burada listelenecek.</p>
+{% endif %}
+
+{% if taslaklarim is not None %}
+<section class="bolum" aria-labelledby="taslaklarim">
+  <h2 id="taslaklarim">Taslaklarım</h2>
+  {% if taslaklarim %}
+  <div class="tablo-kutu">
+    <table>
+      <thead><tr><th scope="col">Duyuru</th><th scope="col">Durum</th><th scope="col">Son değişiklik</th></tr></thead>
+      <tbody>
+        {% for d in taslaklarim %}
+        <tr>
+          <td><a href="{% url 'panel:duyuru' d.pk %}">{{ d.baslik }}</a>{% if d.durum == 'taslak' and d.onay_notu %} <span class="etiket etiket-cizgi">Düzeltme istendi</span>{% endif %}</td>
+          <td>{% include "panel/duyurular/_durum.html" %}</td>
+          <td class="tarih">{{ d.guncelleme|date:"d.m.Y H:i" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="bos-durum">Taslağınız yok. Yeni bir duyuru yazmak için <a href="{% url 'panel:duyuru_yeni' %}">Yeni duyuru</a>.</p>
+  {% endif %}
+</section>
+{% endif %}
+
+<section class="bolum" aria-labelledby="rollerim">
+  <h2 id="rollerim">Rolleriniz</h2>
+  <div class="etiketler">
+    {% for a in rollerim %}<span class="etiket{% if a.rol == 'yonetim_kurulu' %} etiket-koyu{% endif %}">{{ a.get_rol_display }}{% if a.gorev_adi %} · {{ a.gorev_adi }}{% endif %} · bitiş {{ a.bitis|date:"d.m.Y" }}</span>{% endfor %}
+  </div>
 </section>
 {% endblock %}

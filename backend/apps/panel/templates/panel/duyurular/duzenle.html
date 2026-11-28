@@ -1,0 +1,67 @@
+{% extends "panel/base.html" %}
+{% load static %}
+{% block baslik %}{% if duyuru %}{{ duyuru.baslik }}{% else %}Yeni duyuru{% endif %} · DİYAK Panel{% endblock %}
+{% block icerik %}
+<header class="sayfa-basi">
+  <div>
+    <p class="ust-baslik"><a href="{% url 'panel:duyurular' %}">Duyurular</a></p>
+    <h1>{% if duyuru %}Duyuruyu düzenle{% else %}Yeni duyuru{% endif %}</h1>
+  </div>
+  {% if duyuru %}<div class="etiketler">{% include "panel/duyurular/_durum.html" with d=duyuru %}</div>{% endif %}
+</header>
+
+{% if duyuru.durum == 'taslak' and duyuru.onay_notu %}
+<div class="bilgi bolum-ici"><p><strong>Yönetim Kurulu düzeltme istedi:</strong></p><p class="ust-bosluk">{{ duyuru.onay_notu|linebreaksbr }}</p></div>
+{% endif %}
+{% if duyuru.durum == 'yayinda' %}
+<p class="bilgi bolum-ici">Bu duyuru yayında. Kaydettiğiniz değişiklik onay beklemeden sitede görünür ve işlem kaydına yazılır.</p>
+{% endif %}
+
+<div class="duzen-iki">
+  <form method="post" novalidate id="duyuru-formu" data-duyuru-formu>
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="form-hata" role="alert">{% for h in form.non_field_errors %}<p>{{ h }}</p>{% endfor %}</div>{% endif %}
+    {% with a=form.baslik %}{% include "panel/_alan.html" %}{% endwith %}
+    {% with a=form.etiket %}{% include "panel/_alan.html" %}{% endwith %}
+    <fieldset class="etkinlik-alanlari" data-etkinlik-alanlari>
+      <legend>Etkinlik bilgisi <span class="ikincil">(yalnızca “Etkinlik” etiketinde)</span></legend>
+      {% with a=form.etkinlik_baslangic %}{% include "panel/_alan.html" %}{% endwith %}
+      {% with a=form.etkinlik_yer %}{% include "panel/_alan.html" %}{% endwith %}
+    </fieldset>
+    {% with a=form.ozet %}{% include "panel/_alan.html" %}{% endwith %}
+    <div class="form-alan form-alan-genis" data-editor data-etiket="govde-etiketi">
+      <label id="govde-etiketi" for="{{ form.govde.id_for_label }}">{{ form.govde.label }}</label>
+      {{ form.govde }}
+      <noscript><p class="form-yardim">JavaScript kapalı: metni paragraflar halinde yazın. Biçimlendirme için &lt;p&gt;, &lt;strong&gt;, &lt;em&gt; kullanılabilir.</p></noscript>
+      {% for h in form.govde.errors %}<p class="form-hata" role="alert">{{ h }}</p>{% endfor %}
+    </div>
+    <div class="dugmeler">
+      <button type="submit" name="islem" value="kaydet" class="dugme-ikincil">Kaydet</button>
+      {% if not duyuru or duyuru.durum == 'taslak' or duyuru.durum == 'kaldirildi' %}
+      <button type="submit" name="islem" value="onaya_gonder">Onaya gönder</button>
+      {% if yk %}<button type="submit" name="islem" value="yayimla">Onayla ve yayımla</button>{% endif %}
+      {% endif %}
+      {% if duyuru %}<a href="{% url 'panel:duyuru_onizleme' duyuru.pk %}">Tam sayfa önizleme</a>{% endif %}
+    </div>
+    {% if yk and not duyuru or yk and duyuru.durum != 'yayinda' %}<p class="ikincil ust-bosluk">“Onayla ve yayımla”: kendi hazırladığınız içeriği onaylarsınız; işlem kaydında öyle görünür.</p>{% endif %}
+  </form>
+
+  <section class="onizleme-kutu" aria-labelledby="onizleme-baslik">
+    <h2 id="onizleme-baslik" class="ust-baslik">Önizleme</h2>
+    {% include "panel/duyurular/_onizleme.html" with baslik=form.baslik.value ozet=form.ozet.value etiket=form.etiket.value etiket_adi=duyuru.get_etiket_display|default:"Duyuru" govde=duyuru.govde tarih=duyuru.yayin_tarihi|default:simdi etkinlik_zaman=duyuru.etkinlik.baslangic etkinlik_yer=duyuru.etkinlik.yer %}
+  </section>
+</div>
+
+{% if duyuru %}
+<section class="bolum" aria-labelledby="diger-islemler">
+  <h2 id="diger-islemler">Diğer işlemler</h2>
+  <div class="dugmeler dugmeler-sik">
+    {% if duyuru.durum == 'yayinda' and yk %}<a class="dugme dugme-ikincil" href="{% url 'panel:duyuru_yayindan_kaldir' duyuru.pk %}">Yayından kaldır</a>{% endif %}
+    {% if duyuru.durum == 'taslak' and not duyuru.yayin_tarihi %}{% if yk or duyuru.olusturan_id == request.user.pk %}<a class="dugme dugme-ikincil" href="{% url 'panel:duyuru_sil' duyuru.pk %}">Taslağı sil</a>{% endif %}{% endif %}
+  </div>
+  <p class="ikincil ust-bosluk">Hazırlayan: {{ duyuru.olusturan.get_full_name|default:duyuru.olusturan.email|default:"—" }}{% if duyuru.onaylayan %} · Onaylayan: {{ duyuru.onaylayan.get_full_name|default:duyuru.onaylayan.email }}{% endif %}{% if duyuru.yayin_tarihi %} · İlk yayın: {{ duyuru.yayin_tarihi|date:"d.m.Y H:i" }}{% endif %}</p>
+</section>
+{% endif %}
+<script src="{% static 'panel/editor.js' %}" defer></script>
+<script src="{% static 'panel/duyuru.js' %}" defer></script>
+{% endblock %}

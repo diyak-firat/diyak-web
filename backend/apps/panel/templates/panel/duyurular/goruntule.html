@@ -1,0 +1,42 @@
+{% extends "panel/base.html" %}
+{% block baslik %}{{ duyuru.baslik }} · DİYAK Panel{% endblock %}
+{% block icerik %}
+<header class="sayfa-basi">
+  <div>
+    <p class="ust-baslik"><a href="{% url 'panel:duyurular' %}">Duyurular</a></p>
+    <h1>{{ duyuru.baslik }}</h1>
+  </div>
+  <div class="etiketler">{% include "panel/duyurular/_durum.html" with d=duyuru %}</div>
+</header>
+
+{% if duyuru.durum == 'onay_bekliyor' %}
+<p class="bilgi bolum-ici">Bu duyuru Yönetim Kurulu onayını bekliyor; onay bekleyen içerik düzenlenemez.{% if geri_cekebilir %} Değiştirmek için önce taslağa geri alın.{% endif %}</p>
+{% endif %}
+
+{% include "panel/duyurular/_onizleme.html" with baslik=duyuru.baslik ozet=duyuru.ozet etiket=duyuru.etiket etiket_adi=duyuru.get_etiket_display govde=duyuru.govde tarih=duyuru.yayin_tarihi|default:duyuru.guncelleme etkinlik_zaman=duyuru.etkinlik.baslangic etkinlik_yer=duyuru.etkinlik.yer %}
+
+<p class="ikincil ust-bosluk">Hazırlayan: {{ duyuru.olusturan.get_full_name|default:duyuru.olusturan.email|default:"—" }}{% if duyuru.onaylayan %} · Onaylayan: {{ duyuru.onaylayan.get_full_name|default:duyuru.onaylayan.email }}{% endif %} · Son değişiklik: {{ duyuru.guncelleme|date:"d.m.Y H:i" }}</p>
+
+{% if onaylayabilir %}
+<section class="bolum" aria-labelledby="onay">
+  <h2 id="onay">Onay</h2>
+  <p class="aciklama">Duyuruyu yukarıdaki haliyle okuyun. Onayladığınızda sitede yayımlanır ve işlem kaydına adınızla yazılır.{% if duyuru.olusturan_id == request.user.pk %} Bu duyuruyu siz hazırladınız; kayıtta “kendi içeriğini onayladı” olarak görünür.{% endif %}</p>
+  <form method="post" action="{% url 'panel:duyuru_onayla' duyuru.pk %}" class="dugmeler">
+    {% csrf_token %}
+    <button type="submit">Onayla ve yayımla</button>
+  </form>
+  <form method="post" action="{% url 'panel:duyuru_duzeltme_iste' duyuru.pk %}" class="ust-bosluk">
+    {% csrf_token %}
+    {% with a=duzeltme_formu.not_ %}{% include "panel/_alan.html" %}{% endwith %}
+    <button type="submit" class="dugme-ikincil">Düzeltme iste</button>
+  </form>
+</section>
+{% endif %}
+
+{% if geri_cekebilir %}
+<form method="post" action="{% url 'panel:duyuru_geri_cek' duyuru.pk %}" class="dugmeler">
+  {% csrf_token %}
+  <button type="submit" class="dugme-ikincil">Taslağa geri al</button>
+</form>
+{% endif %}
+{% endblock %}
