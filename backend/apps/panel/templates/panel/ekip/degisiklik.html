@@ -1,0 +1,55 @@
+{% extends "panel/base.html" %}
+{% block baslik %}Ekip değişikliği · DİYAK Panel{% endblock %}
+{% block icerik %}
+<header class="sayfa-basi">
+  <div><p class="ust-baslik"><a href="{% url 'panel:ekip' %}">Ekip</a></p><h1>{{ d.ozet }}</h1></div>
+  <span class="etiket{% if d.durum == 'yayinda' %} etiket-koyu{% endif %}">{{ d.get_durum_display }}</span>
+</header>
+
+{% if d.durum == 'taslak' and d.onay_notu %}
+<div class="bilgi bolum-ici"><p><strong>Yönetim Kurulu düzeltme istedi:</strong></p><p class="ust-bosluk">{{ d.onay_notu|linebreaksbr }}</p><p class="ust-bosluk">Ekip ekranında düzeltip yeniden onaya gönderin.</p></div>
+{% endif %}
+
+<p class="ikincil">Hazırlayan: {{ d.olusturan.get_full_name|default:d.olusturan.email|default:"—" }} · Dönem: {{ d.donem.ad }}{% if d.onaylayan %} · Onaylayan: {{ d.onaylayan.get_full_name|default:d.onaylayan.email }}{% endif %}{% if d.yayin_tarihi %} · Yayın: {{ d.yayin_tarihi|date:"d.m.Y H:i" }}{% endif %}</p>
+
+{% if fark is not None %}
+<section class="bolum" aria-labelledby="farklar">
+  <h2 id="farklar">Sitedeki halden farkı</h2>
+  {% if fark %}
+  <ul class="fark-listesi">
+    {% for f in fark %}
+    <li><strong>{{ f.grup }}</strong>{% if f.yeni_grup %} (yeni grup){% endif %}{% if f.kalkan_grup %} (grup kaldırılıyor){% endif %}:
+      {% if f.eklenen %}eklenen: {{ f.eklenen|join:", " }}. {% endif %}
+      {% if f.cikan %}çıkan: {{ f.cikan|join:", " }}. {% endif %}
+      {% if f.degisen %}bilgisi değişen: {{ f.degisen|join:", " }}.{% endif %}
+      {% if not f.eklenen and not f.cikan and not f.degisen %}sitede görünecek kişi yok.{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="bos-durum">Kişilerde fark yok (yalnızca sıra değişmiş olabilir).</p>
+  {% endif %}
+</section>
+{% endif %}
+
+<section class="bolum" aria-labelledby="gorunum">
+  <h2 id="gorunum">Sitede görünecek hal</h2>
+  {% include "panel/ekip/_onizleme.html" %}
+</section>
+
+{% if onaylayabilir %}
+<section class="bolum" aria-labelledby="onay">
+  <h2 id="onay">Onay</h2>
+  <p class="aciklama">Kişilerin bilgilerini ve fotoğraflarını kontrol edin. Onayladığınızda bu hal sitede yayımlanır ve işlem kaydına adınızla yazılır.{% if d.olusturan_id == request.user.pk %} Bu değişikliği siz hazırladınız; kayıtta “kendi içeriğini onayladı” olarak görünür.{% endif %}</p>
+  <form method="post" action="{% url 'panel:ekip_degisiklik_onayla' d.pk %}" class="dugmeler">{% csrf_token %}<button type="submit">Onayla ve yayımla</button></form>
+  <form method="post" action="{% url 'panel:ekip_degisiklik_duzeltme' d.pk %}" class="ust-bosluk">
+    {% csrf_token %}
+    {% with a=duzeltme_formu.not_ %}{% include "panel/_alan.html" %}{% endwith %}
+    <button type="submit" class="dugme-ikincil">Düzeltme iste</button>
+  </form>
+</section>
+{% endif %}
+{% if geri_cekebilir %}
+<form method="post" action="{% url 'panel:ekip_degisiklik_geri_cek' d.pk %}" class="dugmeler">{% csrf_token %}<button type="submit" class="dugme-ikincil">Geri çek</button></form>
+{% endif %}
+{% endblock %}

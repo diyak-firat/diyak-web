@@ -1,0 +1,7 @@
+{% extends "panel/base.html" %}
+{% block baslik %}Ekip önizlemesi · DİYAK Panel{% endblock %}
+{% block icerik %}
+<header class="sayfa-basi"><div><p class="ust-baslik"><a href="{% url 'panel:ekip' %}">Ekip</a></p><h1>{{ baslik }}</h1></div></header>
+<p class="aciklama">Yalnızca yazılı yayın onayı işaretli kişiler gösterilir.{% if veri.donem %} Dönem: {{ veri.donem }}.{% endif %}</p>
+{% include "panel/ekip/_onizleme.html" %}
+{% endblock %}

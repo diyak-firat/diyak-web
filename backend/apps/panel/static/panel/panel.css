@@ -69,6 +69,10 @@ code {
 [hidden] {
   display: none !important;
 }
+input[type='checkbox'],
+input[type='radio'] {
+  accent-color: var(--navy);
+}
 
 .skip-link {
   position: absolute;
@@ -721,4 +725,156 @@ fieldset.etkinlik-alanlari legend {
 .onizleme-govde h2 {
   margin: 1.6em 0 0.4em;
   font-size: 24px;
+}
+
+/* ---------- Ekip ---------- */
+
+.grup-basi {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px 24px;
+  margin-bottom: 8px;
+}
+.grup-basi h2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.satir-islem {
+  display: flex;
+  gap: 16px;
+  white-space: nowrap;
+}
+.satir-islem .metin-dugme {
+  min-height: 0;
+}
+.metin-dugme:disabled {
+  color: var(--placeholder);
+  text-decoration: none;
+  cursor: default;
+}
+.kucuk-foto {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 2px;
+  object-fit: cover;
+}
+.kucuk-foto.bos,
+.ekip-foto-bos {
+  background: var(--chip);
+}
+.orta-foto {
+  display: block;
+  width: 120px;
+  height: 120px;
+  margin-bottom: 12px;
+  border-radius: var(--radius);
+  object-fit: cover;
+}
+fieldset.alan-grubu {
+  margin: 8px 0 24px;
+  padding: 16px 16px 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+fieldset.alan-grubu legend {
+  padding: 0 6px;
+  font-weight: 500;
+}
+.iki-sutun {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 24px;
+}
+@media (max-width: 700px) {
+  .iki-sutun {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.onay-satiri {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-weight: 500;
+}
+.onay-satiri input {
+  width: 20px;
+  height: 20px;
+}
+.fark-listesi {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 8px;
+}
+
+/* Ekip önizlemesi: sitedeki ekip sayfası (components/ekip/KisiKarti.astro) */
+.ekip-grup + .ekip-grup {
+  margin-top: 40px;
+}
+.ekip-grup h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+.ekip-no {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.ekip-kartlar {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px;
+}
+@media (max-width: 900px) {
+  .ekip-kartlar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.ekip-kart {
+  min-width: 0;
+}
+.ekip-kart img,
+.ekip-foto-bos {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius);
+  object-fit: cover;
+}
+.ekip-gorev {
+  margin: 14px 0 4px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.ekip-gorev.vurgulu {
+  color: var(--navy);
+}
+.ekip-ad {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.ekip-eposta {
+  font-size: 14px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.ekip-baglantilar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-top: 8px;
+  font-family: var(--mono);
+  font-size: 13px;
 }

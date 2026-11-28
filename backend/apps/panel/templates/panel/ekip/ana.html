@@ -1,0 +1,82 @@
+{% extends "panel/base.html" %}
+{% block baslik %}Ekip · DİYAK Panel{% endblock %}
+{% block icerik %}
+<header class="sayfa-basi">
+  <div>
+    <p class="ust-baslik">Ekip sayfası</p>
+    <h1>Ekip{% if donem %} · {{ donem.ad }}{% endif %}</h1>
+  </div>
+  <div class="dugmeler dugmeler-sik">
+    {% if donem %}<a class="dugme dugme-ikincil" href="{% url 'panel:ekip_onizleme' %}">Önizleme</a>{% endif %}
+    {% if duzenleyebilir %}<a class="dugme dugme-ikincil" href="{% url 'panel:ekip_donem_yeni' %}">Yeni dönem</a>{% endif %}
+  </div>
+</header>
+
+<div class="bilgi bolum-ici">
+  <p>Burada yaptığınız değişiklikler <strong>onaya gönderilip Yönetim Kurulu onaylayana kadar sitede görünmez.</strong>
+  {% if yayindaki %}Sitedeki hal {{ yayindaki.yayin_tarihi|date:"d.m.Y H:i" }} tarihinde onaylandı.{% else %}Ekip sayfası panelden henüz hiç yayımlanmadı.{% endif %}</p>
+  {% if acik %}<p class="ust-bosluk">{% if acik.durum == 'onay_bekliyor' %}Onay bekleyen bir değişiklik var: {% else %}Düzeltme istenen bir değişiklik var: {% endif %}<a href="{% url 'panel:ekip_degisiklik' acik.pk %}">{{ acik.ozet }}</a></p>{% endif %}
+</div>
+
+{% if not donem %}
+<p class="bos-durum">Henüz dönem yok.{% if duzenleyebilir %} Başlamak için “Yeni dönem”e basın; sitedeki bölümlerle (Akademik Danışman, Yönetim, birimler) boş başlatabilirsiniz.{% endif %}</p>
+{% else %}
+
+{% for g in gruplar %}
+<section class="bolum ekip-duzen-grup" aria-labelledby="grup-{{ g.pk }}">
+  <div class="grup-basi">
+    <h2 id="grup-{{ g.pk }}">{{ g.ad }} <span class="etiket">{{ g.get_tur_display }}</span></h2>
+    {% if duzenleyebilir %}
+    <div class="dugmeler dugmeler-sik">
+      <form method="post" action="{% url 'panel:ekip_tasi' 'grup' g.pk %}">{% csrf_token %}<input type="hidden" name="yon" value="yukari"><button type="submit" class="metin-dugme" {% if forloop.first %}disabled{% endif %}>Yukarı<span class="gorunmez">: {{ g.ad }}</span></button></form>
+      <form method="post" action="{% url 'panel:ekip_tasi' 'grup' g.pk %}">{% csrf_token %}<input type="hidden" name="yon" value="asagi"><button type="submit" class="metin-dugme" {% if forloop.last %}disabled{% endif %}>Aşağı<span class="gorunmez">: {{ g.ad }}</span></button></form>
+      <a href="{% url 'panel:ekip_grup' g.pk %}">Grubu düzenle</a>
+      <a class="dugme dugme-ikincil" href="{% url 'panel:ekip_kisi_yeni' g.pk %}">Kişi ekle</a>
+    </div>
+    {% endif %}
+  </div>
+  <div class="tablo-kutu">
+    <table>
+      <thead><tr><th scope="col"><span class="gorunmez">Fotoğraf</span></th><th scope="col">Ad</th><th scope="col">Görev</th><th scope="col">Yayın onayı</th>{% if duzenleyebilir %}<th scope="col"><span class="gorunmez">İşlemler</span></th>{% endif %}</tr></thead>
+      <tbody>
+        {% for k in g.kisiler.all %}
+        <tr>
+          <td>{% if k.foto %}<img class="kucuk-foto" src="{{ k.foto.url }}" alt="" width="40" height="40">{% else %}<span class="kucuk-foto bos" aria-hidden="true"></span>{% endif %}</td>
+          <td>{% if duzenleyebilir %}<a href="{% url 'panel:ekip_kisi' k.pk %}">{{ k.ad }}</a>{% else %}{{ k.ad }}{% endif %}</td>
+          <td>{{ k.gorev }}</td>
+          <td>{% if k.yayin_onayi_tarihi %}<span class="etiket etiket-koyu">Var</span>{% else %}<span class="etiket etiket-cizgi">Yok · sitede görünmez</span>{% endif %}</td>
+          {% if duzenleyebilir %}
+          <td><div class="satir-islem">
+            <form method="post" action="{% url 'panel:ekip_tasi' 'kisi' k.pk %}">{% csrf_token %}<input type="hidden" name="yon" value="yukari"><button type="submit" class="metin-dugme" {% if forloop.first %}disabled{% endif %}>Yukarı<span class="gorunmez">: {{ k.ad }}</span></button></form>
+            <form method="post" action="{% url 'panel:ekip_tasi' 'kisi' k.pk %}">{% csrf_token %}<input type="hidden" name="yon" value="asagi"><button type="submit" class="metin-dugme" {% if forloop.last %}disabled{% endif %}>Aşağı<span class="gorunmez">: {{ k.ad }}</span></button></form>
+          </div></td>
+          {% endif %}
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" class="bos-durum">Bu grupta kimse yok.{% if duzenleyebilir %} “Kişi ekle” ile ekleyin.{% endif %}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endfor %}
+
+{% if duzenleyebilir %}
+<p class="ust-bosluk"><a class="dugme dugme-ikincil" href="{% url 'panel:ekip_grup_yeni' %}">Grup ekle</a></p>
+
+<section class="bolum" aria-labelledby="onaya-gonder">
+  <h2 id="onaya-gonder">Onaya gönder</h2>
+  {% if onaysiz_sayisi %}<p class="aciklama">{{ onaysiz_sayisi }} kişinin yazılı yayın onayı işaretli değil; bu kişiler sitede görünmeyecek.</p>{% endif %}
+  {% if acik and acik.durum == 'onay_bekliyor' %}
+  <p class="aciklama">Onay bekleyen bir değişiklik var. Yeni değişiklikleri göndermek için önce <a href="{% url 'panel:ekip_degisiklik' acik.pk %}">onu açıp geri çekin</a>.</p>
+  {% else %}
+  <form method="post" action="{% url 'panel:ekip_onaya_gonder' %}" class="ust-bosluk">
+    {% csrf_token %}
+    {% with a=onay_formu.ozet %}{% include "panel/_alan.html" %}{% endwith %}
+    <button type="submit">Onaya gönder</button>
+  </form>
+  {% endif %}
+</section>
+{% endif %}
+{% endif %}
+{% endblock %}

@@ -4,7 +4,7 @@ Bu rehber paneli kullanacak Yönetim Kurulu üyeleri, birim editörleri, akademi
 
 > **Bu rehber herkese açık bir depoda durur.** İçindeki isimler ve e-postalar uydurmadır (ör. Ayşe Yılmaz, `ornek@firat.edu.tr`). Rehbere gerçek kişi adı, e-posta, şifre, davet bağlantısı, sunucu bilgisi veya gerçek verinin ekran görüntüsü eklenmez. Ayrıntı: [Bu rehberi güncellerken](#bu-rehberi-güncellerken).
 
-Panel aşama aşama geliştiriliyor. Şu an kullanılabilen bölümler: giriş ve iki adımlı doğrulama, Duyurular, Kullanıcılar, Hesabım ve İşlem kaydı. Ekip sayfası, etkinlik formları ve yanıtlar sırayla eklenecek; her biri eklendiğinde bu rehbere de bölümü yazılacak.
+Panel aşama aşama geliştiriliyor. Şu an kullanılabilen bölümler: giriş ve iki adımlı doğrulama, Duyurular, Ekip, Kullanıcılar, Hesabım ve İşlem kaydı. Etkinlik formları ve yanıtlar sırayla eklenecek; her biri eklendiğinde bu rehbere de bölümü yazılacak.
 
 ## İçindekiler
 
@@ -18,8 +18,9 @@ Panel aşama aşama geliştiriliyor. Şu an kullanılabilen bölümler: giriş v
 8. [Kullanıcılar (Başkan, Başkan Yardımcısı, Teknik sorumlu)](#8-kullanıcılar-başkan-başkan-yardımcısı-teknik-sorumlu)
 9. [İşlem kaydı](#9-işlem-kaydı)
 10. [Duyurular](#10-duyurular)
-11. [Yakında eklenecek bölümler](#11-yakında-eklenecek-bölümler)
-12. [Sık sorulanlar](#12-sık-sorulanlar)
+11. [Ekip sayfası](#11-ekip-sayfası)
+12. [Yakında eklenecek bölümler](#12-yakında-eklenecek-bölümler)
+13. [Sık sorulanlar](#13-sık-sorulanlar)
 
 ---
 
@@ -97,7 +98,7 @@ Her rolün bir **bitiş tarihi** vardır, genellikle dönem sonu (bir sonraki Ol
 | **Danışman** | Akademik danışman | Her şeyi görüntüler, işlem kaydını izler, değiştirmez |
 | **Teknik sorumlu** | 1–2 kişi | Hesap bakımı: 2FA sıfırlama, giriş kilidi açma, teknik sorumlu daveti. İçeriklere ve form yanıtlarına erişmez |
 
-\* Form ve ekip ekranları henüz eklenmedi ([11. bölüm](#11-yakında-eklenecek-bölümler)). Şu an editör panelde Ana ekranı, Duyuruları ve Hesabım'ı görür.
+\* Form ekranları henüz eklenmedi ([12. bölüm](#12-yakında-eklenecek-bölümler)).
 
 **Kimse kendi rolünü değiştiremez.** Başkan kendine rol veremez, kendi rolünü uzatamaz veya kaldıramaz; bunu Başkan Yardımcısı yapar (ya da tersi). Kimse kendi hesabını kapatamaz.
 
@@ -155,7 +156,7 @@ Bu işlemlerin hepsi işlem kaydına yazılır.
 
 ## 9. İşlem kaydı
 
-Yönetim Kurulu, Danışman ve Teknik sorumlu görür. Kim, neyi, ne zaman yaptı: girişler, hatalı denemeler, davetler, rol atama ve kaldırmalar, hesap kapatmalar, 2FA sıfırlamaları, şifre değişiklikleri. Duyurularda onaya gönderme, onaylama, düzeltme isteme, yayımlama ve yayından kaldırma da buraya düşer. İleride yanıt görüntüleme ve indirmeleri de eklenecek.
+Yönetim Kurulu, Danışman ve Teknik sorumlu görür. Kim, neyi, ne zaman yaptı: girişler, hatalı denemeler, davetler, rol atama ve kaldırmalar, hesap kapatmalar, 2FA sıfırlamaları, şifre değişiklikleri. Duyurularda ve ekip sayfasında onaya gönderme, onaylama, düzeltme isteme, yayımlama ve yayından kaldırma da buraya düşer. İleride yanıt görüntüleme ve indirmeleri de eklenecek.
 
 - Eyleme ve kişiye göre filtreleyebilirsiniz.
 - Kayıtlar değiştirilemez ve silinemez; 1 yıl sonra kendiliğinden silinir.
@@ -206,19 +207,59 @@ Tek bir Yönetim Kurulu üyesinin onayı yeterlidir. Kendi yazdığınız duyuru
 
 > Not: Panel şu an sitenin kendisine bağlı değil. Onaylanan duyurular panelde "Yayında" görünür; sitenin gündemi bu duyurulardan beslenmeye ileride geçecek. O zamana kadar sitedeki gündem eski yöntemle güncellenir.
 
-## 11. Yakında eklenecek bölümler
+## 11. Ekip sayfası
+
+Sitedeki **Ekip** sayfası panelden yönetilir. Editörler ve Yönetim Kurulu düzenler, Danışman görür, Yönetim Kurulu onaylar.
+
+**En önemli kural:** Ekip ekranında yaptığınız her değişiklik (kişi ekleme, silme, fotoğraf, sıra) **onaya gönderilip Yönetim Kurulu onaylayana kadar sitede görünmez.** Rahatça düzenleyebilirsiniz; site, en son onaylanan haliyle kalır.
+
+### Dönem
+
+Ekip sayfası dönem dönem tutulur (ör. 2026–2027). Yeni dönem başlarken **Ekip** → **Yeni dönem**:
+- **Önceki dönemi kopyala:** gruplar ve kişiler kopyalanır; ayrılanları silin, yenileri ekleyin.
+- **Sitedeki bölümlerle boş başlat:** Akademik Danışman, Yönetim ve dört birim boş olarak açılır (ilk kurulum için).
+
+Önceki dönemin kayıtları silinmez ama panelde yalnızca aktif dönem düzenlenir.
+
+### Kişi eklemek ve düzenlemek
+
+1. İlgili grubun yanındaki **Kişi ekle**ye basın (ya da kişinin adına basarak düzenleyin).
+2. **Ad soyad**, **görev** (ör. Başkan, Birim Sorumlusu, Üye) ve isterseniz **e-posta**. Akademik danışman için **fakülte / bölüm**.
+3. **Fotoğraf** (isteğe bağlı): JPEG, PNG veya WebP, en fazla 10 MB. Panel fotoğrafı ortadan kare kırpar, küçültür ve telefonun eklediği konum ve cihaz bilgilerini siler. Fotoğraf yoksa sitede gri bir yer tutucu görünür.
+4. **Bağlantılar** (isteğe bağlı): ORCID, LinkedIn, GitHub, Google Scholar, Scopus, DergiPark, Web of Science, YÖK Akademik, kişisel sayfa. Adresler `https://` ile başlamalı.
+5. **Kişinin yayın için yazılı onayı alındı:** Kişinin adı, fotoğrafı, e-postası ve bağlantılarının sitede yayımlanmasına **yazılı** onay verdiyse işaretleyin. **İşaretli değilse kişi sitede görünmez** (KVKK). Yazılı onay belgesini topluluk dosyasında saklayın.
+6. **Kaydet**.
+
+Gruplardaki ve gruplar arasındaki sırayı **Yukarı** / **Aşağı** ile değiştirin. Sitede aynı sırayla görünür. Grup eklemek, adını değiştirmek veya silmek için **Grup ekle** ve **Grubu düzenle**.
+
+**Önizleme** düğmesi, şu anki halin onaylanırsa sitede nasıl görüneceğini gösterir (yalnızca yayın onayı olan kişilerle).
+
+### Onaya göndermek
+
+Ekip ekranının altındaki **Onaya gönder** bölümüne değişikliği bir cümleyle özetleyin (ör. "İletişim Birimi'ne iki yeni üye eklendi.") ve gönderin. O anki hal dondurulur; gönderdikten sonra yaptığınız düzenlemeler bu onaya dahil olmaz, bir sonrakinde gönderilir. Yönetim Kurulu'na e-posta gider.
+
+Aynı anda tek bir onay bekleyen ekip değişikliği olabilir. Yeni bir şey eklemek isterseniz onay bekleyen değişikliği açıp **Geri çek**in, sonra yeniden gönderin.
+
+### Onaylamak (Yönetim Kurulu)
+
+Ana ekrandaki **Onay bekleyenler**de ekip değişikliğini açın. Ekranda:
+- **Sitedeki halden farkı:** hangi gruba kim eklendi, kim çıktı, kimin bilgisi değişti.
+- **Sitede görünecek hal:** kartlar, fotoğraflar, bağlantılar.
+
+Kişilerin bilgilerini ve fotoğraflarını kontrol edip **Onayla ve yayımla**ya basın ya da notla **Düzeltme iste**yin. Onaylanan hal hemen sitedeki ekip sayfasının kaynağı olur.
+
+## 12. Yakında eklenecek bölümler
 
 Bu ekranlar eklendikçe rehbere adım adım bölümleri yazılacak:
 
 | Bölüm | Kimler | Ne yapılacak |
 | --- | --- | --- |
-| **Ekip** | Editör, Yönetim Kurulu | Ekip sayfasındaki kişileri ve fotoğrafları düzenleme, onaya gönderme |
 | **Etkinlikler ve formlar** | Editör, Yönetim Kurulu | Etkinlik kayıt formu oluşturma, onaya gönderme, kontenjan ve kapanış tarihi |
 | **Yanıtlar** | Form sahibi, Yönetim Kurulu, Danışman | Yanıtları görme, CSV indirme, tek yanıt silme |
 
 Ortak kural: yayına giden her şey (duyuru, form, ekip değişikliği) bir Yönetim Kurulu üyesinin panelde **Onayla**ya basmasıyla yayımlanır. E-postadaki bir bağlantıya tıklamak onay vermez.
 
-## 12. Sık sorulanlar
+## 13. Sık sorulanlar
 
 **Doğrulama uygulaması sürekli kod üretiyor, bir sorun mu var?**
 Hayır. Uygulama her 30 saniyede yeni kod gösterir; panel yalnızca giriş sırasında sorar ([3. bölüm](#3-iki-adımlı-doğrulamayı-2fa-kurmak)).
@@ -226,8 +267,11 @@ Hayır. Uygulama her 30 saniyede yeni kod gösterir; panel yalnızca giriş sır
 **Menüde Duyurular yok.**
 Duyurular Editör, Yönetim Kurulu ve Danışman rollerine açıktır. Teknik sorumlu içerik görmez. Rolünüzü Hesabım'da kontrol edin.
 
-**Onayladığım duyuru sitede görünmüyor.**
+**Onayladığım duyuru veya ekip değişikliği sitede görünmüyor.**
 Panel henüz siteye bağlanmadı ([10. bölümdeki not](#yayındaki-duyuru)).
+
+**Eklediğim kişi önizlemede yok.**
+"Kişinin yayın için yazılı onayı alındı" kutusu işaretli değil. Yazılı onay olmadan kişi sitede gösterilmez.
 
 **Bir sayfada "403" veya "yetkiniz yok" görüyorum.**
 O ekran rolünüze açık değil ya da rolünüzün süresi dolmuş. Hesabım'da rollerinizi ve bitiş tarihlerini kontrol edin; gerekiyorsa Başkan veya Başkan Yardımcısı'na yazın.

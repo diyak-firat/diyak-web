@@ -1,0 +1,29 @@
+{% comment %}
+Sitedeki ekip sayfasının (frontend/src/pages/ekip.astro, components/ekip/) yapısına yakın önizleme.
+Yalnızca yayımlanacak veri (yayın onaylı kişiler, herkese açık alanlar) gösterilir.
+{% endcomment %}
+<div class="ekip-onizleme">
+  {% for g in veri.gruplar %}
+  <section class="ekip-grup">
+    <h3><span class="ekip-no">{{ forloop.counter|stringformat:"02d" }}</span> {{ g.ad }}</h3>
+    {% if g.kisiler %}
+    <div class="ekip-kartlar">
+      {% for k in g.kisiler %}
+      <div class="ekip-kart">
+        {% if k.foto %}<img src="{{ MEDIA_URL }}{{ k.foto }}" alt="" width="160" height="160" loading="lazy">{% else %}<div class="ekip-foto-bos" aria-hidden="true"></div>{% endif %}
+        <p class="ekip-gorev{% if g.tur != 'birim' or k.gorev != 'Üye' %} vurgulu{% endif %}">{{ k.gorev }}</p>
+        <p class="ekip-ad">{{ k.ad }}</p>
+        {% if k.birim %}<p class="ikincil">{{ k.birim }}</p>{% endif %}
+        {% if k.eposta %}<p class="ekip-eposta">{{ k.eposta }}</p>{% endif %}
+        {% if k.baglanti_listesi %}<p class="ekip-baglantilar">{% for ad, url in k.baglanti_listesi %}<a href="{{ url }}" rel="noopener noreferrer">{{ ad }}</a>{% endfor %}</p>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="ikincil">Bu grupta sitede görünecek kişi yok.</p>
+    {% endif %}
+  </section>
+  {% empty %}
+  <p class="bos-durum">Yayımlanacak grup yok.</p>
+  {% endfor %}
+</div>

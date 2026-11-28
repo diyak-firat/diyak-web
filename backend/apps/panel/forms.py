@@ -155,3 +155,97 @@ class DuzeltmeFormu(forms.Form):
         widget=forms.Textarea(attrs={"rows": 4}),
         help_text="Not hazırlayan kişiye panelde gösterilir.",
     )
+
+
+class DonemFormu(forms.Form):
+    ad = forms.CharField(label="Dönem adı", max_length=40, help_text="ör. 2026–2027")
+    baslangic = forms.DateField(label="Başlangıç", widget=forms.DateInput(attrs={"type": "date"}, format="%Y-%m-%d"))
+    bitis = forms.DateField(
+        label="Bitiş", widget=forms.DateInput(attrs={"type": "date"}, format="%Y-%m-%d"),
+        help_text="Genellikle bir sonraki Olağan Genel Kurul.",
+    )
+    baslangic_icerigi = forms.ChoiceField(
+        label="Nasıl başlasın?",
+        widget=forms.RadioSelect,
+        choices=[
+            ("kopyala", "Önceki dönemin gruplarını ve kişilerini kopyala (sonra düzenlersiniz)"),
+            ("varsayilan", "Sitedeki bölümlerle boş başlat (Akademik Danışman, Yönetim, dört birim)"),
+            ("bos", "Tamamen boş başlat"),
+        ],
+        initial="kopyala",
+    )
+
+
+class GrupFormu(forms.Form):
+    ad = forms.CharField(label="Grup adı", max_length=120, help_text="ör. İletişim Birimi")
+    tur = forms.ChoiceField(label="Tür")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        from apps.ekip.models import GrupTuru
+
+        self.fields["tur"].choices = GrupTuru.choices
+
+
+class KisiFormu(forms.Form):
+    ad = forms.CharField(label="Ad soyad", max_length=150)
+    gorev = forms.CharField(label="Görev", max_length=100, help_text="ör. Başkan, Birim Sorumlusu, Üye")
+    birim = forms.CharField(
+        label="Fakülte / bölüm", max_length=200, required=False, help_text="Akademik danışman için."
+    )
+    eposta = forms.EmailField(label="E-posta", required=False)
+    foto = forms.FileField(
+        label="Fotoğraf",
+        required=False,
+        widget=forms.ClearableFileInput(attrs={"accept": "image/jpeg,image/png,image/webp"}),
+        help_text="JPEG, PNG veya WebP, en fazla 10 MB. Kare kırpılır; konum gibi gizli bilgiler silinir.",
+    )
+    foto_kaldir = forms.BooleanField(label="Fotoğrafı kaldır", required=False)
+    yayin_onayi = forms.BooleanField(
+        label="Kişinin yayın için yazılı onayı alındı",
+        required=False,
+        help_text="İşaretli değilse kişi sitede görünmez (KVKK). Onay belgesini topluluk dosyasında saklayın.",
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        from apps.ekip.models import BAGLANTI_TURLERI
+
+        for tur, ad in BAGLANTI_TURLERI.items():
+            self.fields[f"baglanti_{tur}"] = forms.URLField(
+                label=ad, required=False, max_length=300, assume_scheme="https",
+                widget=forms.URLInput(attrs={"placeholder": "https://…"}),
+            )
+
+    def baglanti_alanlari(self):
+        return [self[a] for a in self.fields if a.startswith("baglanti_")]
+
+    def clean(self):
+        temiz = super().clean()
+        for ad, deger in list(temiz.items()):
+            if ad.startswith("baglanti_") and deger and not deger.startswith("https://"):
+                self.add_error(ad, "Adres https:// ile başlamalı.")
+        return temiz
+
+    def kisi_verisi(self, onceki_onay_tarihi=None) -> dict:
+        from django.utils import timezone
+
+        v = self.cleaned_data
+        return {
+            "ad": v["ad"],
+            "gorev": v["gorev"],
+            "birim": v["birim"],
+            "eposta": v["eposta"],
+            "baglantilar": {
+                a.removeprefix("baglanti_"): d for a, d in v.items() if a.startswith("baglanti_") and d
+            },
+            "yayin_onayi_tarihi": (onceki_onay_tarihi or timezone.localdate()) if v["yayin_onayi"] else None,
+        }
+
+
+class EkipOnayFormu(forms.Form):
+    ozet = forms.CharField(
+        label="Değişikliği bir cümleyle özetleyin",
+        max_length=300,
+        help_text="Yönetim Kurulu onay ekranında görür. ör. “İletişim Birimi'ne iki yeni üye eklendi.”",
+    )

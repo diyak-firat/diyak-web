@@ -11,6 +11,7 @@
 {% if onay_bekleyenler is not None %}
 <section class="bolum" aria-labelledby="onay-bekleyenler">
   <h2 id="onay-bekleyenler">Onay bekleyenler</h2>
+  {% if ekip_bekleyen %}<p class="bilgi bolum-ici">Ekip sayfası değişikliği onay bekliyor: <a href="{% url 'panel:ekip_degisiklik' ekip_bekleyen.pk %}">{{ ekip_bekleyen.ozet }}</a></p>{% endif %}
   {% if onay_bekleyenler %}
   <div class="tablo-kutu">
     <table>
@@ -26,7 +27,7 @@
       </tbody>
     </table>
   </div>
-  {% else %}
+  {% elif not ekip_bekleyen %}
   <p class="bos-durum">Onay bekleyen bir şey yok.</p>
   {% endif %}
 </section>

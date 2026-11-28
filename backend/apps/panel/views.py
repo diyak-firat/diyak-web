@@ -165,10 +165,16 @@ def ana(request):
 
     from apps.accounts.yetki import icerik_hazirlayabilir_mi, onaylayabilir_mi
     from apps.duyurular.models import Durum, Duyuru
+    from apps.ekip.models import Degisiklik, DegisiklikDurumu
 
     k = request.user
     rollerim = RolAtamasi.objects.etkin().filter(kullanici=k).order_by("rol")
     onay_bekleyenler = Duyuru.objects.filter(durum=Durum.ONAY_BEKLIYOR).order_by("guncelleme") if onaylayabilir_mi(k) else None
+    ekip_bekleyen = (
+        Degisiklik.objects.filter(durum=DegisiklikDurumu.ONAY_BEKLIYOR).select_related("olusturan").first()
+        if onaylayabilir_mi(k)
+        else None
+    )
     taslaklarim = (
         Duyuru.objects.filter(olusturan=k, durum__in=[Durum.TASLAK, Durum.ONAY_BEKLIYOR]).order_by("-guncelleme")
         if icerik_hazirlayabilir_mi(k)
@@ -177,5 +183,5 @@ def ana(request):
     return render(
         request,
         "panel/ana.html",
-        {"rollerim": rollerim, "onay_bekleyenler": onay_bekleyenler, "taslaklarim": taslaklarim},
+        {"rollerim": rollerim, "onay_bekleyenler": onay_bekleyenler, "ekip_bekleyen": ekip_bekleyen, "taslaklarim": taslaklarim},
     )

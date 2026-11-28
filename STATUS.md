@@ -7,9 +7,7 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 
 ## Şu an
 
-- [ ] **A3 · Ekip sayfası** (PANEL.md §12; fotoğraflar K-27)
-  - [x] `ekip` modelleri (dönem, grup, kişi, değişiklik), fotoğraf işleme (Pillow; EXIF silinir), onaya gönderilen halin dondurulması, `/api/ekip/` (yalnızca yayın onaylı kişiler)
-  - [ ] Ekip ekranı: dönem, gruplar ve kişiler, fotoğraf yükleme, sıralama, onaya gönderme ve onay ekranı; `ekip.json`'daki grup yapısının aktarılması; rehber
+- [ ] **A4 · Etkinlikler ve formlar** (PANEL.md §12): başlamadan önce aydınlatma metni taslağının (hukuk birimi) durumu ve spam koruması için Redis'in eklenmesi konuşulacak
 
 ## Sıradaki
 
@@ -66,7 +64,7 @@ Faz 1 kısa tutulur: Faz 1'de duyuru yazma aracı kurulmaz, hızla Faz 2'ye geç
 - [ ] Sentry ve uptime/disk izleme
 
 **Yönetim paneli** (PANEL.md §12)
-- [ ] **Astro'nun gündemi `/api/duyurular/`'dan çekmesi** (K-26: hosting kararından sonra). Aynı işte: yayımla ve yayından kaldırda Cloudflare Pages deploy hook'u (1 dakikalık pencerede birleştirme, Redis veya zamanlayıcı gerekir); geçişte gündemde gerçek Markdown gönderisi varsa `faz1_aktar` ile panele aktarma (şu an hepsi `ornek: true`, aktarılacak gönderi yok)
+- [ ] **Astro'nun gündemi `/api/duyurular/`'dan, ekip sayfasını `/api/ekip/`'ten çekmesi** (K-26: hosting kararından sonra). Aynı işte: yayımla ve yayından kaldırda Cloudflare Pages deploy hook'u (1 dakikalık pencerede birleştirme, Redis veya zamanlayıcı gerekir); geçişte gündemde gerçek Markdown gönderisi varsa `faz1_aktar` ile panele aktarma (şu an hepsi `ornek: true`, aktarılacak gönderi yok)
 - [ ] Duyuruya kapak görseli (dosya yükleme akışı A3'te kurulunca)
 - [ ] A3 · Ekip sayfası: panelden yönetim, yayın onayı, fotoğraflar, `ekip.json`'dan aktarım. Akademik danışman ve ekip üyelerinin gerçek bilgileri ilk kez bu arayüzden girilecek; panelin ilk gerçek testi olur (o zamana kadar `ekip.json` yer tutucu kalır)
 - [ ] A4 · Etkinlikler ve formlar: hazır ama kaldırılabilir alanlar, zorunlu aydınlatma onayı, onay kontrol listesi, herkese açık form sayfası; etkinliğe isteğe bağlı **harita bağlantısı** (yalnızca Google Maps adresleri; yer adı panelde ve sitede tıklanınca haritayı açar; gömülü harita ve API anahtarı yok, 2026-11-28 kararı)
@@ -85,6 +83,7 @@ Aylık geri yükleme provaları buraya yazılır: `tarih · yedek adı · kayıt
 
 ## Tamamlananlar
 
+- [x] **A3 · Ekip sayfası** (PR #29 ve bu PR; K-27): dönem, grup ve kişi modelleri, Pillow ile fotoğraf işleme (EXIF silinir), onaylanan halin dondurulması, `/api/ekip/` (yalnızca yazılı yayın onaylı kişiler), Ekip ekranı (dönem açma, sitedeki bölümlerle başlatma, kişi ve fotoğraf, sıralama, önizleme), onay ekranı (sitedeki halden fark), rehber. `ekip.json`'daki kişiler yer tutucu olduğu için aktarılmadı; grup yapısı "sitedeki bölümlerle başlat" seçeneğiyle geliyor. Astro'nun ekip sayfasını API'den çekmesi gündemle birlikte (K-26)
 - [x] **A2 · Onay altyapısı ve duyurular, panel tarafı** (PR #25, #26 ve bu PR): `Duyuru`, yalın `Etkinlik`, ortak onay akışı, `nh3` temizliği, Tiptap editörü (K-26), duyuru ekranları, onay ekranı, e-posta bildirimleri, `/api/duyurular/` (yalnızca yayımlanmış). Astro bağlantısı ve deploy hook ayrı iş
 - [x] Panel kullanım rehberi → `docs/PANEL-KULLANIM.md` (şimdilik A1 ekranları; her aşamada genişler). Public repo kuralları AGENTS.md'ye eklendi
 - [x] Panel: İşlem kaydı ekranı (eylem ve kişi filtresi, sayfalama; Yönetim Kurulu, Danışman, Teknik)

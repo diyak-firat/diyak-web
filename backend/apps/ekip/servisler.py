@@ -11,9 +11,20 @@ from apps.accounts.yetki import icerik_hazirlayabilir_mi
 from apps.onay import akis
 
 from .foto import foto_isle
-from .models import Degisiklik, DegisiklikDurumu, Donem, Grup, Kisi
+from .models import Degisiklik, DegisiklikDurumu, Donem, Grup, GrupTuru, Kisi
 
 KISI_ALANLARI = ("ad", "gorev", "birim", "eposta", "baglantilar", "yayin_onayi_tarihi")
+
+# Sitedeki ekip sayfasının bölümleri (DESIGN.md "Ekip"; frontend/src/data/ekip.json). Yeni dönem
+# "sitedeki yapıyla" başlatılınca bu gruplar boş olarak açılır.
+VARSAYILAN_GRUPLAR = (
+    ("Akademik Danışman", GrupTuru.DANISMAN),
+    ("Yönetim", GrupTuru.YONETIM),
+    ("Proje ve Araştırma Birimi", GrupTuru.BIRIM),
+    ("İletişim Birimi", GrupTuru.BIRIM),
+    ("Etkinlik ve Sponsorluk Birimi", GrupTuru.BIRIM),
+    ("Medya ve Tasarım Birimi", GrupTuru.BIRIM),
+)
 
 
 def _yetki(kullanici) -> None:
@@ -26,8 +37,11 @@ def aktif_donem() -> Donem | None:
 
 
 @transaction.atomic
-def donem_olustur(kullanici, ad: str, baslangic, bitis, kopyalanacak: Donem | None = None) -> Donem:
-    """Yeni dönemi açar ve aktif yapar. ``kopyalanacak`` verilirse gruplar ve kişiler kopyalanır."""
+def donem_olustur(
+    kullanici, ad: str, baslangic, bitis, kopyalanacak: Donem | None = None, varsayilan_gruplar: bool = False
+) -> Donem:
+    """Yeni dönemi açar ve aktif yapar. ``kopyalanacak`` verilirse gruplar ve kişiler kopyalanır;
+    ``varsayilan_gruplar`` ise sitedeki bölümler boş olarak açılır."""
     _yetki(kullanici)
     if bitis < baslangic:
         raise ValidationError("Dönemin bitişi başlangıcından önce olamaz.")
@@ -41,6 +55,9 @@ def donem_olustur(kullanici, ad: str, baslangic, bitis, kopyalanacak: Donem | No
             for k in grup.kisiler.all():
                 Kisi.objects.create(grup=yeni, foto=k.foto.name, sira=k.sira, kullanici=k.kullanici,
                                     **{a: getattr(k, a) for a in KISI_ALANLARI})
+    elif varsayilan_gruplar:
+        for sira, (grup_adi, tur) in enumerate(VARSAYILAN_GRUPLAR, start=1):
+            Grup.objects.create(donem=donem, ad=grup_adi, tur=tur, sira=sira)
     return donem
 
 
@@ -136,6 +153,26 @@ def onaya_gonder(kullanici, donem: Donem, ozet: str) -> Degisiklik:
     degisiklik.veri = anlik_goruntu(donem)
     degisiklik.save()
     return akis.onaya_gonder(kullanici, degisiklik)
+
+
+def fark(eski: dict | None, yeni: dict) -> list[dict]:
+    """Onay ekranı için: gruplara göre eklenen, çıkarılan ve bilgisi değişen kişiler (ada göre)."""
+    eski_gruplar = {g["ad"]: {k["ad"]: k for k in g["kisiler"]} for g in (eski or {}).get("gruplar", [])}
+    sonuc = []
+    for g in yeni.get("gruplar", []):
+        onceki = eski_gruplar.pop(g["ad"], None)
+        simdiki = {k["ad"]: k for k in g["kisiler"]}
+        if onceki is None:
+            sonuc.append({"grup": g["ad"], "yeni_grup": True, "eklenen": list(simdiki), "cikan": [], "degisen": []})
+            continue
+        eklenen = [a for a in simdiki if a not in onceki]
+        cikan = [a for a in onceki if a not in simdiki]
+        degisen = [a for a in simdiki if a in onceki and simdiki[a] != onceki[a]]
+        if eklenen or cikan or degisen:
+            sonuc.append({"grup": g["ad"], "yeni_grup": False, "eklenen": eklenen, "cikan": cikan, "degisen": degisen})
+    for ad, kisiler in eski_gruplar.items():
+        sonuc.append({"grup": ad, "kalkan_grup": True, "eklenen": [], "cikan": list(kisiler), "degisen": []})
+    return sonuc
 
 
 def yayindaki() -> Degisiklik | None:

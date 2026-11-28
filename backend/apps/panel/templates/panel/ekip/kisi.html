@@ -1,0 +1,46 @@
+{% extends "panel/base.html" %}
+{% block baslik %}{% if kisi %}{{ kisi.ad }}{% else %}Kişi ekle{% endif %} · DİYAK Panel{% endblock %}
+{% block icerik %}
+<header class="sayfa-basi">
+  <div><p class="ust-baslik"><a href="{% url 'panel:ekip' %}">Ekip</a> · {{ grup.ad }}</p><h1>{% if kisi %}{{ kisi.ad }}{% else %}Kişi ekle{% endif %}</h1></div>
+</header>
+<form method="post" enctype="multipart/form-data" novalidate>
+  {% csrf_token %}
+  {% if form.non_field_errors %}<div class="form-hata" role="alert">{% for h in form.non_field_errors %}<p>{{ h }}</p>{% endfor %}</div>{% endif %}
+  {% with a=form.ad %}{% include "panel/_alan.html" %}{% endwith %}
+  {% with a=form.gorev %}{% include "panel/_alan.html" %}{% endwith %}
+  {% with a=form.birim %}{% include "panel/_alan.html" %}{% endwith %}
+  {% with a=form.eposta %}{% include "panel/_alan.html" %}{% endwith %}
+
+  <fieldset class="alan-grubu">
+    <legend>Fotoğraf</legend>
+    {% if kisi.foto %}<img class="orta-foto" src="{{ kisi.foto.url }}" alt="Şu anki fotoğraf" width="120" height="120">{% endif %}
+    <div class="form-alan">
+      <label for="{{ form.foto.id_for_label }}">{% if kisi.foto %}Yeni fotoğraf yükle{% else %}Fotoğraf yükle{% endif %}</label>
+      <input type="file" name="foto" id="{{ form.foto.id_for_label }}" accept="image/jpeg,image/png,image/webp">
+      <p class="form-yardim">{{ form.foto.help_text }}</p>
+      {% for h in form.foto.errors %}<p class="form-hata" role="alert">{{ h }}</p>{% endfor %}
+    </div>
+    {% if kisi.foto %}<label class="onay-satiri">{{ form.foto_kaldir }} Fotoğrafı kaldır</label>{% endif %}
+  </fieldset>
+
+  <fieldset class="alan-grubu">
+    <legend>Bağlantılar <span class="ikincil">(isteğe bağlı, https:// ile)</span></legend>
+    <div class="iki-sutun">
+      {% for a in form.baglanti_alanlari %}{% include "panel/_alan.html" %}{% endfor %}
+    </div>
+  </fieldset>
+
+  <fieldset class="alan-grubu">
+    <legend>KVKK</legend>
+    <label class="onay-satiri">{{ form.yayin_onayi }} {{ form.yayin_onayi.label }}</label>
+    <p class="form-yardim">{{ form.yayin_onayi.help_text }}{% if kisi.yayin_onayi_tarihi %} İlk işaretlenme: {{ kisi.yayin_onayi_tarihi|date:"d.m.Y" }}.{% endif %}</p>
+  </fieldset>
+
+  <div class="dugmeler">
+    <button type="submit">Kaydet</button>
+    <a href="{% url 'panel:ekip' %}">Vazgeç</a>
+    {% if kisi %}<a href="{% url 'panel:ekip_kisi_sil' kisi.pk %}">Kişiyi sil</a>{% endif %}
+  </div>
+</form>
+{% endblock %}
