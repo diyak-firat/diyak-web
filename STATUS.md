@@ -9,8 +9,8 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 
 - [ ] **A1 · Temel ve hesaplar** (PANEL.md §12): roller ve dönemler, davet, 2FA (`django-otp`), giriş kilidi (`django-axes`), yeni cihaz uyarısı, `denetim`, `ilk_yonetici`, panel iskeleti ve menüsü, Kullanıcılar ekranı. Yeni pip bağımlılıkları (django-otp, django-axes) onaylandı (2026-11-27)
   - [x] Roller (`RolAtamasi`, bitiş tarihli), `Davet` (tek kullanımlık, 48 saat, belirteç özeti saklanır), yetki kuralları, `denetim.IslemKaydi`
-  - [ ] Giriş, zorunlu 2FA, `django-axes` kilidi, yeni cihaz uyarısı, oturum zaman aşımı, davet kabul ekranı, `ilk_yonetici`
-  - [ ] Panel iskeleti ve menüsü, Kullanıcılar ekranı
+  - [x] Giriş, zorunlu 2FA (Admin dahil), `django-axes` kilidi (IP saklanmaz), yeni cihaz uyarısı, oturum süreleri, davet kabul ekranı, `ilk_yonetici` (K-25)
+  - [ ] Panel iskeleti ve menüsü (`tokens.css`), Kullanıcılar ekranı (davet, rol ata/kaldır, hesabı kapat, 2FA sıfırlama ve kilit açma), Hesabım (şifre değiştir)
 
 ## Sıradaki
 

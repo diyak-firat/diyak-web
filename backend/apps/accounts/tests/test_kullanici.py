@@ -1,5 +1,6 @@
 import pytest
 from django.contrib.auth import authenticate, get_user_model
+from django.test import RequestFactory
 from django.db import IntegrityError
 
 Kullanici = get_user_model()
@@ -25,14 +26,14 @@ def test_eposta_kucuk_harfe_cevrilir_ve_benzersizdir():
 @pytest.mark.django_db
 def test_eposta_ve_sifreyle_giris_yapilir():
     Kullanici.objects.create_user(email="giris@ornek.org", password="uzun-ve-guclu-sifre-2026")
-    assert authenticate(email="giris@ornek.org", password="uzun-ve-guclu-sifre-2026") is not None
-    assert authenticate(email="giris@ornek.org", password="yanlis-sifre-0000") is None
+    assert authenticate(RequestFactory().post("/giris/"), email="giris@ornek.org", password="uzun-ve-guclu-sifre-2026") is not None
+    assert authenticate(RequestFactory().post("/giris/"), email="giris@ornek.org", password="yanlis-sifre-0000") is None
 
 
 @pytest.mark.django_db
 def test_giriste_eposta_buyuk_kucuk_harf_duyarsiz():
     Kullanici.objects.create_user(email="giris@ornek.org", password="uzun-ve-guclu-sifre-2026")
-    assert authenticate(email="Giris@Ornek.ORG", password="uzun-ve-guclu-sifre-2026") is not None
+    assert authenticate(RequestFactory().post("/giris/"), email="Giris@Ornek.ORG", password="uzun-ve-guclu-sifre-2026") is not None
 
 
 @pytest.mark.django_db

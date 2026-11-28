@@ -4,6 +4,8 @@ import pytest
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
+from conftest import dogrulanmis_giris
+
 Kullanici = get_user_model()
 SIFRE = "uzun-ve-guclu-sifre-2026"
 
@@ -11,7 +13,7 @@ SIFRE = "uzun-ve-guclu-sifre-2026"
 @pytest.fixture
 def teknik(client):
     k = Kullanici.objects.create_superuser(email="teknik@ornek.org", password=SIFRE)
-    client.force_login(k)
+    dogrulanmis_giris(client, k)
     return k
 
 
@@ -54,3 +56,12 @@ def test_admin_kisa_sifreyi_reddeder(client, teknik):
     )
     assert yanit.status_code == 200
     assert not Kullanici.objects.filter(email="kisa@ornek.org").exists()
+
+
+@pytest.mark.django_db
+def test_2fa_dogrulanmamis_superuser_admine_giremez(client):
+    k = Kullanici.objects.create_superuser(email="su@ornek.org", password=SIFRE)
+    client.force_login(k)
+    yanit = client.get(reverse("admin:accounts_kullanici_changelist"))
+    assert yanit.status_code == 302
+    assert reverse("admin:login") in yanit["Location"]

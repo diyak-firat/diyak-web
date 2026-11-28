@@ -1,5 +1,6 @@
 """Tüm ortamlar için ortak ayarlar. Ortama özel olanlar development.py, production.py, test.py'de."""
 
+from datetime import timedelta
 from pathlib import Path
 
 from .ortam import env
@@ -18,8 +19,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "django_otp",
+    "django_otp.plugins.otp_totp",
+    "axes",
     "apps.accounts",
     "apps.denetim",
+    "apps.panel",
 ]
 
 MIDDLEWARE = [
@@ -28,8 +33,12 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django_otp.middleware.OTPMiddleware",
+    "apps.panel.middleware.OturumSuresiMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # Kilitli hesap yanıtını üretir; listenin sonunda durmalıdır.
+    "axes.middleware.AxesMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -67,6 +76,34 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Kullanıcılar e-posta ile giriş yapar (PANEL.md §6).
 AUTH_USER_MODEL = "accounts.Kullanici"
+AUTHENTICATION_BACKENDS = [
+    "axes.backends.AxesStandaloneBackend",  # kilitli hesabı şifre denetiminden önce durdurur
+    "django.contrib.auth.backends.ModelBackend",
+]
+LOGIN_URL = "panel:giris"
+LOGIN_REDIRECT_URL = "panel:ana"
+
+# Panelin dışarıdan görünen adresi; e-postalardaki bağlantılar bundan üretilir.
+PANEL_ADRESI = env("PANEL_ADRESI", "http://localhost:8000").rstrip("/")
+
+# 2FA (PANEL.md §9): TOTP, telefon uygulamasıyla. Hatalı kodlarda django-otp bekleme süresi uygular.
+OTP_TOTP_ISSUER = "DİYAK Panel"
+
+# Hatalı giriş kilidi (PANEL.md §9): aynı e-postayla 5 hatalı şifrede 30 dakika kilit.
+# IP adresi saklanmaz (PANEL.md §6); kilit yalnızca e-postaya göre uygulanır.
+AXES_FAILURE_LIMIT = 5
+AXES_COOLOFF_TIME = timedelta(minutes=30)
+AXES_LOCKOUT_PARAMETERS = ["username"]
+AXES_USERNAME_CALLABLE = "apps.panel.guvenlik.axes_kullanici_adi"
+AXES_CLIENT_IP_CALLABLE = "apps.panel.guvenlik.ip_saklanmaz"
+AXES_RESET_ON_SUCCESS = True
+AXES_DISABLE_ACCESS_LOG = True
+AXES_VERBOSE = False  # loglara e-posta yazılmasın
+AXES_LOCKOUT_TEMPLATE = "panel/kilitli.html"
+# axes.W006 "ip_address yok" uyarısı: IP bilinçli olarak saklanmıyor. Axes, aynı e-postaya ait
+# denemeleri tarayıcı bilgisinden bağımsız toplar; tarayıcı değiştirerek kilit atlatılamaz
+# (apps/panel/tests/test_giris.py).
+SILENCED_SYSTEM_CHECKS = ["axes.W006"]
 
 # Şifre en az 12 karakter, yaygın şifre listesi dahil (PANEL.md §9).
 AUTH_PASSWORD_VALIDATORS = [
@@ -79,9 +116,11 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-# Oturum: en fazla 8 saat, çerezler HttpOnly ve SameSite=Lax (PANEL.md §9).
-# 1 saat hareketsizlikte sonlandırma A1'de ara katmanla eklenecek.
+# Oturum: en fazla 8 saat veya 1 saat hareketsizlik, çerezler HttpOnly ve SameSite=Lax (PANEL.md §9).
+# Her iki süre de apps.panel.middleware.OturumSuresiMiddleware ile sunucuda uygulanır.
 SESSION_COOKIE_AGE = 8 * 60 * 60
+PANEL_OTURUM_EN_UZUN = 8 * 60 * 60
+PANEL_HAREKETSIZLIK = 60 * 60
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_HTTPONLY = True
@@ -111,4 +150,5 @@ LOGGING = {
     "disable_existing_loggers": False,
     "handlers": {"console": {"class": "logging.StreamHandler"}},
     "root": {"handlers": ["console"], "level": "INFO"},
+    "loggers": {"axes": {"level": "ERROR"}},
 }

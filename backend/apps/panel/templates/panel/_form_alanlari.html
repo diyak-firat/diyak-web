@@ -1,0 +1,11 @@
+{% if form.non_field_errors %}
+<div class="form-hata" role="alert">{% for hata in form.non_field_errors %}<p>{{ hata }}</p>{% endfor %}</div>
+{% endif %}
+{% for alan in form %}
+<div class="form-alan">
+  <label for="{{ alan.id_for_label }}">{{ alan.label }}</label>
+  {{ alan }}
+  {% if alan.help_text %}<p class="form-yardim">{{ alan.help_text }}</p>{% endif %}
+  {% for hata in alan.errors %}<p class="form-hata" role="alert">{{ hata }}</p>{% endfor %}
+</div>
+{% endfor %}

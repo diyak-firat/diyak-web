@@ -25,10 +25,12 @@ Sonra:
 ```bash
 docker compose up -d                              # PostgreSQL + Django (http://localhost:8000)
 docker compose run --rm web python manage.py migrate
-docker compose run --rm web python manage.py createsuperuser
+docker compose run --rm web python manage.py ilk_yonetici ben@ornek.org --bitis 2027-10-31 --eposta-gonderme
 docker compose run --rm web pytest                # testler
 docker compose run --rm web python manage.py makemigrations
 ```
+
+`ilk_yonetici` bir davet bağlantısı yazar (yerelde e-postalar konsola düşer). Bağlantıyı açıp şifre belirleyin, telefonunuzdaki doğrulama uygulamasıyla 2FA'yı kurun: panel http://localhost:8000/ adresindedir. Django Admin de 2FA ister; teknik hesaba `is_staff`/`is_superuser` gerekiyorsa `createsuperuser` ile açın ve ilk girişi panelin `/giris/` sayfasından yapıp 2FA'yı orada kurun.
 
 Kod `backend/` klasöründen konteynere bağlıdır; değişiklikler sunucuyu yeniden başlatmadan görünür.
 
@@ -55,7 +57,10 @@ backend/
 ├── config/api.py             /api/saglik/ (izleme servisi için)
 ├── apps/accounts/            Kullanici (e-posta ile giriş), dönemlik RolAtamasi, Davet
 │                             yetki.py: panel yetki kuralları · servisler.py: davet ve rol işlemleri
+├── apps/accounts/management/ ilk_yonetici: ilk Başkan / Teknik sorumlu daveti
 ├── apps/denetim/             IslemKaydi ve kaydet() (kişisel veri yazılmaz)
+├── apps/panel/               Giriş, 2FA (django-otp), kilit (django-axes), davet kabul, oturum süresi;
+│                             erisim.py: her panel görünümü panel_gerekli ile sarılır
 ├── conftest.py               Ortak test fixture'ları (sahte kullanıcı ve roller)
 └── tests/                    Ayar ve uç nokta testleri (uygulama testleri apps/*/tests/ altında)
 ```

@@ -17,7 +17,7 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 # HSTS preload bilinçli olarak kapalı: listeden çıkmak aylar sürer ve preload yalnızca ana alan
 # adına uygulanabilir (site büyük olasılıkla firat.edu.tr'nin bir alt alan adında olacak).
 SECURE_HSTS_PRELOAD = False
-SILENCED_SYSTEM_CHECKS = ["security.W021"]
+SILENCED_SYSTEM_CHECKS = [*SILENCED_SYSTEM_CHECKS, "security.W021"]  # noqa: F405
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = "same-origin"
 X_FRAME_OPTIONS = "DENY"

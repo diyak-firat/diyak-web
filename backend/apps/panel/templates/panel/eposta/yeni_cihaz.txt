@@ -1,0 +1,11 @@
+{% autoescape off %}Merhaba,
+
+DİYAK yönetim panelindeki hesabınıza {{ zaman|date:"j F Y H:i" }} saatinde yeni bir cihaz veya tarayıcıdan giriş yapıldı.
+
+Bu giriş sizseniz bir şey yapmanıza gerek yok.
+
+Siz değilseniz hemen şifrenizi değiştirin ve teknik sorumluya haber verin:
+{{ panel_adresi }}
+
+DİYAK · Fırat Üniversitesi Doğal Dil İşleme ve Yapay Zekâ Araştırmaları Topluluğu
+{% endautoescape %}

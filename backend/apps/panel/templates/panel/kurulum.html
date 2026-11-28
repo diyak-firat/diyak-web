@@ -1,0 +1,24 @@
+{% extends "panel/_giris_kalibi.html" %}
+{% block baslik %}İki adımlı doğrulamayı kur · DİYAK Panel{% endblock %}
+{% block icerik %}
+<h1>İki adımlı doğrulamayı kur</h1>
+<p>Panele girmek için şifrenize ek olarak telefonunuzdaki bir doğrulama uygulamasının ürettiği kod gerekir.</p>
+<ol class="adimlar">
+  <li>Telefonunuza bir doğrulama uygulaması kurun (Google Authenticator, Microsoft Authenticator, Aegis vb.).</li>
+  <li>Uygulamada "hesap ekle"yi seçip bu karekodu okutun.
+    <img class="karekod" src="{{ karekod }}" alt="Doğrulama uygulaması için karekod" width="200" height="200">
+    <details>
+      <summary>Karekod okutamıyorum</summary>
+      <p>Uygulamaya bu anahtarı elle girin (zaman tabanlı):</p>
+      <p><code class="anahtar">{{ anahtar }}</code></p>
+    </details>
+  </li>
+  <li>Uygulamanın gösterdiği 6 haneli kodu aşağıya yazın.</li>
+</ol>
+<form method="post" novalidate>
+  {% csrf_token %}
+  {% include "panel/_form_alanlari.html" %}
+  <button type="submit">Doğrula ve devam et</button>
+</form>
+<form method="post" action="{% url 'panel:cikis' %}">{% csrf_token %}<button type="submit" class="metin-dugme">Vazgeç ve çık</button></form>
+{% endblock %}
