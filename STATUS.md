@@ -2,16 +2,12 @@
 
 Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan önce bu dosyayı okur, iş bitince günceller.
 
-**Faz:** 1 — statik site
+**Faz:** 1 — statik site yayında değil; Faz 2 paneli geliştiriliyor (A1 bitti)
 **Son güncelleme:** 2026-11-28
 
 ## Şu an
 
-- [ ] **A1 · Temel ve hesaplar** (PANEL.md §12): roller ve dönemler, davet, 2FA (`django-otp`), giriş kilidi (`django-axes`), yeni cihaz uyarısı, `denetim`, `ilk_yonetici`, panel iskeleti ve menüsü, Kullanıcılar ekranı. Yeni pip bağımlılıkları (django-otp, django-axes) onaylandı (2026-11-27)
-  - [x] Roller (`RolAtamasi`, bitiş tarihli), `Davet` (tek kullanımlık, 48 saat, belirteç özeti saklanır), yetki kuralları, `denetim.IslemKaydi`
-  - [x] Giriş, zorunlu 2FA (Admin dahil), `django-axes` kilidi (IP saklanmaz), yeni cihaz uyarısı, oturum süreleri, davet kabul ekranı, `ilk_yonetici` (K-25)
-  - [x] Panel iskeleti ve menüsü (`tokens.css` ve yazı tipleri kopyası, kaynakla aynı olduğu testle denetlenir), Kullanıcılar ekranı (davet, rol ata/kaldır, hesabı kapat; teknik için 2FA sıfırlama ve kilit açma)
-  - [x] Hesabım (şifre değiştir, 2FA cihazı, son giriş olayları), `manage.py gece_gorevleri` (rol bitiş hatırlatması 14 ve 3 gün kala; 1 yıldan eski işlem kaydı, süresi dolmuş davet, onaysız 2FA cihazı ve eski giriş denemelerinin silinmesi)
+- [ ] **A2 · Onay altyapısı ve duyurular** (PANEL.md §12): başlamadan önce "Bekleyen kararlar"daki metin editörü seçilmeli; Astro'nun gündemi API'den çekmesi siteyi yayına bağlar, sıralaması kullanıcıyla konuşulacak
 
 ## Sıradaki
 
@@ -64,7 +60,7 @@ Faz 1 kısa tutulur: Faz 1'de duyuru yazma aracı kurulmaz, hızla Faz 2'ye geç
 - [ ] Sentry ve uptime/disk izleme
 
 **Yönetim paneli** (PANEL.md §12)
-- [ ] A1 · Temel ve hesaplar: davet, dönemlik rol atama, 2FA, giriş kilidi, yeni cihaz uyarısı, işlem kaydı
+- [ ] İşlem kaydı ekranı (PANEL.md §5; Yönetim Kurulu, Danışman, Teknik): kayıtlar A1'den beri tutuluyor, panelde listelenmiyor. Menüye eklenecek
 - [ ] A2 · Onay altyapısı ve duyurular: Yönetim Kurulu onayı, metin editörü, önizleme, API, Astro bağlantısı, Markdown'dan aktarım
 - [ ] A3 · Ekip sayfası: panelden yönetim, yayın onayı, fotoğraflar, `ekip.json`'dan aktarım. Akademik danışman ve ekip üyelerinin gerçek bilgileri ilk kez bu arayüzden girilecek; panelin ilk gerçek testi olur (o zamana kadar `ekip.json` yer tutucu kalır)
 - [ ] A4 · Etkinlikler ve formlar: hazır ama kaldırılabilir alanlar, zorunlu aydınlatma onayı, onay kontrol listesi, herkese açık form sayfası
@@ -83,6 +79,8 @@ Aylık geri yükleme provaları buraya yazılır: `tarih · yedek adı · kayıt
 
 ## Tamamlananlar
 
+- [x] **A1 · Temel ve hesaplar** (PR #17–#20): dönemlik roller, davet (48 saat, tek kullanımlık), yetki kuralları, `denetim` işlem kaydı; şifre + TOTP girişi (Admin dahil), `django-axes` kilidi (IP saklanmaz), yeni cihaz uyarısı, oturum süreleri, `ilk_yonetici`; panel iskeleti ve menüsü, Kullanıcılar ekranı (teknik için 2FA sıfırlama ve kilit açma), Hesabım, `gece_gorevleri` (K-25)
+- [x] Compose yerelde ilk kez çalıştırıldı (2026-11-28): migrate, testler, `/api/saglik/`
 - [x] Backend iskeleti: Django 5.2 LTS, DRF (K-23 varsayılanları), e-posta ile giriş yapan `accounts.Kullanici`, `/api/saglik/`, ayarlar (base/development/test/production), Dockerfile, Compose (K-24), CI (`backend testleri`: migration, pytest, `check --deploy`, Bandit)
 - [x] API katmanı kararı: Django REST Framework (K-23)
 - [x] Open Graph görseli → `frontend/public/og.png` (kaynak `design/og/`), `og:*` ve `twitter:card` etiketleri
