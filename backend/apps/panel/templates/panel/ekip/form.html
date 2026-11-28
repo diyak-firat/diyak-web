@@ -1,0 +1,14 @@
+{% extends "panel/base.html" %}
+{% block baslik %}{{ baslik }} · DİYAK Panel{% endblock %}
+{% block icerik %}
+<header class="sayfa-basi"><div><p class="ust-baslik"><a href="{% url 'panel:ekip' %}">Ekip</a></p><h1>{{ baslik }}</h1></div></header>
+<form method="post" novalidate>
+  {% csrf_token %}
+  {% include "panel/_form_alanlari.html" %}
+  <div class="dugmeler">
+    <button type="submit">{{ dugme }}</button>
+    <a href="{% url 'panel:ekip' %}">Vazgeç</a>
+    {% if sil_adresi %}<a href="{% url sil_adresi nesne.pk %}">Grubu sil</a>{% endif %}
+  </div>
+</form>
+{% endblock %}

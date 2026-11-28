@@ -1,0 +1,13 @@
+{% extends "panel/base.html" %}
+{% block baslik %}{{ baslik }} · DİYAK Panel{% endblock %}
+{% block icerik %}
+<header class="sayfa-basi"><div><p class="ust-baslik"><a href="{% url geri %}">Geri dön</a></p><h1>{{ baslik }}</h1></div></header>
+<div class="onay-kutusu">
+  <p>{{ metin }}</p>
+  <form method="post" class="dugmeler">
+    {% csrf_token %}
+    <button type="submit">{{ dugme }}</button>
+    <a href="{% url geri %}">Vazgeç</a>
+  </form>
+</div>
+{% endblock %}

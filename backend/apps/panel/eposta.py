@@ -27,24 +27,25 @@ def _yk_epostalari(haric=None) -> list[str]:
     return sorted(set(sorgu.values_list("kullanici__email", flat=True)))
 
 
-def onay_epostasi_gonder(duyuru, gonderen=None) -> None:
+def onay_epostasi_gonder(nesne, gonderen=None, tur="duyuru", adres_adi="panel:duyuru", baslik=None) -> None:
     """Onaya gönderilen içerik için Yönetim Kurulu'na bildirim. Yalnızca başlık ve panel bağlantısı."""
     alicilar = _yk_epostalari(haric=gonderen)
     if not alicilar:
         return
     metin = render_to_string(
         "panel/eposta/onay_bekliyor.txt",
-        {"tur": "duyuru", "baslik": duyuru.baslik, "baglanti": settings.PANEL_ADRESI + reverse("panel:duyuru", args=[duyuru.pk])},
+        {"tur": tur, "baslik": baslik or nesne.baslik, "baglanti": settings.PANEL_ADRESI + reverse(adres_adi, args=[nesne.pk])},
     )
-    send_mail("DİYAK Panel: onay bekleyen 1 duyuru var", metin, None, alicilar)
+    send_mail(f"DİYAK Panel: onay bekleyen 1 {tur} var", metin, None, alicilar)
 
 
-def duzeltme_epostasi_gonder(duyuru) -> None:
+def duzeltme_epostasi_gonder(nesne, tur="duyuru", adres_adi="panel:duyuru", baslik=None, adres_arg=True) -> None:
     """Düzeltme istendiğinde hazırlayana bildirim. Notun kendisi panelde görünür."""
-    if duyuru.olusturan is None or not duyuru.olusturan.is_active:
+    if nesne.olusturan is None or not nesne.olusturan.is_active:
         return
+    adres = reverse(adres_adi, args=[nesne.pk]) if adres_arg else reverse(adres_adi)
     metin = render_to_string(
         "panel/eposta/duzeltme_istendi.txt",
-        {"tur": "duyuru", "baslik": duyuru.baslik, "baglanti": settings.PANEL_ADRESI + reverse("panel:duyuru", args=[duyuru.pk])},
+        {"tur": tur, "baslik": baslik or nesne.baslik, "baglanti": settings.PANEL_ADRESI + adres},
     )
-    send_mail("DİYAK Panel: duyurunuz için düzeltme istendi", metin, None, [duyuru.olusturan.email])
+    send_mail(f"DİYAK Panel: {tur} için düzeltme istendi", metin, None, [nesne.olusturan.email])

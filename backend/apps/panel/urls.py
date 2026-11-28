@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import duyurular, hesabim, islem_kaydi, kullanicilar, views
+from . import duyurular, ekip, hesabim, islem_kaydi, kullanicilar, views
 
 app_name = "panel"
 
@@ -22,6 +22,21 @@ urlpatterns = [
     path("duyurular/<int:pk>/geri-cek/", duyurular.geri_cek, name="duyuru_geri_cek"),
     path("duyurular/<int:pk>/yayindan-kaldir/", duyurular.yayindan_kaldir, name="duyuru_yayindan_kaldir"),
     path("duyurular/<int:pk>/sil/", duyurular.sil, name="duyuru_sil"),
+    path("ekip/", ekip.ana, name="ekip"),
+    path("ekip/onizleme/", ekip.onizleme, name="ekip_onizleme"),
+    path("ekip/donem/yeni/", ekip.donem_yeni, name="ekip_donem_yeni"),
+    path("ekip/grup/yeni/", ekip.grup_yeni, name="ekip_grup_yeni"),
+    path("ekip/grup/<int:pk>/", ekip.grup_duzenle, name="ekip_grup"),
+    path("ekip/grup/<int:pk>/sil/", ekip.grup_sil, name="ekip_grup_sil"),
+    path("ekip/grup/<int:grup_pk>/kisi/yeni/", ekip.kisi_yeni, name="ekip_kisi_yeni"),
+    path("ekip/kisi/<int:pk>/", ekip.kisi_duzenle, name="ekip_kisi"),
+    path("ekip/kisi/<int:pk>/sil/", ekip.kisi_sil, name="ekip_kisi_sil"),
+    path("ekip/<str:tur>/<int:pk>/tasi/", ekip.tasi, name="ekip_tasi"),
+    path("ekip/onaya-gonder/", ekip.onaya_gonder, name="ekip_onaya_gonder"),
+    path("ekip/degisiklik/<int:pk>/", ekip.degisiklik, name="ekip_degisiklik"),
+    path("ekip/degisiklik/<int:pk>/onayla/", ekip.degisiklik_onayla, name="ekip_degisiklik_onayla"),
+    path("ekip/degisiklik/<int:pk>/duzeltme-iste/", ekip.degisiklik_duzeltme, name="ekip_degisiklik_duzeltme"),
+    path("ekip/degisiklik/<int:pk>/geri-cek/", ekip.degisiklik_geri_cek, name="ekip_degisiklik_geri_cek"),
     path("islem-kaydi/", islem_kaydi.liste, name="islem_kaydi"),
     path("hesabim/", hesabim.hesabim, name="hesabim"),
     path("hesabim/sifre/", hesabim.sifre_degistir, name="hesabim_sifre"),
