@@ -7,13 +7,17 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 
 ## Şu an
 
-- [ ] **A2 · Onay altyapısı ve duyurular** (PANEL.md §12): başlamadan önce "Bekleyen kararlar"daki metin editörü seçilmeli; Astro'nun gündemi API'den çekmesi siteyi yayına bağlar, sıralaması kullanıcıyla konuşulacak
+- [ ] **A2 · Onay altyapısı ve duyurular** (PANEL.md §12; editör Tiptap, Astro bağlantısı sonra: K-26)
+  - [x] `duyurular.Duyuru`, `etkinlikler.Etkinlik` (yalın), ortak onay akışı (`apps/onay`), gövde temizliği (`nh3`)
+  - [ ] Panel ekranları: duyuru listesi, düzenleme (Tiptap), önizleme, onay ekranı, e-posta bildirimleri
+  - [ ] `/api/duyurular/` (yalnızca yayımlanmış), deploy hook, `faz1_aktar` (Markdown'dan aktarım)
+  - Kapak görseli alanı dosya yükleme akışıyla (A3 fotoğraflarıyla birlikte) eklenecek
 
 ## Sıradaki
 
 **Repo ve yayın**
 - [ ] Organizasyonda en az iki owner (geliştirici + akademik danışman veya bir yönetim kurulu üyesi)
-- [ ] Organizasyon ayarları → Code security: **Secret scanning** ve **Push protection**'ı aç (public repoda ücretsiz; yanlışlıkla commit'lenen şifre veya anahtarı push sırasında engeller). Şu an `diyak-web` için ikisi de kapalı
+- [ ] Organizasyon ayarları → Code security: **Secret scanning** ve **Push protection**'ı organizasyon genelinde aç (`diyak-web` reposunda 2026-11-28'de açıldı)
 - [ ] Gizli operasyon bilgileri için yer: organizasyonda private `diyak-ops` reposu veya parola yöneticisi; erişim yalnızca teknik sorumlular ve Başkan
 - [ ] Bilgi İşlem'den alt alan adı talep et (ör. `diyak.firat.edu.tr`), `astro.config.mjs` içindeki `site` değerini güncelle. RSS ve canonical bağlantıları bu değerden üretilir; şu an `diyak.example.org`
 
@@ -62,7 +66,7 @@ Faz 1 kısa tutulur: Faz 1'de duyuru yazma aracı kurulmaz, hızla Faz 2'ye geç
 - [ ] Sentry ve uptime/disk izleme
 
 **Yönetim paneli** (PANEL.md §12)
-- [ ] A2 · Onay altyapısı ve duyurular: Yönetim Kurulu onayı, metin editörü, önizleme, API, Astro bağlantısı, Markdown'dan aktarım
+- [ ] Astro'nun gündemi `/api/duyurular/`'dan çekmesi (K-26: hosting kararından sonra)
 - [ ] A3 · Ekip sayfası: panelden yönetim, yayın onayı, fotoğraflar, `ekip.json`'dan aktarım. Akademik danışman ve ekip üyelerinin gerçek bilgileri ilk kez bu arayüzden girilecek; panelin ilk gerçek testi olur (o zamana kadar `ekip.json` yer tutucu kalır)
 - [ ] A4 · Etkinlikler ve formlar: hazır ama kaldırılabilir alanlar, zorunlu aydınlatma onayı, onay kontrol listesi, herkese açık form sayfası
 - [ ] A5 · Yanıtlar ve saklama: tablo, CSV, otomatik silme
@@ -76,7 +80,7 @@ Aylık geri yükleme provaları buraya yazılır: `tarih · yedek adı · kayıt
 
 ## Bekleyen kararlar
 
-- **Panel metin editörü:** Konuşulacak. Öneri: Tiptap (çekirdeği MIT lisanslı, araç çubuğu kendi tasarımımızla yapılabiliyor); daha sade alternatif: Trix. A2'den önce karar verilip DECISIONS.md'ye yazılacak.
+- (şu an yok)
 
 ## Tamamlananlar
 

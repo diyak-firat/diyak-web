@@ -92,3 +92,18 @@ def hesabi_kapatabilir_mi(kapatan, hedef, gun=None) -> bool:
 def islem_kaydini_gorebilir_mi(kullanici, gun=None) -> bool:
     """İşlem kaydı ekranı: Yönetim Kurulu, Danışman ve Teknik sorumlu (PANEL.md §4)."""
     return rolu_var(kullanici, Rol.YONETIM_KURULU, Rol.DANISMAN, Rol.TEKNIK, gun=gun)
+
+
+def icerik_hazirlayabilir_mi(kullanici, gun=None) -> bool:
+    """Duyuru, form ve ekip taslağı hazırlayıp onaya gönderebilir mi (Editör, Yönetim Kurulu)."""
+    return rolu_var(kullanici, Rol.EDITOR, Rol.YONETIM_KURULU, gun=gun)
+
+
+def onaylayabilir_mi(kullanici, gun=None) -> bool:
+    """Yayına giden her şeyi yalnızca etkin Yönetim Kurulu üyesi onaylar (PANEL.md §8)."""
+    return rolu_var(kullanici, Rol.YONETIM_KURULU, gun=gun)
+
+
+def icerigi_gorebilir_mi(kullanici, gun=None) -> bool:
+    """Duyuruları görüntüleyebilir mi: hazırlayanlar ve Danışman (yalnızca okur)."""
+    return rolu_var(kullanici, Rol.EDITOR, Rol.YONETIM_KURULU, Rol.DANISMAN, gun=gun)

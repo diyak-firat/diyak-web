@@ -59,6 +59,9 @@ backend/
 │                             yetki.py: panel yetki kuralları · servisler.py: davet ve rol işlemleri
 ├── apps/accounts/management/ ilk_yonetici: ilk Başkan / Teknik sorumlu daveti
 ├── apps/denetim/             IslemKaydi ve kaydet() (kişisel veri yazılmaz)
+├── apps/duyurular/           Duyuru; temizle.py: gövdenin nh3 ile temizliği; servisler.py: düzenleme kuralları
+├── apps/etkinlikler/         Etkinlik (A2'de yalın; ekranlar ve formlar A4'te)
+├── apps/onay/                Ortak onay akışı: onaya gönder, onayla, düzeltme iste, geri çek
 ├── apps/panel/               Giriş, 2FA (django-otp), kilit (django-axes), davet kabul, oturum süresi;
 │                             erisim.py: her panel görünümü panel_gerekli ile sarılır
 │                             kullanicilar.py: Kullanıcılar ekranı · static/panel/: stiller (README)
