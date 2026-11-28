@@ -24,6 +24,8 @@ INSTALLED_APPS = [
     "axes",
     "apps.accounts",
     "apps.denetim",
+    "apps.etkinlikler",
+    "apps.duyurular",
     "apps.panel",
 ]
 

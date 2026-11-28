@@ -175,3 +175,11 @@ Biçim: **Karar** · **Gerekçe** · **Bedeli** (vazgeçtiğimiz şey)
 - `segno` saf Python'dur, bağımlılığı yoktur ve `django-otp`'nin desteklediği iki karekod kütüphanesinden biridir. `qrcode` + Pillow'a göre daha hafif.
 - PANEL.md §6 IP saklamayı yasaklar. Axes'in IP alanı `AXES_CLIENT_IP_CALLABLE` ile boş bırakılır, kilit yalnızca e-postaya göre uygulanır. Axes aynı e-postanın denemelerini tarayıcı bilgisinden bağımsız topladığı için tarayıcı değiştirerek kilit atlatılamaz (testi var); bu yüzden `axes.W006` uyarısı susturuldu. Axes'in ayrıntılı logları kapalıdır (`AXES_VERBOSE=False`), loglara e-posta yazılmaz.
 **Bedeli:** IP'ye göre kilit olmadığı için biri bir kullanıcının e-postasını bilerek o hesabı 30 dakika kilitleyebilir. Küçük bir kullanıcı kitlesinde kabul edilebilir; sorun olursa yeniden değerlendirilir. Herkese açık formların IP başına sınırı (Redis'te kısa süreli sayaç) ayrı bir iştir (A4).
+
+### K-26 · Panel metin editörü: Tiptap; Astro–API bağlantısı sonra
+**Tarih:** 2026-11-28
+**Karar:** Panelde duyuru metni Tiptap ile yazılır. Araç çubuğu PANEL.md §9'daki izin listesiyle sınırlıdır: kalın, italik, başlık (h2/h3), madde ve numaralı liste, alıntı, bağlantı. Tiptap npm paketleri tek bir JavaScript dosyasına derlenir ve bu dosya backend'in statik dosyalarına konur; Docker imajı Node gerektirmez. Editör yalnızca kolaylıktır: sunucu, gelen HTML'i her kayıtta `nh3` ile temizler. Astro'nun gündemi `/api/duyurular/`'dan çekmesi A2'nin panel ve API kısmı bittikten sonra, hosting kararı verilince ayrı bir işte yapılır.
+**Gerekçe:**
+- Tiptap'ın çekirdeği MIT lisanslıdır, hazır bir arayüz dayatmaz; araç çubuğu sitenin tasarımıyla (`tokens.css`) yazılabilir. Trix daha sade ama kendi görünümünü ve izin listemizde olmayan öğeleri (ör. ek dosya) getirir.
+- Astro'yu API'ye bağlamak site derlemesini çalışan bir backend'e bağımlı kılar. Hosting (KVKK) kararı verilmeden bunu yapmak siteyi yayınlanamaz hale getirebilir.
+**Bedeli:** Panel için küçük bir JS derleme adımı olur (PANEL.md §11'deki "metin editörü tek istisnadır" kuralı). Derlenmiş dosya repoda tutulur; paket güncellenince yeniden derlenir.
