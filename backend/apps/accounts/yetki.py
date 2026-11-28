@@ -76,3 +76,8 @@ def hesabi_kapatabilir_mi(kapatan, hedef, gun=None) -> bool:
     if not roller:
         return baskan_veya_yardimcisi_mi(kapatan, gun)
     return roller <= atanabilir_roller(kapatan, gun)
+
+
+def islem_kaydini_gorebilir_mi(kullanici, gun=None) -> bool:
+    """İşlem kaydı ekranı: Yönetim Kurulu, Danışman ve Teknik sorumlu (PANEL.md §4)."""
+    return rolu_var(kullanici, Rol.YONETIM_KURULU, Rol.DANISMAN, Rol.TEKNIK, gun=gun)

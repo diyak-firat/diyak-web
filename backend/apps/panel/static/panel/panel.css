@@ -499,3 +499,31 @@ td.tarih {
 .dugmeler-sik {
   margin-top: 0;
 }
+
+/* ---------- Filtre ve sayfalama ---------- */
+
+.filtre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0 16px;
+  margin-bottom: 24px;
+}
+.filtre .form-alan {
+  min-width: 220px;
+  margin-bottom: 0;
+}
+.sayfalama {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+  font-family: var(--mono);
+  font-size: 14px;
+}
+.sayfalama a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}

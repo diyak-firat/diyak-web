@@ -60,7 +60,6 @@ Faz 1 kısa tutulur: Faz 1'de duyuru yazma aracı kurulmaz, hızla Faz 2'ye geç
 - [ ] Sentry ve uptime/disk izleme
 
 **Yönetim paneli** (PANEL.md §12)
-- [ ] İşlem kaydı ekranı (PANEL.md §5; Yönetim Kurulu, Danışman, Teknik): kayıtlar A1'den beri tutuluyor, panelde listelenmiyor. Menüye eklenecek
 - [ ] A2 · Onay altyapısı ve duyurular: Yönetim Kurulu onayı, metin editörü, önizleme, API, Astro bağlantısı, Markdown'dan aktarım
 - [ ] A3 · Ekip sayfası: panelden yönetim, yayın onayı, fotoğraflar, `ekip.json`'dan aktarım. Akademik danışman ve ekip üyelerinin gerçek bilgileri ilk kez bu arayüzden girilecek; panelin ilk gerçek testi olur (o zamana kadar `ekip.json` yer tutucu kalır)
 - [ ] A4 · Etkinlikler ve formlar: hazır ama kaldırılabilir alanlar, zorunlu aydınlatma onayı, onay kontrol listesi, herkese açık form sayfası
@@ -79,6 +78,7 @@ Aylık geri yükleme provaları buraya yazılır: `tarih · yedek adı · kayıt
 
 ## Tamamlananlar
 
+- [x] Panel: İşlem kaydı ekranı (eylem ve kişi filtresi, sayfalama; Yönetim Kurulu, Danışman, Teknik)
 - [x] **A1 · Temel ve hesaplar** (PR #17–#20): dönemlik roller, davet (48 saat, tek kullanımlık), yetki kuralları, `denetim` işlem kaydı; şifre + TOTP girişi (Admin dahil), `django-axes` kilidi (IP saklanmaz), yeni cihaz uyarısı, oturum süreleri, `ilk_yonetici`; panel iskeleti ve menüsü, Kullanıcılar ekranı (teknik için 2FA sıfırlama ve kilit açma), Hesabım, `gece_gorevleri` (K-25)
 - [x] Compose yerelde ilk kez çalıştırıldı (2026-11-28): migrate, testler, `/api/saglik/`
 - [x] Backend iskeleti: Django 5.2 LTS, DRF (K-23 varsayılanları), e-posta ile giriş yapan `accounts.Kullanici`, `/api/saglik/`, ayarlar (base/development/test/production), Dockerfile, Compose (K-24), CI (`backend testleri`: migration, pytest, `check --deploy`, Bandit)
