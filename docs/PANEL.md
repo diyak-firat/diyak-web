@@ -181,6 +181,9 @@ formlar.Form
   durum             taslak | onay_bekliyor | acik | kapali | arsiv
   acilis, kapanis   tarih-saat
   kontenjan         int, boşsa sınırsız
+  kayit_usulu       ilk_gelen | basvuru (K-30)
+  kapak_gorseli     isteğe bağlı (editör yükler)
+  ekler             → FormEki (PDF), isteğe bağlı
   alanlar           JSON (§7 şeması), sayı sınırı yok
   tekil_alan        alan kimliği, isteğe bağlı (ör. "eposta": aynı değerle ikinci gönderim engellenir)
   aydinlatma_metni  → AydinlatmaMetni (zorunlu)
@@ -197,6 +200,7 @@ formlar.Yanit
   aydinlatma_surumu → AydinlatmaMetni (zorunlu)
   acik_riza         bool (gerekliyse true olmalı)
   gonderim          tarih-saat
+  durum             basvurdu | kabul | yedek | ret (K-30)
   katilim           bilinmiyor | katildi | katilmadi (etkinlikten sonra form sahibi veya Yönetim Kurulu işaretler)
 
 ekip.Donem
@@ -247,14 +251,20 @@ IP adresi **saklanmaz**. Spam sınırlaması için gereken sayaçlar Redis'te k�
 
 | Tür | Kural |
 | --- | --- |
-| `kisa_metin` | ≤ 200 karakter |
+| `kisa_metin` | ≤ 200 karakter. İsteğe bağlı biçim (`bicim`): `ogrenci_no` (yalnızca rakam, 5–15 hane) veya `telefon` (rakam, boşluk, `+`, `(`, `)`, `-`; 10–15 rakam) |
 | `uzun_metin` | ≤ 2000 karakter |
 | `eposta` | E-posta biçimi doğrulanır |
-| `tek_secim` | 2–50 seçenek, her biri ≤ 150 karakter |
+| `tek_secim` | 2–50 seçenek, her biri ≤ 150 karakter; düğmeler (radyo) halinde |
+| `acilir_liste` | `tek_secim` ile aynı kurallar; açılır liste halinde gösterilir |
 | `coklu_secim` | 2–50 seçenek, isteğe bağlı en fazla seçim sayısı |
+| `tarih` | `kip`: `tarih` veya `tarih_saat`; isteğe bağlı en erken ve en geç değer |
+| `olcek` | Tam sayı; başı ve sonu editör belirler (`en_az` 0–1, `en_cok` 2–10); isteğe bağlı iki uç etiketi (≤ 50) |
 | `onay` | Tek onay kutusu |
 
 Her alanın `id` (otomatik, değişmez), `tur`, `etiket` (≤ 200), `aciklama` (isteğe bağlı) ve `zorunlu` bilgisi vardır. **Alan sayısında sınır yoktur.**
+
+- **"Diğer" seçeneği:** `tek_secim`, `acilir_liste` ve `coklu_secim` alanlarında `diger: true` ise sona "Diğer" eklenir; seçilince kısa bir metin kutusu (≤ 150) açılır ve doldurulması zorunlu olur.
+- **Görseller ve ekler (yalnızca editör yükler):** Forma bir kapak görseli ve her soruya isteğe bağlı bir görsel eklenebilir; ekip fotoğraflarıyla aynı akıştan geçer (Pillow ile yeniden kodlanır, EXIF silinir; K-27). Forma PDF ekleri (ör. katılım koşulları) eklenebilir: yalnızca PDF, ≤ 10 MB, dosya türü içerikten doğrulanır, ziyaretçiye indirme olarak sunulur. **Katılımcılar dosya yükleyemez** (§2).
 
 ```json
 {
@@ -265,7 +275,13 @@ Her alanın `id` (otomatik, değişmez), `tur`, `etiket` (≤ 200), `aciklama` (
     { "id": "q7k2", "tur": "tek_secim", "etiket": "Dizüstü bilgisayar getirebilecek misiniz?",
       "zorunlu": true, "secenekler": ["Evet", "Hayır"] },
     { "id": "q9m4", "tur": "uzun_metin", "etiket": "Bu atölyeden beklentiniz nedir?",
-      "zorunlu": false }
+      "zorunlu": false },
+    { "id": "n3x8", "tur": "kisa_metin", "etiket": "Öğrenci numarası", "zorunlu": false,
+      "bicim": "ogrenci_no" },
+    { "id": "b2r5", "tur": "acilir_liste", "etiket": "Bölüm", "zorunlu": false,
+      "secenekler": ["Bilgisayar Mühendisliği", "Yazılım Mühendisliği"], "diger": true },
+    { "id": "t6k1", "tur": "olcek", "etiket": "Atölyeden ne kadar memnun kaldınız?",
+      "zorunlu": true, "en_az": 1, "en_cok": 5, "etiket_en_az": "Hiç", "etiket_en_cok": "Çok" }
   ]
 }
 ```
@@ -322,6 +338,9 @@ Editör: form taslağı ──▶ onaya gönder ──▶ Yönetim Kurulu: kontr
 
 - Tekil alan seçildiyse (varsayılan: e-posta) aynı değerle ikinci gönderim engellenir: "Bu e-postayla zaten kayıt olunmuş".
 - Kontenjan ve kapanış kontrolü gönderim anında veritabanı kilidiyle yapılır, son yerde yarış durumu olmaz.
+- **Kayıt usulü (K-30), form ayarında seçilir:**
+  - **İlk gelen:** kontenjan dolana kadar gelen kayıtlar `kabul` olur. Kontenjan dolunca form kapanmaz; yeni kayıtlar `yedek` olur ve kişiye "yedek listedesiniz" denir. Form sahibi yedekten kabule alabilir.
+  - **Başvuru:** kontenjandan bağımsız başvuru alınır (`basvurdu`). Kapanıştan sonra form sahibi veya Yönetim Kurulu her başvuruyu `kabul`, `yedek` veya `ret` olarak işaretler; seçimde önceki katılmama notu (§8 Katılım) görünür. Formda e-posta alanı varsa sonuç e-postası gönderilebilir.
 - Formda e-posta alanı varsa katılımcıya kısa bir onay e-postası gider (etkinlik adı, tarih, yer, kaydı iptal etmek için iletişim adresi).
 
 ### Ekip sayfası

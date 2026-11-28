@@ -210,3 +210,12 @@ Biçim: **Karar** · **Gerekçe** · **Bedeli** (vazgeçtiğimiz şey)
 **Bedeli:**
 - Katılımcı verisi 10 yıl panelde ve yedeklerde durur; yetki ve işlem kaydı kuralları bu yüzden daha önemli hale gelir.
 - Metin e-posta adresini ve topluluk üyesi olmayan katılımcıları açıkça saymıyor. Formlarda yalnızca aydınlatma onayı zorunlu, diğer alanlar kaldırılabilir; hangi alanların sorulacağına form hazırlanırken ve Yönetim Kurulu onayında dikkat edilir. Etkinliklere özgü bir aydınlatma metni için SKS ve kvkk@firat.edu.tr'ye danışılması STATUS.md'de.
+
+### K-30 · Form alan türleri, kayıt usulü ve editör ekleri
+**Tarih:** 2026-11-28
+**Karar:**
+- Alan türlerine `acilir_liste`, `tarih` (tarih veya tarih-saat), `olcek` (başı ve sonu editörce ayarlanır, uç etiketleri isteğe bağlı) eklendi. Seçimli alanlarda isteğe bağlı "Diğer: ___" seçeneği var. `kisa_metin` alanına isteğe bağlı biçim denetimi geldi: öğrenci numarası veya telefon.
+- Kayıt usulü form başına seçilir: **ilk gelen** (kontenjan dolunca yeni kayıtlar yedek listeye düşer, form kapanmaz) veya **başvuru** (kapanıştan sonra kabul / yedek / ret seçimi). Yanıtın `durum` alanı bu yüzden eklendi.
+- Editör forma kapak görseli, sorulara görsel ve PDF ekleri ekleyebilir. Katılımcı tarafında dosya yükleme yok.
+**Gerekçe:** Kullanıcı kararları (2026-11-28). Başvuru usulü, daha önce kayıt olup katılmayanları ikinci sıraya koyma isteğiyle (K-29) birlikte çalışır. Öğrenci numarası biçimi, formlar arası eşleştirmeyi e-postadan daha güvenilir yapar. Görseller K-27 akışından geçer.
+**Bedeli:** PDF ekleri K-27'nin görsel istisnasını genişletir: PDF yeniden kodlanamaz. Bu yüzden yalnızca editör yükler, tür içerikten doğrulanır, boyut sınırlıdır ve ziyaretçiye indirme (`Content-Disposition: attachment`, `nosniff`) olarak sunulur, sayfa içinde açılmaz.
