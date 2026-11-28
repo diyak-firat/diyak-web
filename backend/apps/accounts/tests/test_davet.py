@@ -147,3 +147,30 @@ def test_islemler_kisisel_veri_olmadan_kayda_gecer(baskan, kullanici_yap, donem_
     for k in kayitlar:
         metin = str(k.ayrinti)
         assert "gizli" not in metin.lower() and "@" not in metin
+
+
+@pytest.mark.parametrize("rol", [Rol.DANISMAN, Rol.EDITOR, Rol.YONETIM_KURULU])
+def test_baskan_kendine_rol_atayamaz(baskan, donem_sonu, rol):
+    with pytest.raises(PermissionDenied):
+        servisler.rol_ata(baskan, baskan, rol, donem_sonu, "Başkan")
+    assert RolAtamasi.objects.filter(kullanici=baskan).count() == 1
+
+
+def test_baskan_kendi_rolunu_uzatamaz_ve_kaldiramaz(baskan):
+    with pytest.raises(PermissionDenied):
+        servisler.rol_ata(baskan, baskan, Rol.YONETIM_KURULU, timezone.localdate() + timedelta(days=2000), "Başkan")
+    with pytest.raises(PermissionDenied):
+        servisler.rol_kaldir(baskan, RolAtamasi.objects.get(kullanici=baskan))
+    assert RolAtamasi.objects.filter(kullanici=baskan).count() == 1
+
+
+def test_teknik_kendine_ikinci_teknik_rol_atayamaz(teknik, donem_sonu):
+    with pytest.raises(PermissionDenied):
+        servisler.rol_ata(teknik, teknik, Rol.TEKNIK, donem_sonu)
+
+
+def test_baskan_yardimcisi_baskanin_rolunu_degistirebilir(baskan, kullanici_yap, donem_sonu):
+    """Kendi rolü değişecek kişi için yol: başka bir yetkili."""
+    yrd = kullanici_yap(Rol.YONETIM_KURULU, "Başkan Yardımcısı")
+    servisler.rol_ata(yrd, baskan, Rol.DANISMAN, donem_sonu)
+    assert RolAtamasi.objects.filter(kullanici=baskan, rol=Rol.DANISMAN).exists()

@@ -39,6 +39,10 @@
   </div>
 </section>
 
+{% if kendisi %}
+<p class="bilgi ust-bosluk">Bu sizin hesabınız. Kendi rollerinizi değiştiremezsiniz; rolünüzün atanması, uzatılması veya kaldırılması için Başkan ya da Başkan Yardımcısı'ndan başka bir yetkiliye başvurun.</p>
+{% endif %}
+
 {% if form and hedef.is_active %}
 <section class="bolum" aria-labelledby="rol-ata">
   <h2 id="rol-ata">Rol ata</h2>

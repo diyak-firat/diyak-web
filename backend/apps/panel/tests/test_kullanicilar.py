@@ -242,3 +242,32 @@ def test_html_kacislanir(client, tam_giris, baskan, kullanici_yap):
     tam_giris(baskan)
     icerik = client.get(reverse("panel:kullanicilar")).content.decode()
     assert "<script>alert(1)</script>" not in icerik and "&lt;script&gt;" in icerik
+
+
+def test_baskan_kendi_sayfasinda_rol_atayamaz(client, tam_giris, baskan, donem_sonu):
+    tam_giris(baskan)
+    adres = reverse("panel:kullanici", args=[baskan.pk])
+    sayfa = client.get(adres)
+    assert sayfa.status_code == 200
+    assert sayfa.context["form"] is None and sayfa.context["kendisi"]
+    assert not any(s["kaldirabilir"] for s in sayfa.context["atamalar"])
+    assert "Kendi rollerinizi değiştiremezsiniz" in sayfa.content.decode()
+    yanit = client.post(adres, {"rol": Rol.DANISMAN, "gorev_adi": "", "bitis": donem_sonu.isoformat()})
+    assert yanit.status_code == 403
+    assert list(RolAtamasi.objects.filter(kullanici=baskan).values_list("rol", flat=True)) == [Rol.YONETIM_KURULU]
+
+
+def test_baskan_kendi_rolunu_url_ile_kaldiramaz(client, tam_giris, baskan):
+    tam_giris(baskan)
+    atama = RolAtamasi.objects.get(kullanici=baskan)
+    adres = reverse("panel:kullanici_rol_kaldir", args=[baskan.pk, atama.pk])
+    assert client.get(adres).status_code == 403
+    assert client.post(adres).status_code == 403
+    assert RolAtamasi.objects.filter(pk=atama.pk).exists()
+
+
+def test_teknik_kendi_sayfasinda_rol_atayamaz(client, tam_giris, teknik, donem_sonu):
+    tam_giris(teknik)
+    adres = reverse("panel:kullanici", args=[teknik.pk])
+    assert client.post(adres, {"rol": Rol.TEKNIK, "bitis": donem_sonu.isoformat()}).status_code == 403
+    assert RolAtamasi.objects.filter(kullanici=teknik).count() == 1

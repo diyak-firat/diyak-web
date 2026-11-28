@@ -89,3 +89,12 @@ def test_bitis_baslangictan_once_olamaz(kullanici_yap):
     k = kullanici_yap()
     with pytest.raises(IntegrityError):
         RolAtamasi.objects.create(kullanici=k, rol=Rol.EDITOR, baslangic=BUGUN(), bitis=BUGUN() - timedelta(days=1))
+
+
+def test_kimse_kendi_rolunu_degistiremez(baskan, teknik, kullanici_yap):
+    hedef = kullanici_yap()
+    assert not yetki.rolunu_degistirebilir_mi(baskan, baskan, Rol.DANISMAN)
+    assert not yetki.rolunu_degistirebilir_mi(teknik, teknik, Rol.TEKNIK)
+    assert yetki.rolunu_degistirebilir_mi(baskan, hedef, Rol.DANISMAN)
+    assert not yetki.rolunu_degistirebilir_mi(baskan, hedef, Rol.TEKNIK)
+    assert not yetki.rolunu_degistirebilir_mi(AnonymousUser(), hedef, Rol.EDITOR)
