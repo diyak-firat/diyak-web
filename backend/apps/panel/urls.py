@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import kullanicilar, views
+from . import hesabim, kullanicilar, views
 
 app_name = "panel"
 
@@ -12,6 +12,8 @@ urlpatterns = [
     path("cikis/", views.cikis, name="cikis"),
     path("davet/", views.davet_kabul, name="davet_kabul"),
     path("davet/<str:token>/", views.davet, name="davet"),
+    path("hesabim/", hesabim.hesabim, name="hesabim"),
+    path("hesabim/sifre/", hesabim.sifre_degistir, name="hesabim_sifre"),
     path("kullanicilar/", kullanicilar.liste, name="kullanicilar"),
     path("kullanicilar/davet/", kullanicilar.davet_et, name="kullanici_davet"),
     path("kullanicilar/<int:pk>/", kullanicilar.detay, name="kullanici"),

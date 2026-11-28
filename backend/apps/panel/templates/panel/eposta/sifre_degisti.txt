@@ -1,0 +1,8 @@
+{% autoescape off %}Merhaba,
+
+DİYAK yönetim panelindeki hesabınızın şifresi {{ zaman|date:"j F Y H:i" }} saatinde değiştirildi.
+
+Bu değişikliği siz yaptıysanız bir şey yapmanıza gerek yok. Siz yapmadıysanız hemen teknik sorumluya haber verin.
+
+DİYAK · Fırat Üniversitesi Doğal Dil İşleme ve Yapay Zekâ Araştırmaları Topluluğu
+{% endautoescape %}

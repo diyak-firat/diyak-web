@@ -12,4 +12,5 @@ def menu(request):
     ogeler = [("Ana ekran", "panel:ana", ad == "ana")]
     if kullanicilari_yonetebilir_mi(k):
         ogeler.append(("Kullanıcılar", "panel:kullanicilar", ad.startswith("kullanici")))
+    ogeler.append(("Hesabım", "panel:hesabim", ad.startswith("hesabim")))
     return {"panel_menu": [{"ad": a, "adres": u, "aktif": aktif} for a, u, aktif in ogeler]}

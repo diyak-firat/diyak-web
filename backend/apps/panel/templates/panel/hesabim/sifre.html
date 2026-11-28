@@ -1,0 +1,19 @@
+{% extends "panel/base.html" %}
+{% block baslik %}Şifremi değiştir · DİYAK Panel{% endblock %}
+{% block icerik %}
+<header class="sayfa-basi">
+  <div>
+    <p class="ust-baslik"><a href="{% url 'panel:hesabim' %}">Hesabım</a></p>
+    <h1>Şifremi değiştir</h1>
+  </div>
+</header>
+<p class="aciklama">Şifreniz değişince diğer cihaz ve tarayıcılardaki oturumlarınız kapanır; bu oturum açık kalır. E-posta adresinize bilgilendirme gider.</p>
+<form method="post" novalidate class="ust-bosluk">
+  {% csrf_token %}
+  {% include "panel/_form_alanlari.html" %}
+  <div class="dugmeler">
+    <button type="submit">Şifreyi değiştir</button>
+    <a href="{% url 'panel:hesabim' %}">Vazgeç</a>
+  </div>
+</form>
+{% endblock %}

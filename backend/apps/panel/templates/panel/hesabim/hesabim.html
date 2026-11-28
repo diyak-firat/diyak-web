@@ -1,0 +1,48 @@
+{% extends "panel/base.html" %}
+{% block baslik %}Hesabım · DİYAK Panel{% endblock %}
+{% block icerik %}
+<header class="sayfa-basi">
+  <div>
+    <p class="ust-baslik">Hesabım</p>
+    <h1>{{ request.user.get_full_name|default:request.user.email }}</h1>
+  </div>
+  <a class="dugme dugme-ikincil" href="{% url 'panel:hesabim_sifre' %}">Şifremi değiştir</a>
+</header>
+
+<dl class="bilgiler">
+  <dt>E-posta</dt><dd>{{ request.user.email }}</dd>
+  <dt>Roller</dt>
+  <dd>
+    <div class="etiketler">
+      {% for a in roller %}<span class="etiket{% if a.rol == 'yonetim_kurulu' %} etiket-koyu{% endif %}">{{ a.get_rol_display }}{% if a.gorev_adi %} · {{ a.gorev_adi }}{% endif %} · bitiş {{ a.bitis|date:"d.m.Y" }}</span>{% endfor %}
+    </div>
+  </dd>
+  <dt>İki adımlı doğrulama</dt>
+  <dd>
+    {% for c in cihazlar %}
+    {{ c.name }}: {{ c.created_at|date:"d.m.Y"|default:"" }} tarihinde eklendi{% if c.last_used_at %}, son kullanım {{ c.last_used_at|date:"d.m.Y H:i" }}{% endif %}{% if not forloop.last %}<br>{% endif %}
+    {% endfor %}
+    <p class="ikincil">Telefonunuzu kaybederseniz veya değiştirirseniz teknik sorumluya yazın; 2FA'nızı sıfırlar, bir sonraki girişte yeniden kurarsınız.</p>
+  </dd>
+</dl>
+
+<section class="bolum" aria-labelledby="son-girisler">
+  <h2 id="son-girisler">Son giriş olayları</h2>
+  <p class="aciklama">Tanımadığınız bir giriş veya başarısız deneme görürseniz şifrenizi değiştirin ve teknik sorumluya haber verin.</p>
+  <div class="tablo-kutu ust-bosluk">
+    <table>
+      <thead><tr><th scope="col">Zaman</th><th scope="col">Olay</th></tr></thead>
+      <tbody>
+        {% for o in olaylar %}
+        <tr>
+          <td class="tarih">{{ o.zaman|date:"d.m.Y H:i" }}</td>
+          <td>{{ o.get_eylem_display }}{% if o.ayrinti.asama == "iki_adim" %} (doğrulama kodu){% elif o.ayrinti.asama == "sifre" %} (şifre){% endif %}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="2" class="bos-durum">Kayıt yok.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
