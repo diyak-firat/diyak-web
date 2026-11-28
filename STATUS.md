@@ -7,7 +7,9 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 
 ## Şu an
 
-- [ ] **A3 · Ekip sayfası** (PANEL.md §12): `ekip` modelleri, Ekip ekranı, fotoğraf yükleme, onay akışı, `/api/ekip/`. Fotoğraf yükleme akışı (yeniden boyutlandırma, EXIF silme, depolama yeri) başlamadan önce konuşulacak
+- [ ] **A3 · Ekip sayfası** (PANEL.md §12; fotoğraflar K-27)
+  - [x] `ekip` modelleri (dönem, grup, kişi, değişiklik), fotoğraf işleme (Pillow; EXIF silinir), onaya gönderilen halin dondurulması, `/api/ekip/` (yalnızca yayın onaylı kişiler)
+  - [ ] Ekip ekranı: dönem, gruplar ve kişiler, fotoğraf yükleme, sıralama, onaya gönderme ve onay ekranı; `ekip.json`'daki grup yapısının aktarılması; rehber
 
 ## Sıradaki
 
@@ -47,7 +49,7 @@ Faz 1 kısa tutulur: Faz 1'de duyuru yazma aracı kurulmaz, hızla Faz 2'ye geç
 - [ ] Aydınlatma metni ve açık rıza metni taslakları, üniversitenin hukuk birimiyle (formların ön şartı)
 - [ ] E-posta gönderim servisi (davet, onay bildirimi, kayıt onayı): önce Bilgi İşlem'in SMTP sunucusu sorulur; yurt dışındaki bir servis KVKK açısından yurt dışına aktarım sayılır
 - [ ] Bütçe: giderlerin nereden karşılanacağı (SKS?) ve ödeme yapılan hesapların topluluk adına açılması
-- [ ] Yayın hazırlığı (Compose): Caddy (TLS ve statik dosyalar), `collectstatic`, Redis, `manage.py gece_gorevleri` için her gece çalışan zamanlayıcı; sunucuda `secrets/` dosya izinleri (web konteyneri `uid 10001` ile çalışır, `chmod 600` + root sahipliği onun okumasını engeller; OPERASYON.md §3 buna göre güncellenmeli)
+- [ ] Yayın hazırlığı (Compose): Caddy (TLS, statik dosyalar ve `/medya/` altındaki yüklenen görseller), `collectstatic`, Redis, `manage.py gece_gorevleri` için her gece çalışan zamanlayıcı; sunucuda `secrets/` dosya izinleri (web konteyneri `uid 10001` ile çalışır, `chmod 600` + root sahipliği onun okumasını engeller; OPERASYON.md §3 buna göre güncellenmeli)
 - [ ] Object storage ve dosya yükleme akışı
 - [ ] Yurt içi VPS seç: 4 GB RAM; paket yükseltmeyi yeniden kurulum gerektirmeden destekleyen bir sağlayıcı (K-19)
 - [ ] Deneme ortamı aynı sunucuda, ayrı Docker Compose projesi olarak (OPERASYON.md §12)
@@ -57,6 +59,8 @@ Faz 1 kısa tutulur: Faz 1'de duyuru yazma aracı kurulmaz, hızla Faz 2'ye geç
 - [ ] Panel adresi (`panel.<alan-adi>`) ve teknik erişim için VPN (Django Admin, SSH)
 - [ ] Yedek anahtarlarını en az iki kişi için üret (OPERASYON.md §4)
 - [ ] Otomatik yedek, cron ve izleme servisi (OPERASYON.md §5)
+- [ ] Yedeğe `media` volume'ünü (ekip fotoğrafları, K-27) ekle; OPERASYON.md §5 buna göre güncellenmeli (onay gerek)
+- [ ] Gece görevi: hiçbir kişi kaydında ve onaylı/bekleyen ekip değişikliğinde kullanılmayan fotoğraf dosyalarını sil
 - [ ] Yayın betiği: elle yedek olmadan migrate çalıştırmasın (OPERASYON.md §6)
 - [ ] İlk geri yükleme provası (OPERASYON.md §8)
 - [ ] Sentry ve uptime/disk izleme
@@ -65,7 +69,7 @@ Faz 1 kısa tutulur: Faz 1'de duyuru yazma aracı kurulmaz, hızla Faz 2'ye geç
 - [ ] **Astro'nun gündemi `/api/duyurular/`'dan çekmesi** (K-26: hosting kararından sonra). Aynı işte: yayımla ve yayından kaldırda Cloudflare Pages deploy hook'u (1 dakikalık pencerede birleştirme, Redis veya zamanlayıcı gerekir); geçişte gündemde gerçek Markdown gönderisi varsa `faz1_aktar` ile panele aktarma (şu an hepsi `ornek: true`, aktarılacak gönderi yok)
 - [ ] Duyuruya kapak görseli (dosya yükleme akışı A3'te kurulunca)
 - [ ] A3 · Ekip sayfası: panelden yönetim, yayın onayı, fotoğraflar, `ekip.json`'dan aktarım. Akademik danışman ve ekip üyelerinin gerçek bilgileri ilk kez bu arayüzden girilecek; panelin ilk gerçek testi olur (o zamana kadar `ekip.json` yer tutucu kalır)
-- [ ] A4 · Etkinlikler ve formlar: hazır ama kaldırılabilir alanlar, zorunlu aydınlatma onayı, onay kontrol listesi, herkese açık form sayfası
+- [ ] A4 · Etkinlikler ve formlar: hazır ama kaldırılabilir alanlar, zorunlu aydınlatma onayı, onay kontrol listesi, herkese açık form sayfası; etkinliğe isteğe bağlı **harita bağlantısı** (yalnızca Google Maps adresleri; yer adı panelde ve sitede tıklanınca haritayı açar; gömülü harita ve API anahtarı yok, 2026-11-28 kararı)
 - [ ] A5 · Yanıtlar ve saklama: tablo, CSV, otomatik silme
 - [ ] A6 · Cilalama: rehberi (`docs/PANEL-KULLANIM.md`) panelin içinde **Yardım** sayfası olarak göster; rehbere deneme ortamında sahte veriyle alınmış ekran görüntüleri ekle
 

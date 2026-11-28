@@ -12,6 +12,7 @@ dependencies = [
     "django-axes>=9.1,<10",
     "segno>=1.6,<2",
     "nh3>=0.3,<0.4",
+    "pillow>=12,<13",
 ]
 
 [dependency-groups]

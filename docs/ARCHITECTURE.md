@@ -128,7 +128,7 @@ Panel rollerinin ayrıntılı yetki tablosu: [PANEL.md §3](PANEL.md#3-roller-ve
 3. Arka plan işi dosyayı **ClamAV** ile tarar. Temiz değilse dosya silinir ve kullanıcıya bildirilir.
 4. Dosya private bucket'ta durur. Yalnızca yetkili kişiye **süreli link** ile açılır.
 
-Dosyalar asla veritabanına veya sunucu diskine yazılmaz.
+Dosyalar asla veritabanına veya sunucu diskine yazılmaz. Tek istisna: panelden yüklenen, herkese açık ekip fotoğrafları (K-27).
 
 ## Güvenlik
 

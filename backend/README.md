@@ -60,6 +60,7 @@ backend/
 ├── apps/accounts/management/ ilk_yonetici: ilk Başkan / Teknik sorumlu daveti
 ├── apps/denetim/             IslemKaydi ve kaydet() (kişisel veri yazılmaz)
 ├── apps/duyurular/           Duyuru; temizle.py: gövdenin nh3 ile temizliği; servisler.py: düzenleme kuralları
+├── apps/ekip/                Dönem, Grup, Kisi, Degisiklik (onaylı donmuş hal); foto.py: Pillow işleme (K-27)
 ├── apps/etkinlikler/         Etkinlik (A2'de yalın; ekranlar ve formlar A4'te)
 ├── apps/onay/                Ortak onay akışı: onaya gönder, onayla, düzeltme iste, geri çek
 ├── editor/                   Panel metin editörü kaynağı (Tiptap, K-26); derlenmiş hali

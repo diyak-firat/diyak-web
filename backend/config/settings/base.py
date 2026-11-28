@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "apps.denetim",
     "apps.etkinlikler",
     "apps.duyurular",
+    "apps.ekip",
     "apps.panel",
 ]
 
@@ -136,6 +137,13 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Yüklenen herkese açık görseller (ekip fotoğrafları; K-27). Yerelde backend/media/, sunucuda
+# `media` volume'ü. Canlıda Caddy sunar. Kişisel/özel dosyalar buraya konmaz (ARCHITECTURE.md).
+MEDIA_URL = "/medya/"
+MEDIA_ROOT = BASE_DIR / "media"
+FILE_UPLOAD_MAX_MEMORY_SIZE = 2 * 1024 * 1024
+DATA_UPLOAD_MAX_MEMORY_SIZE = 2 * 1024 * 1024
 
 # API (K-23): yalnızca JSON, varsayılan izin KAPALI. Herkese açık uç noktalar görünüm
 # düzeyinde açıkça AllowAny alır ve salt okunurdur.
