@@ -1,6 +1,6 @@
 """Panel şablonlarına menüyü verir. Menüde yalnızca kişinin açabildiği ekranlar görünür."""
 
-from apps.accounts.yetki import kullanicilari_yonetebilir_mi, panel_kullanicisi_mi
+from apps.accounts.yetki import islem_kaydini_gorebilir_mi, kullanicilari_yonetebilir_mi, panel_kullanicisi_mi
 
 
 def menu(request):
@@ -12,5 +12,7 @@ def menu(request):
     ogeler = [("Ana ekran", "panel:ana", ad == "ana")]
     if kullanicilari_yonetebilir_mi(k):
         ogeler.append(("Kullanıcılar", "panel:kullanicilar", ad.startswith("kullanici")))
+    if islem_kaydini_gorebilir_mi(k):
+        ogeler.append(("İşlem kaydı", "panel:islem_kaydi", ad == "islem_kaydi"))
     ogeler.append(("Hesabım", "panel:hesabim", ad.startswith("hesabim")))
     return {"panel_menu": [{"ad": a, "adres": u, "aktif": aktif} for a, u, aktif in ogeler]}

@@ -1,0 +1,56 @@
+{% extends "panel/base.html" %}
+{% block baslik %}İşlem kaydı · DİYAK Panel{% endblock %}
+{% block icerik %}
+<header class="sayfa-basi">
+  <div>
+    <p class="ust-baslik">İşlem kaydı</p>
+    <h1>Kim, neyi, ne zaman yaptı</h1>
+  </div>
+</header>
+<p class="aciklama">Kayıtlar değiştirilemez ve 1 yıl saklanır. Kişisel veri (form yanıtları, IP adresi) kaydedilmez; kişiler ve nesneler kimlikleriyle anılır.</p>
+
+<form method="get" class="filtre ust-bosluk" aria-label="Kayıtları filtrele">
+  <div class="form-alan">
+    <label for="eylem">Eylem</label>
+    <select id="eylem" name="eylem">
+      <option value="">Tümü</option>
+      {% for deger, ad in eylemler %}<option value="{{ deger }}"{% if deger == secili_eylem %} selected{% endif %}>{{ ad }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="form-alan">
+    <label for="kisi">Kişi</label>
+    <select id="kisi" name="kisi">
+      <option value="">Tümü</option>
+      {% for k in kisiler %}<option value="{{ k.pk }}"{% if k.pk|stringformat:"d" == secili_kisi %} selected{% endif %}>{{ k.get_full_name|default:k.email }}</option>{% endfor %}
+    </select>
+  </div>
+  <button type="submit" class="dugme-ikincil">Filtrele</button>
+</form>
+
+<div class="tablo-kutu">
+  <table>
+    <thead><tr><th scope="col">Zaman</th><th scope="col">Kişi</th><th scope="col">Eylem</th><th scope="col">Nesne</th><th scope="col">Ayrıntı</th></tr></thead>
+    <tbody>
+      {% for k in sayfa %}
+      <tr>
+        <td class="tarih">{{ k.zaman|date:"d.m.Y H:i" }}</td>
+        <td>{% if k.kullanici %}{{ k.kullanici.get_full_name|default:k.kullanici.email }}{% else %}<span class="ikincil">sistem</span>{% endif %}</td>
+        <td>{{ k.get_eylem_display }}</td>
+        <td>{% if k.nesne_turu %}<code>{{ k.nesne_turu }} #{{ k.nesne_id }}</code>{% else %}—{% endif %}</td>
+        <td class="ikincil">{% for ad, deger in k.ayrinti.items %}{{ ad }}: {{ deger }}{% if not forloop.last %} · {% endif %}{% empty %}—{% endfor %}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5" class="bos-durum">Bu filtreye uyan kayıt yok.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if sayfa.paginator.num_pages > 1 %}
+<nav class="sayfalama" aria-label="Sayfalar">
+  {% if sayfa.has_previous %}<a href="?eylem={{ secili_eylem|urlencode }}&amp;kisi={{ secili_kisi|urlencode }}&amp;sayfa={{ sayfa.previous_page_number }}">Önceki</a>{% endif %}
+  <span>Sayfa {{ sayfa.number }} / {{ sayfa.paginator.num_pages }}</span>
+  {% if sayfa.has_next %}<a href="?eylem={{ secili_eylem|urlencode }}&amp;kisi={{ secili_kisi|urlencode }}&amp;sayfa={{ sayfa.next_page_number }}">Sonraki</a>{% endif %}
+</nav>
+{% endif %}
+{% endblock %}
