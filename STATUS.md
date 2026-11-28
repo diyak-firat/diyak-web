@@ -43,11 +43,11 @@ Siteyi bir bağlantıyla ekibe/danışmana göstermek gerektiğinde veya alan ad
 Faz 1 kısa tutulur: Faz 1'de duyuru yazma aracı kurulmaz, hızla Faz 2'ye geçilir (K-18). Plan: [backend/README.md](backend/README.md), panel: [docs/PANEL.md](docs/PANEL.md).
 
 - [ ] Hosting yeri kararı (KVKK — yurt içi / üniversite sunucusu / yurt dışı)
-- [ ] Veri sorumlusunun kim olduğunu (topluluk mu, üniversite mi) SKS ile yazılı netleştir
+- [ ] Veri sorumlusu: üniversitenin "Öğrenci Topluluğu Üyesi İlgili Kişi Aydınlatma Metni"nde Fırat Üniversitesi olarak geçiyor (2026-11-28). Etkinlik formları için uygun metin SKS ve kvkk@firat.edu.tr ile netleştirilecek (e-posta alanı, üye olmayan katılımcılar, saklama süresi)
 - [ ] Aydınlatma metni ve açık rıza metni taslakları, üniversitenin hukuk birimiyle (formların ön şartı)
 - [ ] E-posta gönderim servisi (davet, onay bildirimi, kayıt onayı): önce Bilgi İşlem'in SMTP sunucusu sorulur; yurt dışındaki bir servis KVKK açısından yurt dışına aktarım sayılır
 - [ ] Bütçe: giderlerin nereden karşılanacağı (SKS?) ve ödeme yapılan hesapların topluluk adına açılması
-- [ ] Yayın hazırlığı (Compose): Caddy (TLS, statik dosyalar ve `/medya/` altındaki yüklenen görseller), `collectstatic`, Redis, `manage.py gece_gorevleri` için her gece çalışan zamanlayıcı; sunucuda `secrets/` dosya izinleri (web konteyneri `uid 10001` ile çalışır, `chmod 600` + root sahipliği onun okumasını engeller; OPERASYON.md §3 buna göre güncellenmeli)
+- [ ] Yayın hazırlığı (Compose): Caddy (TLS, statik dosyalar ve `/medya/` altındaki yüklenen görseller), `collectstatic`, `manage.py gece_gorevleri` için her gece çalışan zamanlayıcı; sunucuda `secrets/` dosya izinleri (web konteyneri `uid 10001` ile çalışır, `chmod 600` + root sahipliği onun okumasını engeller; OPERASYON.md §3 buna göre güncellenmeli)
 - [ ] Object storage ve dosya yükleme akışı
 - [ ] Yurt içi VPS seç: 4 GB RAM; paket yükseltmeyi yeniden kurulum gerektirmeden destekleyen bir sağlayıcı (K-19)
 - [ ] Deneme ortamı aynı sunucuda, ayrı Docker Compose projesi olarak (OPERASYON.md §12)
@@ -83,6 +83,7 @@ Aylık geri yükleme provaları buraya yazılır: `tarih · yedek adı · kayıt
 
 ## Tamamlananlar
 
+- [x] Önbellek ve kısa ömürlü sayaçlar için Valkey servisi ve `django-redis` (K-28)
 - [x] **A3 · Ekip sayfası** (PR #29 ve bu PR; K-27): dönem, grup ve kişi modelleri, Pillow ile fotoğraf işleme (EXIF silinir), onaylanan halin dondurulması, `/api/ekip/` (yalnızca yazılı yayın onaylı kişiler), Ekip ekranı (dönem açma, sitedeki bölümlerle başlatma, kişi ve fotoğraf, sıralama, önizleme), onay ekranı (sitedeki halden fark), rehber. `ekip.json`'daki kişiler yer tutucu olduğu için aktarılmadı; grup yapısı "sitedeki bölümlerle başlat" seçeneğiyle geliyor. Astro'nun ekip sayfasını API'den çekmesi gündemle birlikte (K-26)
 - [x] **A2 · Onay altyapısı ve duyurular, panel tarafı** (PR #25, #26 ve bu PR): `Duyuru`, yalın `Etkinlik`, ortak onay akışı, `nh3` temizliği, Tiptap editörü (K-26), duyuru ekranları, onay ekranı, e-posta bildirimleri, `/api/duyurular/` (yalnızca yayımlanmış). Astro bağlantısı ve deploy hook ayrı iş
 - [x] Panel kullanım rehberi → `docs/PANEL-KULLANIM.md` (şimdilik A1 ekranları; her aşamada genişler). Public repo kuralları AGENTS.md'ye eklendi

@@ -156,6 +156,17 @@ REST_FRAMEWORK = {
     "UNAUTHENTICATED_USER": None,
 }
 
+# Önbellek ve kısa ömürlü sayaçlar: Valkey/Redis (K-28). İstek sınırı sayaçları burada tutulur;
+# IP adresi veritabanına yazılmaz (PANEL.md §6, §9).
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": env("REDIS_URL", "redis://redis:6379/0"),
+        "KEY_PREFIX": "diyak",
+        "TIMEOUT": 300,
+    }
+}
+
 # Loglara kişisel veri yazılmaz (PANEL.md §9). İstek gövdeleri loglanmaz.
 LOGGING = {
     "version": 1,
