@@ -1,15 +1,39 @@
-<!doctype html>
+{% load static %}<!doctype html>
 <html lang="tr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
   <title>{% block baslik %}DİYAK Panel{% endblock %}</title>
-  {% block stil %}{% endblock %}
+  <link rel="stylesheet" href="{% static 'panel/fontlar.css' %}">
+  <link rel="stylesheet" href="{% static 'panel/tokens.css' %}">
+  <link rel="stylesheet" href="{% static 'panel/panel.css' %}">
 </head>
 <body class="{% block govde_sinifi %}{% endblock %}">
+  <a class="skip-link" href="#icerik">İçeriğe geç</a>
   {% block govde %}
-  <main id="icerik">{% block icerik %}{% endblock %}</main>
+  <div class="panel">
+    <nav class="menu" aria-label="Panel menüsü">
+      <a class="menu-marka" href="{% url 'panel:ana' %}">DİYAK <span>Yönetim paneli</span></a>
+      <ul>
+        {% for oge in panel_menu %}
+        <li><a href="{% url oge.adres %}"{% if oge.aktif %} aria-current="page"{% endif %}>{{ oge.ad }}</a></li>
+        {% endfor %}
+      </ul>
+      <div class="menu-alt">
+        <strong>{{ request.user.get_full_name|default:request.user.email }}</strong>
+        <form method="post" action="{% url 'panel:cikis' %}">{% csrf_token %}<button type="submit" class="metin-dugme">Çıkış yap</button></form>
+      </div>
+    </nav>
+    <main id="icerik" class="icerik">
+      {% if messages %}
+      <ul class="bildirimler" role="status">
+        {% for m in messages %}<li class="bildirim">{{ m }}</li>{% endfor %}
+      </ul>
+      {% endif %}
+      {% block icerik %}{% endblock %}
+    </main>
+  </div>
   {% endblock %}
 </body>
 </html>

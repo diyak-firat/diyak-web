@@ -1,0 +1,44 @@
+/*
+ * DİYAK tasarım değişkenleri. Tüm renk ve yazı tipleri buradan gelir.
+ * Yeni renk eklemeden önce docs/DESIGN.md dosyasına bakın.
+ */
+:root {
+  color-scheme: light;
+
+  /* Lacivert aile */
+  --navy: #1e2142;
+  --navy-2: #282c55;
+  --navy-3: #161935;
+  --navy-line: #3a3d63;
+
+  /* Metin */
+  --ink: #1a1a1f;
+  --text: #3a3c4a;
+  --muted: #55586a;
+
+  /* Çizgi ve zeminler */
+  --line: #e3e3e8;
+  --line-strong: #c9cbda;
+  --tint: #f5f5f7;
+  --chip: #eeeef3;
+  --paper: #ffffff;
+  --placeholder: #9a9cb0;
+
+  /* Koyu zemin üstü */
+  --on-navy: #c9cbda;
+  --on-navy-muted: #a3a6c2;
+
+  /* Vurgu — az kullanılır */
+  --accent: #e5533a;
+  --hover: #c2412b;
+
+  /* Yazı tipleri */
+  --serif: 'Source Serif 4 Variable', 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* Düzen */
+  --content-max: 1120px;
+  --gutter: 20px;
+  --radius: 4px;
+}

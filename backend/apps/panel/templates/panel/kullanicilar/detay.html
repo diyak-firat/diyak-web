@@ -1,0 +1,66 @@
+{% extends "panel/base.html" %}
+{% block baslik %}{{ hedef.get_full_name|default:hedef.email }} · Kullanıcılar · DİYAK Panel{% endblock %}
+{% block icerik %}
+<header class="sayfa-basi">
+  <div>
+    <p class="ust-baslik"><a href="{% url 'panel:kullanicilar' %}">Kullanıcılar</a></p>
+    <h1>{{ hedef.get_full_name|default:hedef.email }}</h1>
+  </div>
+</header>
+
+<dl class="bilgiler">
+  <dt>E-posta</dt><dd>{{ hedef.email }}</dd>
+  <dt>Hesap</dt><dd>{% if hedef.is_active %}Açık{% else %}<span class="etiket etiket-cizgi">Kapalı</span>{% endif %}</dd>
+  <dt>2FA</dt><dd>{% if iki_adim_kurulu %}Kurulu{% else %}Kurulmamış (ilk girişte kurulacak){% endif %}</dd>
+  <dt>Giriş kilidi</dt><dd>{% if kilitli %}Kilitli: art arda hatalı şifre girildi{% else %}Yok{% endif %}</dd>
+  <dt>Son giriş</dt><dd>{{ hedef.last_login|date:"d.m.Y H:i"|default:"Henüz giriş yapmadı" }}</dd>
+</dl>
+
+<section class="bolum" aria-labelledby="roller">
+  <h2 id="roller">Roller</h2>
+  <div class="tablo-kutu">
+    <table>
+      <thead><tr><th scope="col">Rol</th><th scope="col">Görev</th><th scope="col">Başlangıç</th><th scope="col">Bitiş</th><th scope="col">Durum</th><th scope="col"><span class="gorunmez">İşlem</span></th></tr></thead>
+      <tbody>
+        {% for s in atamalar %}
+        <tr>
+          <td>{{ s.atama.get_rol_display }}</td>
+          <td>{{ s.atama.gorev_adi|default:"—" }}</td>
+          <td class="tarih">{{ s.atama.baslangic|date:"d.m.Y" }}</td>
+          <td class="tarih">{{ s.atama.bitis|date:"d.m.Y" }}</td>
+          <td><span class="etiket{% if s.durum == 'etkin' %} etiket-koyu{% endif %}">{{ s.durum }}</span></td>
+          <td>{% if s.kaldirabilir %}<a href="{% url 'panel:kullanici_rol_kaldir' hedef.pk s.atama.pk %}">Kaldır</a>{% endif %}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="bos-durum">Bu kişinin rolü yok.{% if form %} Aşağıdan rol atayabilirsiniz.{% endif %}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{% if form and hedef.is_active %}
+<section class="bolum" aria-labelledby="rol-ata">
+  <h2 id="rol-ata">Rol ata</h2>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% include "panel/_form_alanlari.html" %}
+    {% include "panel/kullanicilar/_gorev_onerileri.html" %}
+    <button type="submit">Rolü ata</button>
+  </form>
+</section>
+{% endif %}
+
+{% if teknik or kapatabilir %}
+<section class="bolum" aria-labelledby="hesap-islemleri">
+  <h2 id="hesap-islemleri">Hesap işlemleri</h2>
+  <div class="dugmeler dugmeler-sik">
+    {% if teknik and kilitli %}
+    <form method="post" action="{% url 'panel:kullanici_kilidi_ac' hedef.pk %}">{% csrf_token %}<button type="submit" class="dugme-ikincil">Giriş kilidini aç</button></form>
+    {% endif %}
+    {% if teknik and iki_adim_kurulu %}<a class="dugme dugme-ikincil" href="{% url 'panel:kullanici_iki_adim_sifirla' hedef.pk %}">2FA'yı sıfırla</a>{% endif %}
+    {% if kapatabilir %}<a class="dugme dugme-ikincil" href="{% url 'panel:kullanici_kapat' hedef.pk %}">Hesabı kapat</a>{% endif %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

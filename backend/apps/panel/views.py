@@ -161,4 +161,7 @@ def davet_kabul(request):
 
 @panel_gerekli()
 def ana(request):
-    return render(request, "panel/ana.html")
+    from apps.accounts.models import RolAtamasi
+
+    rollerim = RolAtamasi.objects.etkin().filter(kullanici=request.user).order_by("rol")
+    return render(request, "panel/ana.html", {"rollerim": rollerim})

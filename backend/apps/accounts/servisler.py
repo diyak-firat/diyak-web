@@ -16,7 +16,7 @@ from apps.denetim.kayit import kaydet
 from apps.denetim.models import Eylem
 
 from .models import GOREV_BASKAN, Davet, Rol, RolAtamasi
-from .yetki import rol_atayabilir_mi
+from .yetki import hesabi_kapatabilir_mi, rol_atayabilir_mi, teknik_mi
 
 
 def _ozet(token: str) -> str:
@@ -171,3 +171,37 @@ def rol_kaldir(kaldiran, atama: RolAtamasi) -> None:
     with transaction.atomic():
         kaydet(Eylem.ROL_KALDIRMA, kullanici=kaldiran, nesne=atama, ayrinti=_atama_ayrintisi(atama))
         atama.delete()
+
+
+def hesabi_kapat(kapatan, kullanici) -> None:
+    """Hesabı kapatır (``is_active=False``). Açık oturumlar bir sonraki istekte düşer.
+    Rol atamaları silinmez; kapatılmış hesabın rolü zaten yetki vermez.
+    """
+    if not hesabi_kapatabilir_mi(kapatan, kullanici):
+        raise PermissionDenied("Bu hesabı kapatma yetkiniz yok.")
+    with transaction.atomic():
+        kullanici.is_active = False
+        kullanici.save(update_fields=["is_active"])
+        kaydet(Eylem.HESAP_KAPATMA, kullanici=kapatan, nesne=kullanici)
+
+
+def iki_adimi_sifirla(teknik, kullanici) -> int:
+    """Kullanıcının 2FA cihazlarını siler; bir sonraki girişte yeniden kurar. Silinen sayıyı döndürür."""
+    from django_otp.plugins.otp_totp.models import TOTPDevice
+
+    if not teknik_mi(teknik) or kullanici.pk == teknik.pk:
+        raise PermissionDenied("2FA'yı yalnızca teknik sorumlu, başka bir hesap için sıfırlayabilir.")
+    with transaction.atomic():
+        silinen, _ = TOTPDevice.objects.filter(user=kullanici).delete()
+        kaydet(Eylem.IKI_ADIM_SIFIRLAMA, kullanici=teknik, nesne=kullanici, ayrinti={"silinen_cihaz": silinen})
+    return silinen
+
+
+def kilidi_ac(teknik, kullanici) -> None:
+    """Hatalı giriş kilidini (django-axes) kaldırır."""
+    from axes.utils import reset
+
+    if not teknik_mi(teknik):
+        raise PermissionDenied("Hesap kilidini yalnızca teknik sorumlu açabilir.")
+    reset(username=kullanici.email.lower())
+    kaydet(Eylem.KILIT_ACMA, kullanici=teknik, nesne=kullanici)

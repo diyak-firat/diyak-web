@@ -18,6 +18,8 @@ class Eylem(models.TextChoices):
     ROL_ATAMA = "rol_atama", "Rol atama"
     ROL_KALDIRMA = "rol_kaldirma", "Rol kaldırma"
     IKI_ADIM_SIFIRLAMA = "iki_adim_sifirlama", "2FA sıfırlama"
+    KILIT_ACMA = "kilit_acma", "Hesap kilidini açma"
+    HESAP_KAPATMA = "hesap_kapatma", "Hesap kapatma"
     ONAYA_GONDERME = "onaya_gonderme", "Onaya gönderme"
     ONAYLAMA = "onaylama", "Onaylama"
     DUZELTME_ISTEME = "duzeltme_isteme", "Düzeltme isteme"

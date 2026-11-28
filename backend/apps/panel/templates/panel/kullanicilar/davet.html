@@ -1,0 +1,20 @@
+{% extends "panel/base.html" %}
+{% block baslik %}Kişi davet et · DİYAK Panel{% endblock %}
+{% block icerik %}
+<header class="sayfa-basi">
+  <div>
+    <p class="ust-baslik"><a href="{% url 'panel:kullanicilar' %}">Kullanıcılar</a></p>
+    <h1>Kişi davet et</h1>
+  </div>
+</header>
+<p class="aciklama">Davet edilen kişiye 48 saat geçerli, tek kullanımlık bir bağlantı gider. Kişi bağlantıyı açıp şifresini belirler ve telefonuna iki adımlı doğrulama kurar.</p>
+<form method="post" novalidate class="ust-bosluk">
+  {% csrf_token %}
+  {% include "panel/_form_alanlari.html" %}
+  {% include "panel/kullanicilar/_gorev_onerileri.html" %}
+  <div class="dugmeler">
+    <button type="submit">Daveti gönder</button>
+    <a href="{% url 'panel:kullanicilar' %}">Vazgeç</a>
+  </div>
+</form>
+{% endblock %}
