@@ -56,6 +56,17 @@ def rol_atayabilir_mi(kullanici, rol: str, gun=None) -> bool:
     return rol in atanabilir_roller(kullanici, gun)
 
 
+def rolunu_degistirebilir_mi(yapan, hedef, rol: str, gun=None) -> bool:
+    """Bir kişiye bu rolü atayabilir veya ondan kaldırabilir mi.
+
+    Kimse kendi rollerini değiştiremez: Başkan kendine başka rol veremez, kendi rolünü uzatamaz
+    veya kaldıramaz. Kendi rolüyle ilgili bir değişikliği başka bir yetkili yapar.
+    """
+    if hedef is None or getattr(yapan, "pk", None) is None or hedef.pk == yapan.pk:
+        return False
+    return rol_atayabilir_mi(yapan, rol, gun)
+
+
 def kullanicilari_yonetebilir_mi(kullanici, gun=None) -> bool:
     """Kullanıcılar ekranını açabilir mi (Başkan, Başkan Yrd., Teknik)."""
     return bool(atanabilir_roller(kullanici, gun))

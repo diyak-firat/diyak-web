@@ -98,7 +98,8 @@ def _hedef(pk: int):
 @yonetici_gerekli
 def detay(request, pk: int):
     hedef = _hedef(pk)
-    roller = yetki.atanabilir_roller(request.user)
+    kendisi = hedef.pk == request.user.pk
+    roller = frozenset() if kendisi else yetki.atanabilir_roller(request.user)
     form = RolAtamaFormu(request.POST or None, roller=roller, initial={"bitis": _varsayilan_bitis(request.user)})
     if request.method == "POST":
         if not roller:
@@ -132,6 +133,7 @@ def detay(request, pk: int):
             "kilitli": _kilitli_mi(hedef),
             "teknik": yetki.teknik_mi(request.user) and hedef.pk != request.user.pk,
             "kapatabilir": yetki.hesabi_kapatabilir_mi(request.user, hedef),
+            "kendisi": kendisi,
             **_ortak(request),
         },
     )
@@ -145,7 +147,7 @@ def _onay_sayfasi(request, hedef, baslik: str, metin: str, dugme: str):
 def rol_kaldir(request, pk: int, atama_pk: int):
     hedef = _hedef(pk)
     atama = get_object_or_404(RolAtamasi, pk=atama_pk, kullanici=hedef)
-    if not yetki.rol_atayabilir_mi(request.user, atama.rol):
+    if not yetki.rolunu_degistirebilir_mi(request.user, hedef, atama.rol):
         raise PermissionDenied
     if request.method == "POST":
         servisler.rol_kaldir(request.user, atama)

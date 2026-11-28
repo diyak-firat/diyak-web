@@ -16,7 +16,7 @@ from apps.denetim.kayit import kaydet
 from apps.denetim.models import Eylem
 
 from .models import GOREV_BASKAN, Davet, Rol, RolAtamasi
-from .yetki import hesabi_kapatabilir_mi, rol_atayabilir_mi, teknik_mi
+from .yetki import hesabi_kapatabilir_mi, rol_atayabilir_mi, rolunu_degistirebilir_mi, teknik_mi
 
 
 def _ozet(token: str) -> str:
@@ -150,8 +150,8 @@ def daveti_kullan(token: str, sifre: str, ad: str = "", soyad: str = ""):
 
 def rol_ata(atayan, kullanici, rol: str, bitis: date, gorev_adi: str = "", baslangic: date | None = None) -> RolAtamasi:
     _rol_denetle(rol)
-    if not rol_atayabilir_mi(atayan, rol):
-        raise PermissionDenied("Bu rolü atama yetkiniz yok.")
+    if not rolunu_degistirebilir_mi(atayan, kullanici, rol):
+        raise PermissionDenied("Bu rolü atama yetkiniz yok. Kendi rollerinizi değiştiremezsiniz.")
     if not kullanici.is_active:
         raise ValidationError("Kapatılmış bir hesaba rol atanamaz.")
     baslangic = baslangic or timezone.localdate()
@@ -166,8 +166,8 @@ def rol_ata(atayan, kullanici, rol: str, bitis: date, gorev_adi: str = "", basla
 
 def rol_kaldir(kaldiran, atama: RolAtamasi) -> None:
     """Rol atamasını kaldırır. İz işlem kaydında kalır."""
-    if not rol_atayabilir_mi(kaldiran, atama.rol):
-        raise PermissionDenied("Bu rolü kaldırma yetkiniz yok.")
+    if not rolunu_degistirebilir_mi(kaldiran, atama.kullanici, atama.rol):
+        raise PermissionDenied("Bu rolü kaldırma yetkiniz yok. Kendi rollerinizi değiştiremezsiniz.")
     with transaction.atomic():
         kaydet(Eylem.ROL_KALDIRMA, kullanici=kaldiran, nesne=atama, ayrinti=_atama_ayrintisi(atama))
         atama.delete()
