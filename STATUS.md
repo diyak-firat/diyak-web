@@ -7,7 +7,11 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 
 ## Şu an
 
-- [ ] **A4 · Etkinlikler ve formlar** (PANEL.md §12): başlamadan önce aydınlatma metni taslağının (hukuk birimi) durumu ve spam koruması için Redis'in eklenmesi konuşulacak
+- [ ] **A4 · Etkinlikler ve formlar** (PANEL.md §12; K-29, K-30)
+  - [x] Etkinlikler ekranı, harita bağlantısı (yalnızca Google Haritalar), duyuruda var olan etkinliği seçme
+  - [ ] `formlar`: aydınlatma metni (sürümlü; ilk metin üniversitenin öğrenci topluluğu üyesi metni), form, yanıt, alan şeması ve doğrulama
+  - [ ] Form oluşturucu ekranı, editör ekleri (kapak ve soru görseli, PDF), onay kontrol listesi
+  - [ ] Herkese açık kayıt sayfası: kayıt usulü (ilk gelen + yedek / başvuru), kontenjan kilidi, tekil alan, kapanış, onay e-postası, spam koruması
 
 ## Sıradaki
 
@@ -67,7 +71,7 @@ Faz 1 kısa tutulur: Faz 1'de duyuru yazma aracı kurulmaz, hızla Faz 2'ye geç
 - [ ] **Astro'nun gündemi `/api/duyurular/`'dan, ekip sayfasını `/api/ekip/`'ten çekmesi** (K-26: hosting kararından sonra). Aynı işte: yayımla ve yayından kaldırda Cloudflare Pages deploy hook'u (1 dakikalık pencerede birleştirme, Redis veya zamanlayıcı gerekir); geçişte gündemde gerçek Markdown gönderisi varsa `faz1_aktar` ile panele aktarma (şu an hepsi `ornek: true`, aktarılacak gönderi yok)
 - [ ] Duyuruya kapak görseli (dosya yükleme akışı A3'te kurulunca)
 - [ ] A3 · Ekip sayfası: panelden yönetim, yayın onayı, fotoğraflar, `ekip.json`'dan aktarım. Akademik danışman ve ekip üyelerinin gerçek bilgileri ilk kez bu arayüzden girilecek; panelin ilk gerçek testi olur (o zamana kadar `ekip.json` yer tutucu kalır)
-- [ ] A4 · Etkinlikler ve formlar: hazır ama kaldırılabilir alanlar, zorunlu aydınlatma onayı, onay kontrol listesi, herkese açık form sayfası; etkinliğe isteğe bağlı **harita bağlantısı** (yalnızca Google Maps adresleri; yer adı panelde ve sitede tıklanınca haritayı açar; gömülü harita ve API anahtarı yok, 2026-11-28 kararı)
+- [ ] A4 · Etkinlikler ve formlar: hazır ama kaldırılabilir alanlar, zorunlu aydınlatma onayı, onay kontrol listesi, herkese açık form sayfası
 - [ ] A5 · Yanıtlar ve saklama: tablo, CSV, otomatik silme
 - [ ] A6 · Cilalama: rehberi (`docs/PANEL-KULLANIM.md`) panelin içinde **Yardım** sayfası olarak göster; rehbere deneme ortamında sahte veriyle alınmış ekran görüntüleri ekle
 

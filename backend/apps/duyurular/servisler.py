@@ -29,9 +29,18 @@ def duzenleyebilir_mi(kullanici, duyuru: Duyuru | None = None) -> bool:
     return False
 
 
-def _etkinligi_esle(kullanici, duyuru: Duyuru, etkinlik_bilgisi: dict | None) -> None:
-    """Etkinlik etiketli duyuruda etkinliğin zamanı ve yeri duyuruyla birlikte girilir."""
-    if duyuru.etiket != Etiket.ETKINLIK or not etkinlik_bilgisi:
+def _etkinligi_esle(kullanici, duyuru: Duyuru, etkinlik_bilgisi: dict | None, etkinlik: Etkinlik | None) -> None:
+    """Etkinlik etiketli duyuruya etkinlik bağlar.
+
+    ``etkinlik`` verilirse var olan etkinlik bağlanır (bilgileri Etkinlikler ekranında düzenlenir).
+    Verilmezse ``etkinlik_bilgisi`` ile yeni etkinlik açılır ya da bağlı olan güncellenir.
+    """
+    if duyuru.etiket != Etiket.ETKINLIK:
+        return
+    if etkinlik is not None:
+        duyuru.etkinlik = etkinlik
+        return
+    if not etkinlik_bilgisi:
         return
     if duyuru.etkinlik is None:
         duyuru.etkinlik = Etkinlik.objects.create(ad=duyuru.baslik, olusturan=kullanici, **etkinlik_bilgisi)
@@ -42,7 +51,10 @@ def _etkinligi_esle(kullanici, duyuru: Duyuru, etkinlik_bilgisi: dict | None) ->
         duyuru.etkinlik.save()
 
 
-def kaydet_duyuru(kullanici, veri: dict, duyuru: Duyuru | None = None, etkinlik_bilgisi: dict | None = None) -> Duyuru:
+def kaydet_duyuru(
+    kullanici, veri: dict, duyuru: Duyuru | None = None, etkinlik_bilgisi: dict | None = None,
+    etkinlik: Etkinlik | None = None,
+) -> Duyuru:
     """Yeni duyuru oluşturur veya var olanı günceller. ``veri``: baslik, etiket, ozet, govde."""
     if not duzenleyebilir_mi(kullanici, duyuru):
         raise PermissionDenied("Bu duyuruyu düzenleme yetkiniz yok.")
@@ -56,7 +68,7 @@ def kaydet_duyuru(kullanici, veri: dict, duyuru: Duyuru | None = None, etkinlik_
         for alan in ALANLAR:
             if alan in veri:
                 setattr(duyuru, alan, veri[alan])
-        _etkinligi_esle(kullanici, duyuru, etkinlik_bilgisi)
+        _etkinligi_esle(kullanici, duyuru, etkinlik_bilgisi, etkinlik)
         yayindaydi = duyuru.pk is not None and duyuru.durum == Durum.YAYINDA
         if duyuru.durum == Durum.KALDIRILDI:
             duyuru.durum = Durum.TASLAK

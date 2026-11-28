@@ -10,6 +10,6 @@
 </header>
 <p class="aciklama">Duyuru sitede bu şekilde görünecek (son kaydedilen hali).</p>
 <div class="ust-bosluk">
-{% include "panel/duyurular/_onizleme.html" with baslik=duyuru.baslik ozet=duyuru.ozet etiket=duyuru.etiket etiket_adi=duyuru.get_etiket_display govde=duyuru.govde tarih=duyuru.yayin_tarihi|default:duyuru.guncelleme etkinlik_zaman=duyuru.etkinlik.baslangic etkinlik_yer=duyuru.etkinlik.yer %}
+{% include "panel/duyurular/_onizleme.html" with baslik=duyuru.baslik ozet=duyuru.ozet etiket=duyuru.etiket etiket_adi=duyuru.get_etiket_display govde=duyuru.govde tarih=duyuru.yayin_tarihi|default:duyuru.guncelleme etkinlik_zaman=duyuru.etkinlik.baslangic etkinlik_yer=duyuru.etkinlik.yer etkinlik_harita=duyuru.etkinlik.harita_baglantisi %}
 </div>
 {% endblock %}

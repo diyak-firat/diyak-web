@@ -4,7 +4,7 @@ Bu rehber paneli kullanacak Yönetim Kurulu üyeleri, birim editörleri, akademi
 
 > **Bu rehber herkese açık bir depoda durur.** İçindeki isimler ve e-postalar uydurmadır (ör. Ayşe Yılmaz, `ornek@firat.edu.tr`). Rehbere gerçek kişi adı, e-posta, şifre, davet bağlantısı, sunucu bilgisi veya gerçek verinin ekran görüntüsü eklenmez. Ayrıntı: [Bu rehberi güncellerken](#bu-rehberi-güncellerken).
 
-Panel aşama aşama geliştiriliyor. Şu an kullanılabilen bölümler: giriş ve iki adımlı doğrulama, Duyurular, Ekip, Kullanıcılar, Hesabım ve İşlem kaydı. Etkinlik formları ve yanıtlar sırayla eklenecek; her biri eklendiğinde bu rehbere de bölümü yazılacak.
+Panel aşama aşama geliştiriliyor. Şu an kullanılabilen bölümler: giriş ve iki adımlı doğrulama, Duyurular, Etkinlikler, Ekip, Kullanıcılar, Hesabım ve İşlem kaydı. Etkinlik formları ve yanıtlar sırayla eklenecek; her biri eklendiğinde bu rehbere de bölümü yazılacak.
 
 ## İçindekiler
 
@@ -176,7 +176,7 @@ Taslak ──▶ Onaya gönder ──▶ Yönetim Kurulu: Onayla ve yayımla ─
 
 1. Menüden **Duyurular** → **Yeni duyuru**.
 2. **Başlık** (en fazla 140 karakter) ve **etiketi** seçin: Etkinlik, Duyuru, Çağrı veya Yayın.
-3. Etiket **Etkinlik** ise etkinliğin **tarihini, saatini** ve **yerini** girin. Sitede gönderinin altında gri bir kutuda görünür.
+3. Etiket **Etkinlik** ise etkinliği bağlayın: **Etkinlikler** ekranında açılmış bir etkinliği listeden seçin, ya da "Yeni etkinlik"i bırakıp **tarihini, saatini, yerini** ve isterseniz **harita bağlantısını** girin. Sitede gönderinin altında gri bir kutuda görünür; harita bağlantısı varsa yer adına tıklayan ziyaretçi Google Haritalar'da açar.
 4. **Özet**: gündem listesinde başlığın altında görünen bir iki cümle (en fazla 300 karakter).
 5. **Metin**: araç çubuğuyla biçimlendirin. Kalın, italik, başlık, alt başlık, madde ve numaralı liste, alıntı ve bağlantı kullanılabilir.
    - **İç içe liste:** Bir liste maddesindeyken **İçeri al** (ya da klavyede Tab) o maddeyi bir üsttekinin altına alır; **Dışarı al** (Shift+Tab) geri çıkarır. Alt maddelerin türünü değiştirmek için imleç alt maddedeyken **Madde listesi** veya **Numaralı liste**ye basın; örneğin numaralı maddelerin altında madde işaretli bir alt liste olur.
@@ -206,6 +206,15 @@ Tek bir Yönetim Kurulu üyesinin onayı yeterlidir. Kendi yazdığınız duyuru
 - **Yayından kaldırmak** (Yönetim Kurulu): duyuruyu açın → **Yayından kaldır** → onay. Duyuru sitedeki gündemden kalkar. Kaldırılan duyuru düzenlenip yeniden onaya gönderilebilir.
 
 > Not: Panel şu an sitenin kendisine bağlı değil. Onaylanan duyurular panelde "Yayında" görünür; sitenin gündemi bu duyurulardan beslenmeye ileride geçecek. O zamana kadar sitedeki gündem eski yöntemle güncellenir.
+
+### Etkinlikler
+
+Menüdeki **Etkinlikler** ekranında yaklaşan ve geçmiş etkinlikler listelenir. Etkinlik sitede tek başına görünmez; bir duyuruya bağlanınca tarihi, saati ve yeri gönderide çıkar. Kayıt formları da etkinliklere bağlanacak.
+
+- **Yeni etkinlik:** ad, başlangıç (isteğe bağlı bitiş), yer, isteğe bağlı kısa açıklama ve harita bağlantısı.
+- **Harita bağlantısı:** Google Haritalar'da yeri bulun, **Paylaş**a basın, **Bağlantıyı kopyala** deyin ve alana yapıştırın. Yalnızca Google Haritalar adresleri kabul edilir (`https://maps.app.goo.gl/…` veya `https://www.google.com/maps/…`).
+- **Yayındaki bir duyuruya bağlı etkinlik:** tarihi ve yeri sitede göründüğü için yalnızca Yönetim Kurulu değiştirebilir; değişiklik işlem kaydına yazılır. Editörseniz Yönetim Kurulu'na yazın.
+- Bir duyuruya bağlı etkinlik silinemez.
 
 ## 11. Ekip sayfası
 

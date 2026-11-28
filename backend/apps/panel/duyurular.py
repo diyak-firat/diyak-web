@@ -2,6 +2,8 @@
 burada yalnızca çağrılır. Onay işlemleri yalnızca POST ile yapılır (CSRF korumalı).
 """
 
+from datetime import timedelta
+
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.shortcuts import get_object_or_404, redirect, render
@@ -11,6 +13,7 @@ from django.views.decorators.http import require_POST
 from apps.accounts import yetki
 from apps.duyurular import servisler
 from apps.duyurular.models import Durum, Duyuru, Etiket
+from apps.etkinlikler.models import Etkinlik
 from apps.onay import akis
 
 from .erisim import panel_gerekli
@@ -59,9 +62,17 @@ def _baslangic(duyuru: Duyuru | None) -> dict:
         return {"etiket": Etiket.DUYURU}
     veri = {"baslik": duyuru.baslik, "etiket": duyuru.etiket, "ozet": duyuru.ozet, "govde": duyuru.govde}
     if duyuru.etkinlik:
-        veri["etkinlik_baslangic"] = timezone.localtime(duyuru.etkinlik.baslangic)
-        veri["etkinlik_yer"] = duyuru.etkinlik.yer
+        veri["etkinlik_secimi"] = str(duyuru.etkinlik_id)
     return veri
+
+
+def _secilebilir_etkinlikler(duyuru=None):
+    """Seçim listesi: son 1 yılın ve gelecekteki etkinlikler, ayrıca şu an bağlı olan."""
+    sinir = timezone.now() - timedelta(days=365)
+    sorgu = Etkinlik.objects.filter(baslangic__gte=sinir)
+    if duyuru is not None and duyuru.etkinlik_id:
+        sorgu = sorgu | Etkinlik.objects.filter(pk=duyuru.etkinlik_id)
+    return sorgu.distinct().order_by("-baslangic")
 
 
 def _kaydet_ve_ilerle(request, form, duyuru):
@@ -70,7 +81,9 @@ def _kaydet_ve_ilerle(request, form, duyuru):
     if islem == "yayimla" and not yetki.onaylayabilir_mi(request.user):
         raise PermissionDenied
     try:
-        duyuru = servisler.kaydet_duyuru(request.user, form.duyuru_verisi(), duyuru, form.etkinlik_bilgisi())
+        secilen = form.secilen_etkinlik_id()
+        etkinlik = get_object_or_404(Etkinlik, pk=secilen) if secilen else None
+        duyuru = servisler.kaydet_duyuru(request.user, form.duyuru_verisi(), duyuru, form.etkinlik_bilgisi(), etkinlik)
     except ValidationError as hata:
         _hata_mesaji(request, hata)
         return None
@@ -93,7 +106,7 @@ def _kaydet_ve_ilerle(request, form, duyuru):
 
 @hazirlayan
 def yeni(request):
-    form = DuyuruFormu(request.POST or None, initial=_baslangic(None))
+    form = DuyuruFormu(request.POST or None, initial=_baslangic(None), etkinlikler=_secilebilir_etkinlikler())
     if request.method == "POST" and form.is_valid():
         if (yanit := _kaydet_ve_ilerle(request, form, None)) is not None:
             return yanit
@@ -113,7 +126,7 @@ def _duzenleme_baglami(request, form, duyuru):
 def detay(request, pk: int):
     duyuru = get_object_or_404(Duyuru.objects.select_related("etkinlik", "olusturan", "onaylayan"), pk=pk)
     if servisler.duzenleyebilir_mi(request.user, duyuru):
-        form = DuyuruFormu(request.POST or None, initial=_baslangic(duyuru))
+        form = DuyuruFormu(request.POST or None, initial=_baslangic(duyuru), etkinlikler=_secilebilir_etkinlikler(duyuru))
         if request.method == "POST" and form.is_valid():
             if (yanit := _kaydet_ve_ilerle(request, form, duyuru)) is not None:
                 return yanit

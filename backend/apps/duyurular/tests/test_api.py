@@ -56,7 +56,7 @@ def test_yalnizca_izinli_alanlar_doner(client, yk):
     veri = client.get(LISTE).json()[0]
     assert set(veri) == {"slug", "baslik", "etiket", "ozet", "govde", "yayin_tarihi", "etkinlik"}
     assert veri["etiket"] == "Etkinlik"
-    assert set(veri["etkinlik"]) == {"baslangic", "bitis", "yer", "cevrim_ici"}
+    assert set(veri["etkinlik"]) == {"baslangic", "bitis", "yer", "cevrim_ici", "harita_baglantisi"}
     assert veri["etkinlik"]["yer"] == "[Salon]"
     metin = str(veri)
     assert "yk@ornek.org" not in metin and "onay" not in metin
