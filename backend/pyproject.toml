@@ -13,6 +13,7 @@ dependencies = [
     "segno>=1.6,<2",
     "nh3>=0.3,<0.4",
     "pillow>=12,<14",
+    "django-redis>=7,<8",
 ]
 
 [dependency-groups]

@@ -193,3 +193,12 @@ Biçim: **Karar** · **Gerekçe** · **Bedeli** (vazgeçtiğimiz şey)
 - Object storage hosting kararına bağlı. Django'nun dosya depolama katmanı (`STORAGES`) sayesinde ileride kod değişmeden object storage'a geçilebilir.
 - Yeniden kodlama, bir görüntü dosyasına gizlenmiş içeriğin yayına çıkmasını engeller; virüs taraması bu görseller için şart değildir.
 **Bedeli:** `media` volume'ü veritabanı gibi yedeklenmeli (STATUS.md). Hiçbir sürümde kullanılmayan eski fotoğraf dosyaları birikir; temizliği gece görevine eklenecek.
+
+### K-28 · Önbellek ve kısa ömürlü sayaçlar: Valkey + django-redis
+**Tarih:** 2026-11-28
+**Karar:** Herkese açık formların istek sınırı (IP başına sayaç) ve önbellek için Compose'a bir Valkey servisi eklendi; Django `django-redis` ile bağlanır (`REDIS_URL`). Kalıcılık kapalı (`--save ''`, `--appendonly no`), bellek 64 MB ile sınırlı. Port dışarı açılmaz. Testler bellek içi önbellek kullanır.
+**Gerekçe:**
+- PANEL.md §9 spam koruması için kısa süreli sayaç ister ve IP'nin veritabanına yazılmasını yasaklar (§6). Süreli anahtarlar (TTL) bunun için en basit yoldur; sayaçlar kendiliğinden silinir.
+- Valkey, Redis'in Linux Foundation altındaki BSD lisanslı çatalıdır ve aynı protokolü konuşur. Redis 7.4 sonrası sürümlerin lisansı değişti; ileride lisans sorusu çıkmasın diye Valkey seçildi. `django-redis` ikisiyle de çalışır.
+- Kalıcılık kapalı olduğu için yedeklenecek bir şey tutmaz; yeniden başlayınca sayaçlar sıfırlanır, bu kabul edilebilir.
+**Bedeli:** Sunucuda bir konteyner daha (birkaç MB bellek). Valkey çökerse form gönderimi istek sınırı denetiminde hata vermemeli (A4'te ele alınır).

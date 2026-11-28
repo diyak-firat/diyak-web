@@ -2,7 +2,7 @@
 # Yerelde .env içindeki COMPOSE_FILE, docker-compose.dev.yml'yi de ekler (bkz. .env.example).
 #
 # UYARI: `docker compose down -v` ASLA çalıştırılmaz; -v veritabanı volume'ünü siler.
-# TODO (yayın hazırlığı): Caddy (TLS), statik dosyalar, Redis. STATUS.md'de.
+# TODO (yayın hazırlığı): Caddy (TLS), statik dosyalar. STATUS.md'de.
 
 services:
   db:
@@ -21,6 +21,18 @@ services:
       retries: 5
     # "ports" YOK: veritabanı dışarı açılmaz, yalnızca aynı ağdaki Django erişir.
 
+  # Kısa ömürlü sayaçlar ve önbellek (herkese açık formların istek sınırı; IP diske yazılmaz).
+  # Valkey: Redis'in BSD lisanslı çatalı, aynı protokol (K-28). Kalıcılık kapalı: yedeklenecek veri tutmaz.
+  redis:
+    image: valkey/valkey:8-alpine
+    restart: unless-stopped
+    command: ['valkey-server', '--save', '', '--appendonly', 'no', '--maxmemory', '64mb', '--maxmemory-policy', 'allkeys-lru']
+    healthcheck:
+      test: ['CMD', 'valkey-cli', 'ping']
+      interval: 10s
+      retries: 5
+    # "ports" YOK: yalnızca aynı ağdaki Django erişir.
+
   web:
     build:
       context: ./backend
@@ -33,12 +45,15 @@ services:
       DJANGO_CSRF_TRUSTED_ORIGINS: ${DJANGO_CSRF_TRUSTED_ORIGINS:-}
       DB_HOST: db
       DB_PASSWORD_FILE: /run/secrets/db_password
+      REDIS_URL: redis://redis:6379/0
     secrets: [db_password, django_secret_key]
     volumes:
       # Yüklenen herkese açık görseller (ekip fotoğrafları; K-27). Yedeğe dahil edilmeli (STATUS.md).
       - media:/app/media
     depends_on:
       db:
+        condition: service_healthy
+      redis:
         condition: service_healthy
 
 volumes:
