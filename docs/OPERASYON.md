@@ -2,6 +2,8 @@
 
 Bu rehber Faz 2'de, backend sunucusu kurulduğunda uygulanır. Üyelik başvuruları, proje başvuruları ve etkinlik kayıtları topluluğun en önemli verisidir; kaybolması ya da sızması kabul edilemez. Bu belge o verinin nasıl korunacağını adım adım anlatır.
 
+> **Yer tutucular repoda doldurulmaz.** Bu belge herkese açık bir repodadır. `diyak-sunucu.example`, kullanıcı adları ve yollar gibi yer tutucuları sunucudaki ve kendi bilgisayarınızdaki kopyada doldurun. Sunucu adresi, SSH kullanıcıları, VPN ayarları ve yedek anahtarlarının kimde olduğu gibi bilgiler ayrı bir private repoda (ör. `diyak-ops`) veya parola yöneticisinde tutulur. Git geçmişine bir kez giren bilgi silinse bile geçmişte kalır.
+
 > **Agent'lar için:** Bu belgedeki komutları sunucuda sen çalıştırmazsın. Sunucuya bağlanmak, erişim bilgisi istemek veya yedek dosyası açmak yasaktır. Migration içeren işlerde kuralların AGENTS.md dosyasındadır.
 
 ## İçindekiler

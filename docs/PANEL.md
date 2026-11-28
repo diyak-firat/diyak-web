@@ -415,4 +415,4 @@ Her aşama ayrı PR'lar halinde, kabul ölçütleri sağlanınca tamamlanır. He
 - *Kabul:* Form sahibi başka formun yanıtlarını göremiyor (test). Görüntüleme ve indirme işlem kaydına düşüyor. `=HYPERLINK(...)` içeren yanıt CSV'de etkisizleşiyor. Silinme tarihi geçen yanıtlar gece görevinde siliniyor.
 
 **A6: Cilalama**
-- Ana ekran özetleri, boş durumlar, telefon görünümü, erişilebilirlik kontrolü, editörler ve Yönetim Kurulu için kısa kullanım rehberi (`docs/PANEL-KULLANIM.md`).
+- Ana ekran özetleri, boş durumlar, telefon görünümü, erişilebilirlik kontrolü, kullanım rehberinin (`docs/PANEL-KULLANIM.md`, A1'den beri her aşamada güncellenir) panel içinde Yardım sayfası olarak gösterilmesi.
