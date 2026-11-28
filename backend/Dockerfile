@@ -21,7 +21,7 @@ CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
 FROM temel AS prod
 COPY . .
-RUN useradd --system --uid 10001 --no-create-home diyak && chown -R diyak /app
+RUN mkdir -p /app/media && useradd --system --uid 10001 --no-create-home diyak && chown -R diyak /app
 USER diyak
 EXPOSE 8000
 CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--access-logfile", "-"]

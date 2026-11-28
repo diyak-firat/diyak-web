@@ -34,12 +34,16 @@ services:
       DB_HOST: db
       DB_PASSWORD_FILE: /run/secrets/db_password
     secrets: [db_password, django_secret_key]
+    volumes:
+      # Yüklenen herkese açık görseller (ekip fotoğrafları; K-27). Yedeğe dahil edilmeli (STATUS.md).
+      - media:/app/media
     depends_on:
       db:
         condition: service_healthy
 
 volumes:
   pgdata:
+  media:
 
 secrets:
   db_password:

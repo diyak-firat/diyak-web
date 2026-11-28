@@ -183,3 +183,13 @@ Biçim: **Karar** · **Gerekçe** · **Bedeli** (vazgeçtiğimiz şey)
 - Tiptap'ın çekirdeği MIT lisanslıdır, hazır bir arayüz dayatmaz; araç çubuğu sitenin tasarımıyla (`tokens.css`) yazılabilir. Trix daha sade ama kendi görünümünü ve izin listemizde olmayan öğeleri (ör. ek dosya) getirir.
 - Astro'yu API'ye bağlamak site derlemesini çalışan bir backend'e bağımlı kılar. Hosting (KVKK) kararı verilmeden bunu yapmak siteyi yayınlanamaz hale getirebilir.
 **Bedeli:** Panel için küçük bir JS derleme adımı olur (PANEL.md §11'deki "metin editörü tek istisnadır" kuralı). Derlenmiş dosya repoda tutulur; paket güncellenince yeniden derlenir.
+
+### K-27 · Ekip fotoğrafları: Pillow ile işlenir, sunucu diskinde durur
+**Tarih:** 2026-11-28
+**Karar:** Panelden yüklenen ekip fotoğrafları Pillow ile açılıp doğrulanır, döndürme bilgisine göre çevrilir, kare kırpılıp 800×800'e küçültülür ve JPEG olarak **yeniden kodlanır** (EXIF ve gömülü ek veri atılır). Dosyalar şimdilik sunucu diskinde, Docker'ın `media` volume'ünde durur ve `/medya/` altından sunulur (canlıda Caddy). Her yükleme yeni bir dosyadır; onaylı ekip sayfası eski fotoğrafı göstermeye devam edebilir.
+**Gerçekleşme şekli:** Ekip sayfası panelde serbestçe düzenlenen bir çalışma kopyasıdır. Onaya gönderilince o anki hali (yalnızca yazılı yayın onayı olan kişiler ve herkese açık alanlar) `ekip.Degisiklik` kaydına donmuş olarak yazılır; `/api/ekip/` en son onaylananı döndürür.
+**Gerekçe:**
+- ARCHITECTURE.md'deki akış (presigned URL, object storage, ClamAV) kişisel ve özel dosyalar (başvuru ekleri vb.) içindir. Ekip fotoğrafları herkese açık yayımlanacak görsellerdir ve yalnızca 2FA ile giriş yapmış panel kullanıcıları yükler.
+- Object storage hosting kararına bağlı. Django'nun dosya depolama katmanı (`STORAGES`) sayesinde ileride kod değişmeden object storage'a geçilebilir.
+- Yeniden kodlama, bir görüntü dosyasına gizlenmiş içeriğin yayına çıkmasını engeller; virüs taraması bu görseller için şart değildir.
+**Bedeli:** `media` volume'ü veritabanı gibi yedeklenmeli (STATUS.md). Hiçbir sürümde kullanılmayan eski fotoğraf dosyaları birikir; temizliği gece görevine eklenecek.
