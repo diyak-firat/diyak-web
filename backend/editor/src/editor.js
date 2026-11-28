@@ -28,6 +28,18 @@ const DUGMELER = [
   { ayrac: true },
   { ad: 'Madde listesi', komut: (e) => e.chain().focus().toggleBulletList().run(), aktif: (e) => e.isActive('bulletList') },
   { ad: 'Numaralı liste', komut: (e) => e.chain().focus().toggleOrderedList().run(), aktif: (e) => e.isActive('orderedList') },
+  {
+    ad: 'İçeri al',
+    ipucu: 'Liste maddesini bir üsttekinin altına alır (Tab)',
+    komut: (e) => e.chain().focus().sinkListItem('listItem').run(),
+    etkin: (e) => e.can().sinkListItem('listItem'),
+  },
+  {
+    ad: 'Dışarı al',
+    ipucu: 'Alt maddeyi bir üst düzeye çıkarır (Shift+Tab)',
+    komut: (e) => e.chain().focus().liftListItem('listItem').run(),
+    etkin: (e) => e.isActive('listItem') && e.can().liftListItem('listItem'),
+  },
   { ad: 'Alıntı', komut: (e) => e.chain().focus().toggleBlockquote().run(), aktif: (e) => e.isActive('blockquote') },
   { ayrac: true },
   { ad: 'Bağlantı', baglanti: true, aktif: (e) => e.isActive('link') },
@@ -50,6 +62,7 @@ function kur(kutu) {
 
   const cubuk = oge('div', { class: 'editor-cubuk', role: 'toolbar', 'aria-label': 'Metin biçimi' });
   const baglantiFormu = oge('div', { class: 'editor-baglanti', hidden: '' });
+  const metinGirdisi = oge('input', { type: 'text', 'aria-label': 'Görünecek metin', placeholder: 'Görünecek metin' });
   const adresGirdisi = oge('input', {
     type: 'url',
     placeholder: 'https://… veya mailto:…',
@@ -59,7 +72,7 @@ function kur(kutu) {
   const baglantiKaldir = oge('button', { type: 'button', class: 'dugme-ikincil' }, 'Bağlantıyı kaldır');
   const baglantiVazgec = oge('button', { type: 'button', class: 'metin-dugme' }, 'Vazgeç');
   const baglantiHata = oge('p', { class: 'form-hata', role: 'alert', hidden: '' });
-  baglantiFormu.append(adresGirdisi, baglantiEkle, baglantiKaldir, baglantiVazgec, baglantiHata);
+  baglantiFormu.append(metinGirdisi, adresGirdisi, baglantiEkle, baglantiKaldir, baglantiVazgec, baglantiHata);
 
   const yuzey = oge('div', { class: 'editor-yuzey' });
   alan.hidden = true;
@@ -102,18 +115,26 @@ function kur(kutu) {
       continue;
     }
     const d = oge('button', { type: 'button', 'aria-pressed': 'false' }, tanim.ad);
+    if (tanim.ipucu) d.title = tanim.ipucu;
     if (!tanim.aktif) d.removeAttribute('aria-pressed');
     d.addEventListener('click', () => (tanim.baglanti ? baglantiAc() : tanim.komut(editor)));
     cubuk.append(d);
     dugmeler.push([d, tanim]);
   }
 
+  function seciliMetin() {
+    const { from, to } = editor.state.selection;
+    return editor.state.doc.textBetween(from, to, ' ');
+  }
   function baglantiAc() {
+    // İmleç bir bağlantının içindeyse bağlantının tamamı seçilir; böylece düzenlenebilir veya kaldırılabilir.
+    if (editor.isActive('link')) editor.chain().extendMarkRange('link').run();
+    metinGirdisi.value = seciliMetin();
     adresGirdisi.value = editor.getAttributes('link').href || '';
     baglantiHata.hidden = true;
     baglantiKaldir.hidden = !editor.isActive('link');
     baglantiFormu.hidden = false;
-    adresGirdisi.focus();
+    (metinGirdisi.value ? adresGirdisi : metinGirdisi).focus();
   }
   function baglantiKapat() {
     baglantiFormu.hidden = true;
@@ -127,18 +148,35 @@ function kur(kutu) {
       adresGirdisi.focus();
       return;
     }
-    editor.chain().focus().extendMarkRange('link').setLink({ href: adres }).run();
+    const yazilan = metinGirdisi.value;
+    if (yazilan.trim() && yazilan === seciliMetin()) {
+      // Seçili metin aynen kalıyor: yalnızca bağlantı eklenir (biçimi korunur).
+      editor.chain().focus().extendMarkRange('link').setLink({ href: adres }).run();
+    } else {
+      // Seçim yoksa veya metin değiştiyse, metin bağlantılı olarak yerine yazılır.
+      // Seçimin başındaki ve sonundaki boşluklar bağlantının dışında korunur.
+      const secili = seciliMetin();
+      const bas = secili.match(/^\s*/)[0];
+      const son = secili.trim() ? secili.match(/\s*$/)[0] : '';
+      const metin = yazilan.trim() || adres.replace(/^mailto:/i, '');
+      const parcalar = [{ type: 'text', text: metin, marks: [{ type: 'link', attrs: { href: adres } }] }];
+      if (bas) parcalar.unshift({ type: 'text', text: bas });
+      if (son) parcalar.push({ type: 'text', text: son });
+      editor.chain().focus().insertContent(parcalar).unsetMark('link').run();
+    }
     baglantiKapat();
   }
   baglantiEkle.addEventListener('click', baglantiUygula);
-  adresGirdisi.addEventListener('keydown', (olay) => {
+  const enterEscape = (olay) => {
     if (olay.key === 'Enter') {
       olay.preventDefault();
       baglantiUygula();
     } else if (olay.key === 'Escape') {
       baglantiKapat();
     }
-  });
+  };
+  metinGirdisi.addEventListener('keydown', enterEscape);
+  adresGirdisi.addEventListener('keydown', enterEscape);
   baglantiKaldir.addEventListener('click', () => {
     editor.chain().focus().extendMarkRange('link').unsetLink().run();
     baglantiKapat();

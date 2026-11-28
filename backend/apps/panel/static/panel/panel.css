@@ -66,6 +66,9 @@ img {
 code {
   font-family: var(--mono);
 }
+[hidden] {
+  display: none !important;
+}
 
 .skip-link {
   position: absolute;
