@@ -7,10 +7,10 @@ Bu dosya, bu repoda kod yazan agent'lar (Claude Code, Codex vb.) ve yeni katıla
 Fırat Üniversitesi Doğal Dil İşleme ve Yapay Zekâ Araştırmaları Topluluğu (DİYAK) web sitesi. Site Türkçedir, hedef kitlesi öğrenciler, akademisyenler ve diğer üniversitelerin topluluklarıdır.
 
 - **Faz 1 (şu an):** `frontend/` altında statik Astro sitesi. İçerik `frontend/src/content/` ve `frontend/src/data/` altındaki Markdown/JSON dosyalarında.
-- **Faz 2 (sonra):** `backend/` altında Django + PostgreSQL API. Henüz kod yok, plan [backend/README.md](backend/README.md) dosyasında.
+- **Faz 2 (geliştiriliyor):** `backend/` altında Django + PostgreSQL; yönetim paneli ve API. Kurulum ve yapı [backend/README.md](backend/README.md) dosyasında, aşamalar PANEL.md §12'de.
 
 Mimari: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · Kararlar: [docs/DECISIONS.md](docs/DECISIONS.md) · Tasarım: [docs/DESIGN.md](docs/DESIGN.md)
-Faz 2: Yönetim paneli ve formlar [docs/PANEL.md](docs/PANEL.md) · Operasyon [docs/OPERASYON.md](docs/OPERASYON.md)
+Faz 2: Yönetim paneli ve formlar [docs/PANEL.md](docs/PANEL.md) · Kullanım rehberi [docs/PANEL-KULLANIM.md](docs/PANEL-KULLANIM.md) · Operasyon [docs/OPERASYON.md](docs/OPERASYON.md)
 
 ## Komutlar
 
@@ -80,6 +80,17 @@ Türler: `feat` yeni özellik, `fix` hata düzeltme, `docs` doküman, `style` g�
 - Şifre, token, API anahtarı asla repoya girmez. `.env` dosyaları `.gitignore`'da. Örnek değerler `.env.example` dosyasına yazılır.
 - Sitede form ile kişisel veri toplanmaz (Faz 1). Üyelik başvurusu PDF form ile yapılır.
 - Faz 2'de kişisel veri işleyen her özellik için `docs/ARCHITECTURE.md` dosyasındaki güvenlik ve KVKK bölümü geçerlidir.
+
+**Bu repo herkese açık.** Şunlar hiçbir dosyaya, commit mesajına, PR'a veya ekran görüntüsüne girmez:
+- Şifreler, token'lar, davet bağlantıları, 2FA karekodları ve kurtarma kodları
+- Sunucunun IP adresi, SSH kullanıcı adları, VPN yapılandırması ve anahtarları
+- Yedek anahtarlarının kimde olduğu, yedeklerin hangi kişilerin bilgisayarına çekildiği
+- Gerçek kişilerin isimleri ve e-postaları. Örnek gerekiyorsa uydurma kullanılır: "Ayşe Yılmaz, `ornek@firat.edu.tr`"
+- Gerçek veri içeren ekran görüntüleri (yanıt tablosu, kullanıcı listesi). Görüntüler sahte veriyle alınır
+
+Belgelerdeki yer tutucular (ör. OPERASYON.md'deki `diyak-sunucu.example`) repoda doldurulmaz; sunucudaki ve bilgisayardaki kopyada doldurulur. Git geçmişine giren bilgi dosyadan silinse bile geçmişte kalır. Gizli operasyon bilgileri ayrı bir private repoda (ör. `diyak-ops`) veya parola yöneticisinde tutulur. Panel adresi (`panel.<alan-adi>`) gizli değildir, yazılabilir.
+
+Panelde kullanıcıyı etkileyen bir değişiklik yapıldığında `docs/PANEL-KULLANIM.md` de güncellenir.
 
 ## Veritabanı ve yedek kuralları
 

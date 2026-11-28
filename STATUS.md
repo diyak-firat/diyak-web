@@ -13,6 +13,8 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 
 **Repo ve yayın**
 - [ ] Organizasyonda en az iki owner (geliştirici + akademik danışman veya bir yönetim kurulu üyesi)
+- [ ] Organizasyon ayarları → Code security: **Secret scanning** ve **Push protection**'ı aç (public repoda ücretsiz; yanlışlıkla commit'lenen şifre veya anahtarı push sırasında engeller). Şu an `diyak-web` için ikisi de kapalı
+- [ ] Gizli operasyon bilgileri için yer: organizasyonda private `diyak-ops` reposu veya parola yöneticisi; erişim yalnızca teknik sorumlular ve Başkan
 - [ ] Bilgi İşlem'den alt alan adı talep et (ör. `diyak.firat.edu.tr`), `astro.config.mjs` içindeki `site` değerini güncelle. RSS ve canonical bağlantıları bu değerden üretilir; şu an `diyak.example.org`
 
 **Gerçek içerik ve görseller**
@@ -64,7 +66,7 @@ Faz 1 kısa tutulur: Faz 1'de duyuru yazma aracı kurulmaz, hızla Faz 2'ye geç
 - [ ] A3 · Ekip sayfası: panelden yönetim, yayın onayı, fotoğraflar, `ekip.json`'dan aktarım. Akademik danışman ve ekip üyelerinin gerçek bilgileri ilk kez bu arayüzden girilecek; panelin ilk gerçek testi olur (o zamana kadar `ekip.json` yer tutucu kalır)
 - [ ] A4 · Etkinlikler ve formlar: hazır ama kaldırılabilir alanlar, zorunlu aydınlatma onayı, onay kontrol listesi, herkese açık form sayfası
 - [ ] A5 · Yanıtlar ve saklama: tablo, CSV, otomatik silme
-- [ ] A6 · Cilalama ve kullanım rehberi
+- [ ] A6 · Cilalama: rehberi (`docs/PANEL-KULLANIM.md`) panelin içinde **Yardım** sayfası olarak göster; rehbere deneme ortamında sahte veriyle alınmış ekran görüntüleri ekle
 
 ### Operasyon kayıtları
 
@@ -78,6 +80,7 @@ Aylık geri yükleme provaları buraya yazılır: `tarih · yedek adı · kayıt
 
 ## Tamamlananlar
 
+- [x] Panel kullanım rehberi → `docs/PANEL-KULLANIM.md` (şimdilik A1 ekranları; her aşamada genişler). Public repo kuralları AGENTS.md'ye eklendi
 - [x] Panel: İşlem kaydı ekranı (eylem ve kişi filtresi, sayfalama; Yönetim Kurulu, Danışman, Teknik)
 - [x] **A1 · Temel ve hesaplar** (PR #17–#20): dönemlik roller, davet (48 saat, tek kullanımlık), yetki kuralları, `denetim` işlem kaydı; şifre + TOTP girişi (Admin dahil), `django-axes` kilidi (IP saklanmaz), yeni cihaz uyarısı, oturum süreleri, `ilk_yonetici`; panel iskeleti ve menüsü, Kullanıcılar ekranı (teknik için 2FA sıfırlama ve kilit açma), Hesabım, `gece_gorevleri` (K-25)
 - [x] Compose yerelde ilk kez çalıştırıldı (2026-11-28): migrate, testler, `/api/saglik/`
