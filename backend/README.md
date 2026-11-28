@@ -53,7 +53,10 @@ backend/
 ├── config/settings/          base · development · test · production; ayarlar ortam değişkenlerinden
 │                             (gizli bilgiler AD_FILE ile dosyadan: ortam.py)
 ├── config/api.py             /api/saglik/ (izleme servisi için)
-├── apps/accounts/            Kullanici modeli (e-posta ile giriş); roller, davet, 2FA A1'de
+├── apps/accounts/            Kullanici (e-posta ile giriş), dönemlik RolAtamasi, Davet
+│                             yetki.py: panel yetki kuralları · servisler.py: davet ve rol işlemleri
+├── apps/denetim/             IslemKaydi ve kaydet() (kişisel veri yazılmaz)
+├── conftest.py               Ortak test fixture'ları (sahte kullanıcı ve roller)
 └── tests/                    Ayar ve uç nokta testleri (uygulama testleri apps/*/tests/ altında)
 ```
 

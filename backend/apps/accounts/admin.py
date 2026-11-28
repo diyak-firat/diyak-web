@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from .forms import KullaniciDegistirmeFormu, KullaniciOlusturmaFormu
-from .models import Kullanici
+from .models import Davet, Kullanici, RolAtamasi
 
 
 @admin.register(Kullanici)
@@ -19,3 +19,32 @@ class KullaniciAdmin(UserAdmin):
         ("Tarihler", {"fields": ("last_login", "date_joined")}),
     )
     add_fieldsets = ((None, {"classes": ("wide",), "fields": ("email", "password1", "password2")}),)
+
+
+class SaltOkunurAdmin(admin.ModelAdmin):
+    """Roller ve davetler yalnızca panelden, yetki kurallarıyla ve işlem kaydıyla değişir
+    (PANEL.md §4). Admin'de yalnızca görüntülenir; ilk Başkan `manage.py ilk_yonetici` ile açılır.
+    """
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(RolAtamasi)
+class RolAtamasiAdmin(SaltOkunurAdmin):
+    list_display = ["kullanici", "rol", "gorev_adi", "baslangic", "bitis", "atayan"]
+    list_filter = ["rol"]
+    search_fields = ["kullanici__email"]
+
+
+@admin.register(Davet)
+class DavetAdmin(SaltOkunurAdmin):
+    list_display = ["eposta", "rol", "gorev_adi", "olusturma", "kullanildi", "davet_eden"]
+    list_filter = ["rol"]
+    exclude = ["token_ozeti"]
