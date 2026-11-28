@@ -7,11 +7,7 @@ Projenin anlık durumu. Her iş bitince güncellenir. Agent'lar işe başlamadan
 
 ## Şu an
 
-- [ ] **A2 · Onay altyapısı ve duyurular** (PANEL.md §12; editör Tiptap, Astro bağlantısı sonra: K-26)
-  - [x] `duyurular.Duyuru`, `etkinlikler.Etkinlik` (yalın), ortak onay akışı (`apps/onay`), gövde temizliği (`nh3`)
-  - [x] Panel ekranları: duyuru listesi ve filtre, düzenleme (Tiptap; `backend/editor/`), canlı önizleme, onay ekranı (onayla, düzeltme iste, geri çek), yayından kaldırma, taslak silme, ana ekranda onay bekleyenler ve taslaklarım, e-posta bildirimleri; rehber güncellendi
-  - [ ] `/api/duyurular/` (yalnızca yayımlanmış), deploy hook, `faz1_aktar` (Markdown'dan aktarım)
-  - Kapak görseli alanı dosya yükleme akışıyla (A3 fotoğraflarıyla birlikte) eklenecek
+- [ ] **A3 · Ekip sayfası** (PANEL.md §12): `ekip` modelleri, Ekip ekranı, fotoğraf yükleme, onay akışı, `/api/ekip/`. Fotoğraf yükleme akışı (yeniden boyutlandırma, EXIF silme, depolama yeri) başlamadan önce konuşulacak
 
 ## Sıradaki
 
@@ -66,7 +62,8 @@ Faz 1 kısa tutulur: Faz 1'de duyuru yazma aracı kurulmaz, hızla Faz 2'ye geç
 - [ ] Sentry ve uptime/disk izleme
 
 **Yönetim paneli** (PANEL.md §12)
-- [ ] Astro'nun gündemi `/api/duyurular/`'dan çekmesi (K-26: hosting kararından sonra)
+- [ ] **Astro'nun gündemi `/api/duyurular/`'dan çekmesi** (K-26: hosting kararından sonra). Aynı işte: yayımla ve yayından kaldırda Cloudflare Pages deploy hook'u (1 dakikalık pencerede birleştirme, Redis veya zamanlayıcı gerekir); geçişte gündemde gerçek Markdown gönderisi varsa `faz1_aktar` ile panele aktarma (şu an hepsi `ornek: true`, aktarılacak gönderi yok)
+- [ ] Duyuruya kapak görseli (dosya yükleme akışı A3'te kurulunca)
 - [ ] A3 · Ekip sayfası: panelden yönetim, yayın onayı, fotoğraflar, `ekip.json`'dan aktarım. Akademik danışman ve ekip üyelerinin gerçek bilgileri ilk kez bu arayüzden girilecek; panelin ilk gerçek testi olur (o zamana kadar `ekip.json` yer tutucu kalır)
 - [ ] A4 · Etkinlikler ve formlar: hazır ama kaldırılabilir alanlar, zorunlu aydınlatma onayı, onay kontrol listesi, herkese açık form sayfası
 - [ ] A5 · Yanıtlar ve saklama: tablo, CSV, otomatik silme
@@ -84,6 +81,7 @@ Aylık geri yükleme provaları buraya yazılır: `tarih · yedek adı · kayıt
 
 ## Tamamlananlar
 
+- [x] **A2 · Onay altyapısı ve duyurular, panel tarafı** (PR #25, #26 ve bu PR): `Duyuru`, yalın `Etkinlik`, ortak onay akışı, `nh3` temizliği, Tiptap editörü (K-26), duyuru ekranları, onay ekranı, e-posta bildirimleri, `/api/duyurular/` (yalnızca yayımlanmış). Astro bağlantısı ve deploy hook ayrı iş
 - [x] Panel kullanım rehberi → `docs/PANEL-KULLANIM.md` (şimdilik A1 ekranları; her aşamada genişler). Public repo kuralları AGENTS.md'ye eklendi
 - [x] Panel: İşlem kaydı ekranı (eylem ve kişi filtresi, sayfalama; Yönetim Kurulu, Danışman, Teknik)
 - [x] **A1 · Temel ve hesaplar** (PR #17–#20): dönemlik roller, davet (48 saat, tek kullanımlık), yetki kuralları, `denetim` işlem kaydı; şifre + TOTP girişi (Admin dahil), `django-axes` kilidi (IP saklanmaz), yeni cihaz uyarısı, oturum süreleri, `ilk_yonetici`; panel iskeleti ve menüsü, Kullanıcılar ekranı (teknik için 2FA sıfırlama ve kilit açma), Hesabım, `gece_gorevleri` (K-25)
